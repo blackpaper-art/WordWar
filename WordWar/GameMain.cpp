@@ -1,14 +1,17 @@
+#include "GameMain.h"
+#include "Player.h"
+#include "Bullet.h"
+#include "Managers/BulletManager.h"
+
 #include <stdio.h>
 #include <conio.h>
 #include <windows.h>
 #include <time.h>
 
-#include "GameMain.h"
-#include "Player.h"
-#include "Bullet.h"
 
 Player* player = nullptr;
 Bullet* bullet = nullptr;
+BulletManager* bulletManager = new BulletManager;
 
 #define FIELD_WIDTH (16*3)
 #define FIELD_HEIGHT (9*3)
@@ -45,8 +48,13 @@ void DrawField() {
 
 			if (y == player->GetY() && x == player->GetX())
 				ch = player->GetSymbol();
-			else if (y == bullet->GetY() && x == bullet->GetX())
-				ch = bullet->GetSymbol();
+
+			for (Bullet* b : bulletManager->GetAllBullet()) {
+				if (b && y == b->GetY() && x == b->GetX()) {
+					ch = b->GetSymbol();
+					break; // 一格只显示一个对象
+				}
+			}
 
 			putchar(ch);
 		}
@@ -60,9 +68,9 @@ void DrawField() {
 		putchar(X_WALL);
 	}
 	printf("\n");
+
+	//ShowInfo
 	printf("HP: %d", player->ShowPlayerInfo());
-	//putchar();
-	
 }
 
 
@@ -75,7 +83,8 @@ void MainGameLoop() {
 		if (currentTime >= lastTime + TIME_GAP)
 		{
 			lastTime = currentTime;
-			bullet->Update();
+			bulletManager->Update();
+			bulletManager->DrawAllBullets();
 			DrawField();
 		}
 
@@ -89,11 +98,7 @@ void MainGameLoop() {
 
 int main() {
 	//Initialize
-	player = new Player(FIELD_WIDTH / 2, FIELD_HEIGHT / 2);
-	bullet = new Bullet(player->GetX(), player->GetY());
-	
-	
-
+	player = new Player(FIELD_WIDTH / 2, FIELD_HEIGHT / 2, bulletManager);
 	MainGameLoop();
 	delete player;
 	return 0;

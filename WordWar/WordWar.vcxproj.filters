@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\Managers">
+      <UniqueIdentifier>{5e272b79-f26b-4575-981b-f39b3a5b5ac4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bullet.cpp">
@@ -27,6 +30,12 @@
     <ClCompile Include="Player.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="Managers\BulletManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\FieldManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h">
@@ -40,6 +49,12 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\BulletManager.h">
+      <Filter>Resource Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\FieldManager.h">
+      <Filter>Resource Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
