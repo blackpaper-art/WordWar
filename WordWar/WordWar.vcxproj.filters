@@ -36,6 +36,9 @@
     <ClCompile Include="Managers\FieldManager.cpp">
       <Filter>Resource Files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Managers\TimerManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h">
@@ -54,6 +57,9 @@
       <Filter>Resource Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="Managers\FieldManager.h">
+      <Filter>Resource Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\TimerManager.h">
       <Filter>Resource Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>

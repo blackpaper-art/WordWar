@@ -52,7 +52,7 @@ void DrawField() {
 			for (Bullet* b : bulletManager->GetAllBullet()) {
 				if (b && y == b->GetY() && x == b->GetX()) {
 					ch = b->GetSymbol();
-					break; // 一格只显示一个对象
+					break; 
 				}
 			}
 

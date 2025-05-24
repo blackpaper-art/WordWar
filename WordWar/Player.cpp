@@ -6,7 +6,9 @@
 Player::Player(int x, int y, BulletManager* bm)
 	:
 	CharacterBase(x, y, 100, 1, 'P', false), bulletManager(bm)
-{}
+{
+	timerManager->SetTimer(1000, [=] { bulletManager->SpawnBullet(GetX(), GetY() - 1, MoveDir::Up); },  true);
+}
 
 Player::~Player()
 {
@@ -23,11 +25,6 @@ void Player::Update(char input)
 	case 's': newY++; break;
 	case 'a': newX--; break;
 	case 'd': newX++; break;
-	case ' ':
-		if (bulletManager) {
-			bulletManager->SpawnBullet(GetX(), GetY() - 1, MoveDir::Up);
-		}
-		break;
 	default: break;
 	}
 
@@ -46,3 +43,12 @@ int Player::ShowPlayerInfo()
 {
 	return GetHP();
 }
+
+void Player::FireBullets(int bulletCount, int rate)
+{
+	if (bulletManager)
+	{
+		bulletManager->SpawnBullet(GetX(), GetY(), MoveDir::Up);
+	}
+}
+

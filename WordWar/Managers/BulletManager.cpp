@@ -39,12 +39,7 @@ void BulletManager::Update()
 	}
 }
 
-int BulletManager::GetAllBullet()
+const std::vector<Bullet*>& BulletManager::GetAllBullet() const
 {
-	int bulletsNum = 0;
-	for (Bullet* b : bullets)
-	{
-		bulletsNum++;
-	}
-	return bulletsNum;
+	return bullets;
 }

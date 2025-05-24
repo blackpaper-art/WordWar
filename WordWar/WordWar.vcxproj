@@ -128,6 +128,7 @@
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Managers\BulletManager.cpp" />
     <ClCompile Include="Managers\FieldManager.cpp" />
+    <ClCompile Include="Managers\TimerManager.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +137,7 @@
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="Managers\BulletManager.h" />
     <ClInclude Include="Managers\FieldManager.h" />
+    <ClInclude Include="Managers\TimerManager.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
