@@ -16,18 +16,18 @@
     <Filter Include="Resource Files\Managers">
       <UniqueIdentifier>{5e272b79-f26b-4575-981b-f39b3a5b5ac4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Characters">
+      <UniqueIdentifier>{fbf80321-7565-4ca4-b616-63a1a11f8330}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Items">
+      <UniqueIdentifier>{2add39ad-426c-45e4-af4c-e3164587c26d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Characters\Enemies">
+      <UniqueIdentifier>{f6318980-7e1a-42fd-a828-835809440f1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Character.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameMain.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="Managers\BulletManager.cpp">
@@ -39,18 +39,18 @@
     <ClCompile Include="Managers\TimerManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Characters\Character.cpp">
+      <Filter>Resource Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Characters\Player.cpp">
+      <Filter>Resource Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\Bullet.cpp">
+      <Filter>Resource Files\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bullet.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Character.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameMain.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="Managers\BulletManager.h">
@@ -61,6 +61,18 @@
     </ClInclude>
     <ClInclude Include="Managers\TimerManager.h">
       <Filter>Resource Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Characters\Character.h">
+      <Filter>Resource Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Characters\Player.h">
+      <Filter>Resource Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\Bullet.h">
+      <Filter>Resource Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Characters\Enemies\Enemy.h">
+      <Filter>Resource Files\Characters\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

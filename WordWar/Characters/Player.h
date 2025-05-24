@@ -1,7 +1,7 @@
 #pragma once
 #include "Character.h"
-#include "Managers/BulletManager.h"
-#include "Managers/TimerManager.h"
+#include "../Managers/BulletManager.h"
+#include "../Managers/TimerManager.h"
 
 class Player;
 class BulletManager;

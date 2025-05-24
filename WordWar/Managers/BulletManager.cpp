@@ -1,5 +1,5 @@
-#include "BulletManager.h"
-#include "FieldManager.h"
+#include "../Managers/BulletManager.h"
+#include "../Managers/FieldManager.h"
 
 #define FIELD_WIDTH (16 * 3)
 #define FIELD_HEIGHT (9 * 3)
