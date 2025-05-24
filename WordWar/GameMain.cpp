@@ -1,6 +1,6 @@
 #include "GameMain.h"
-#include "Player.h"
-#include "Bullet.h"
+#include "Characters/Player.h"
+#include "Items/Bullet.h"
 #include "Managers/BulletManager.h"
 
 #include <stdio.h>
