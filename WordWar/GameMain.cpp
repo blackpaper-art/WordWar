@@ -1,17 +1,22 @@
 #include "GameMain.h"
 #include "Characters/Player.h"
+#include "Characters/Enemies/Enemy.h"
 #include "Items/Bullet.h"
 #include "Managers/BulletManager.h"
+#include "Managers/EnemyManager.h"
+#include "Managers/TimerManager.h"
 
 #include <stdio.h>
 #include <conio.h>
 #include <windows.h>
 #include <time.h>
 
-
-Player* player = nullptr;
+Player* player;
+Enemy* enemy = nullptr;
 Bullet* bullet = nullptr;
 BulletManager* bulletManager = new BulletManager;
+TimerManager* timerManager = new TimerManager;
+EnemyManager* enemyManager = new EnemyManager(timerManager);
 
 #define FIELD_WIDTH (16*3)
 #define FIELD_HEIGHT (9*3)
@@ -49,6 +54,13 @@ void DrawField() {
 			if (y == player->GetY() && x == player->GetX())
 				ch = player->GetSymbol();
 
+			for (Enemy* e : enemyManager->GetAllEnemy()) {
+				if (e && y == e->GetY() && x == e->GetX()) {
+					ch = e->GetSymbol();
+					break;
+				}
+			}
+
 			for (Bullet* b : bulletManager->GetAllBullet()) {
 				if (b && y == b->GetY() && x == b->GetX()) {
 					ch = b->GetSymbol();
@@ -79,15 +91,18 @@ void MainGameLoop() {
 	while (true)
 	{
 		clock_t currentTime = clock();
-
+		//Auto update (by using clock)
 		if (currentTime >= lastTime + TIME_GAP)
 		{
 			lastTime = currentTime;
+
 			bulletManager->Update();
 			bulletManager->DrawAllBullets();
+			enemyManager->Update();
+			enemyManager->DrawAllEnemy();
 			DrawField();
 		}
-
+		//Manual Update (when player inputed)
 		if (_kbhit()) {
 			char playerInput = _getch();
 			player->Update(playerInput);
@@ -98,7 +113,14 @@ void MainGameLoop() {
 
 int main() {
 	//Initialize
-	player = new Player(FIELD_WIDTH / 2, FIELD_HEIGHT / 2, bulletManager);
+	player = new Player(FIELD_WIDTH / 2, FIELD_HEIGHT / 2, bulletManager, timerManager);
+	if (enemyManager)
+	{
+		enemyManager->InitPlayerPtr(player);
+		enemyManager->SpawnEnemies(1, 1, player);
+	}
+
+	//MainLoop
 	MainGameLoop();
 	delete player;
 	return 0;

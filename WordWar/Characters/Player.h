@@ -10,7 +10,7 @@ class TimerManager;
 class Player : public CharacterBase
 {
 public:
-	Player(int x, int y, BulletManager* bm);
+	Player(int x, int y, BulletManager* bm, TimerManager* tm);
 	~Player();
 
 	void Update(char input);

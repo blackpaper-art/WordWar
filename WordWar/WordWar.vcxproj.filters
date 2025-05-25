@@ -48,6 +48,12 @@
     <ClCompile Include="Items\Bullet.cpp">
       <Filter>Resource Files\Items</Filter>
     </ClCompile>
+    <ClCompile Include="Characters\Enemies\Enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\EnemyManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h">
@@ -73,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="Characters\Enemies\Enemy.h">
       <Filter>Resource Files\Characters\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\EnemyManager.h">
+      <Filter>Resource Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

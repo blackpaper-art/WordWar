@@ -124,10 +124,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Characters\Character.cpp" />
+    <ClCompile Include="Characters\Enemies\Enemy.cpp" />
     <ClCompile Include="Characters\Player.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Items\Bullet.cpp" />
     <ClCompile Include="Managers\BulletManager.cpp" />
+    <ClCompile Include="Managers\EnemyManager.cpp" />
     <ClCompile Include="Managers\FieldManager.cpp" />
     <ClCompile Include="Managers\TimerManager.cpp" />
   </ItemGroup>
@@ -138,6 +140,7 @@
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="Items\Bullet.h" />
     <ClInclude Include="Managers\BulletManager.h" />
+    <ClInclude Include="Managers\EnemyManager.h" />
     <ClInclude Include="Managers\FieldManager.h" />
     <ClInclude Include="Managers\TimerManager.h" />
   </ItemGroup>
