@@ -36,8 +36,8 @@ void Bullet::Update()
 		//Set to new position
 		SetY(newY);
 		SetX(newX);
-
-		if (newY < 0)
+		//Out of Field
+		if (newY < 0 || newX < 0)
 		{
 			SetIsDead(true);
 		}

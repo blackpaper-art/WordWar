@@ -9,7 +9,7 @@ Player::Player(int x, int y, BulletManager* bm, TimerManager* tm)
 	bulletManager(bm), 
 	timerManager(tm)
 {
-	timerManager->SetTimer(2000, [=] { bulletManager->SpawnBullet(GetX(), GetY() - 1, MoveDir::Up); },  true);
+	timerManager->SetTimer(2000, [=] { bulletManager->SpawnBullet(GetX(), GetY(), MoveDir::Up); },  true);
 }
 
 Player::~Player()

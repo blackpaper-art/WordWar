@@ -35,6 +35,18 @@ void FieldManager::InitializeManagers(Player* p, TimerManager* tm, EnemyManager*
 
 void FieldManager::Update()
 {
+	for (const auto& b : bulletManager->GetAllBullet()) {
+		if (!b || b->GetIsDead()) continue;
+
+		for (Enemy* e : enemyManager->GetAllEnemy()) {
+			if (!e || e->GetIsDead()) continue;
+
+			if (b->GetX() == e->GetX() && b->GetY() == e->GetY()) {
+				b->SetIsDead(true);
+				e->SetIsDead(true);
+			}
+		}
+	}
 }
 
 void FieldManager::DrawField()
@@ -63,15 +75,21 @@ void FieldManager::DrawField()
 
 			for (Enemy* e : enemyManager->GetAllEnemy()) {
 				if (e && y == e->GetY() && x == e->GetX()) {
-					ch = e->GetSymbol();
-					break;
+					if (!e->GetIsDead())
+					{
+						ch = e->GetSymbol();
+						break;
+					}
 				}
 			}
 
-			for (Bullet* b : bulletManager->GetAllBullet()) {
+			for (const std::unique_ptr<Bullet>& b : bulletManager->GetAllBullet()) {
 				if (b && y == b->GetY() && x == b->GetX()) {
-					ch = b->GetSymbol();
-					break;
+					if (!b->GetIsDead())
+					{
+						ch = b->GetSymbol();
+						break;
+					}
 				}
 			}
 
@@ -89,5 +107,5 @@ void FieldManager::DrawField()
 	printf("\n");
 
 	//ShowInfo
-	printf("HP: %d", player->ShowPlayerInfo());
+	printf("Bullets Count: %d", bulletManager->GetAllBullet().size());
 }

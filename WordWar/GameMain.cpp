@@ -10,10 +10,10 @@
 #include <time.h>
 
 Player* player;
-BulletManager* bulletManager = new BulletManager;
 TimerManager* timerManager = new TimerManager;
 EnemyManager* enemyManager = new EnemyManager(timerManager);
 FieldManager* fieldManager = new FieldManager;
+BulletManager* bulletManager = new BulletManager();
 
 void MainGameLoop() {
 	clock_t lastTime = clock();
@@ -29,6 +29,7 @@ void MainGameLoop() {
 			bulletManager->DrawAllBullets();
 			enemyManager->Update();
 			enemyManager->DrawAllEnemy();
+			fieldManager->Update();
 			fieldManager->DrawField();
 		}
 		//Manual Update (when player inputed)
@@ -47,6 +48,10 @@ int main() {
 	if (fieldManager)
 	{
 		fieldManager->InitializeManagers(player, timerManager, enemyManager, bulletManager);
+	}
+	if (bulletManager)
+	{
+		bulletManager->InitFieldPtr(fieldManager);
 	}
 	if (enemyManager)
 	{

@@ -1,10 +1,7 @@
 #include "../Managers/BulletManager.h"
-#include "../Managers/FieldManager.h"
 
 #define FIELD_WIDTH (16 * 3)
 #define FIELD_HEIGHT (9 * 3)
-
-FieldManager fieldManager;
 
 BulletManager::BulletManager()
 {
@@ -14,32 +11,43 @@ BulletManager::~BulletManager()
 {
 }
 
+void BulletManager::InitFieldPtr(FieldManager* fm)
+{
+	fieldManager = fm;
+}
+
 void BulletManager::SpawnBullet(int x, int y, MoveDir dir)
 {
-	bullets.push_back(new Bullet(x, y, dir));
+	bullets.push_back(std::make_unique<Bullet>(x, y, dir));
 }
 
 void BulletManager::DrawAllBullets()
 {
-	for (Bullet* b : bullets)
+	for (const auto& b : bullets)
 	{
 		int x = b->GetX();
 		int y = b->GetY();
 		if (x >= 0 && x < FIELD_WIDTH && y >= 0 && y < FIELD_HEIGHT) {
-			fieldManager.SetField(x, y, b->GetSymbol());
+			fieldManager->SetField(x, y, b->GetSymbol());
 		}
 	}
 }
 
 void BulletManager::Update() 
 {
-	for (Bullet* b : bullets)
+	auto it = bullets.begin();
+	while (it != bullets.end())
 	{
-		if (b) b->Update();
+		(*it)->Update();
+		if ((*it)->GetIsDead())
+		{
+			it = bullets.erase(it);
+		}
+		else { ++it; }
 	}
 }
 
-const std::vector<Bullet*>& BulletManager::GetAllBullet() const
+const std::vector<std::unique_ptr<Bullet>>& BulletManager::GetAllBullet() const
 {
 	return bullets;
 }
