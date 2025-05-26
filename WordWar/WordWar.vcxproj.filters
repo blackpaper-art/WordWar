@@ -16,6 +16,12 @@
     <Filter Include="Resource Files\Managers">
       <UniqueIdentifier>{5e272b79-f26b-4575-981b-f39b3a5b5ac4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Characters">
+      <UniqueIdentifier>{4a27fd6f-4065-4121-ae66-0de95952b03d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Characters\Enemies">
+      <UniqueIdentifier>{ff2f9612-5203-4537-adfa-3a138c577f92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameMain.cpp">
@@ -28,7 +34,22 @@
       <Filter>Resource Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Managers\TimerManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\EnemyManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Characters\Enemies\Enemy.cpp">
+      <Filter>Resource Files\Characters\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\Bullet.cpp">
+      <Filter>Resource Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Characters\Character.cpp">
+      <Filter>Resource Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Characters\Player.cpp">
+      <Filter>Resource Files\Characters</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -44,8 +65,20 @@
     <ClInclude Include="Managers\TimerManager.h">
       <Filter>Resource Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Characters\Enemy.h">
+    <ClInclude Include="Managers\EnemyManager.h">
       <Filter>Resource Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Characters\Enemies\Enemy.h">
+      <Filter>Resource Files\Characters\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\Bullet.h">
+      <Filter>Resource Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Characters\Character.h">
+      <Filter>Resource Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Characters\Player.h">
+      <Filter>Resource Files\Characters</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

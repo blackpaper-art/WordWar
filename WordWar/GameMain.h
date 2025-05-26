@@ -1,7 +1,3 @@
 #pragma once
-
-class Player;
-extern Player* player;
-
-class Bullet;
-extern Bullet* bullet;
+#define FPS (1)
+#define TIME_GAP (CLOCKS_PER_SEC / FPS)
