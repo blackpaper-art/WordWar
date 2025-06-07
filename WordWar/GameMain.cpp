@@ -8,13 +8,14 @@
 #include <stdio.h>
 #include <conio.h>
 #include <time.h>
+#include <memory>
 
-//Create main pointers
-Player* player;
-TimerManager* timerManager = new TimerManager;
-EnemyManager* enemyManager = new EnemyManager(timerManager);
-FieldManager* fieldManager = new FieldManager;
-BulletManager* bulletManager = new BulletManager();
+//Create main smart pointers
+std::unique_ptr <Player> player;
+std::unique_ptr <TimerManager> timerManager;
+std::unique_ptr <FieldManager> fieldManager;
+std::unique_ptr <EnemyManager> enemyManager;
+std::unique_ptr <BulletManager> bulletManager;
 
 int main() {
 	//Initialize
@@ -30,19 +31,22 @@ int main() {
 
 void InitializeMainGame()
 {
-	player = new Player(fieldManager->GetFieldWidth() / 2, fieldManager->GetFieldHeight() / 2, bulletManager, timerManager);
+	//Create Manager objects
+	fieldManager = std::make_unique<FieldManager>();
+	bulletManager = std::make_unique<BulletManager>();
 
+	player = std::make_unique<Player>(fieldManager->GetFieldWidth() / 2, fieldManager->GetFieldHeight() / 2, bulletManager.get(), timerManager.get());
+
+	enemyManager = std::make_unique<EnemyManager>(timerManager.get(), player.get(), fieldManager.get());
+
+	//Initialize internal pointers for each manager
 	if (fieldManager)
 	{
-		fieldManager->InitializeManagers(player, timerManager, enemyManager, bulletManager);
+		fieldManager->InitializeManagers(player.get(), timerManager.get(), enemyManager.get(), bulletManager.get());
 	}
 	if (bulletManager)
 	{
-		bulletManager->InitFieldPtr(fieldManager);
-	}
-	if (enemyManager)
-	{
-		enemyManager->InitPlayerPtr(player);
+		bulletManager->InitFieldPtr(fieldManager.get());
 	}
 }
 
@@ -50,31 +54,28 @@ void MainGameLoop() {
 	clock_t lastTime = clock();
 	while (true)
 	{
-		clock_t currentTime = clock();
-		//Auto update (by using clock)
-		if (currentTime >= lastTime + TIME_GAP)
-		{
-			lastTime = currentTime;
-			bulletManager->Update();
-			enemyManager->Update();
-
-			fieldManager->Update();
-			fieldManager->DrawField();
-		}
 		//Manual Update (when player inputed)
 		if (_kbhit()) {
 			char playerInput = _getch();
 			player->Update(playerInput);
 			fieldManager->DrawField();
 		}
+
+		//Auto update (by using clock)
+		clock_t currentTime = clock();
+		if (currentTime >= lastTime + TIME_GAP)
+		{
+			bulletManager->Update();
+			enemyManager->Update();
+			fieldManager->Update();
+
+			fieldManager->DrawField();
+			lastTime = currentTime;
+		}
+		
 	}
 }
 
 void ShutdownGame()
 {
-	delete player;
-	delete bulletManager;
-	delete enemyManager;
-	delete fieldManager;
-	delete timerManager;
 }

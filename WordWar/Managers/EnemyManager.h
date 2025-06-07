@@ -9,10 +9,10 @@
 class EnemyManager
 {
 public:
-	EnemyManager(TimerManager* tm);
+	EnemyManager(TimerManager* tm, Player* p, FieldManager* fm);
 	~EnemyManager();
 
-	void InitPlayerPtr(Player* p);
+	//void InitPlayerPtr(Player* p);
 	void SpawnEnemies(int x, int y, Player* p);
 	void Update();
 	void DrawAllEnemy();
@@ -21,7 +21,7 @@ private:
 	std::vector<std::unique_ptr<Enemy>> enemies;
 
 	Player* player;
-	FieldManager fieldManager;
+	FieldManager* fieldManager;
 	TimerManager* timerManager;
 
 	int spawnInterval;

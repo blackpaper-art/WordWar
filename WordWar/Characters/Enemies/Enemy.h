@@ -11,7 +11,9 @@ public:
 
 	void SpawnEnemy(int x, int y);
 	void Update();
+	void PredicNextPos(int& outX, int& outY) const;
 private:
 	void ApproachToPlayer();
 	Player* player;
+	int preX, preY;
 };

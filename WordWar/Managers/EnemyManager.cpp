@@ -1,26 +1,27 @@
 #include "EnemyManager.h"
+#include <set>
 
 #define FIELD_WIDTH (16 * 3)
 #define FIELD_HEIGHT (9 * 3)
 
-EnemyManager::EnemyManager(TimerManager* tm)
+EnemyManager::EnemyManager(TimerManager* tm, Player* p, FieldManager* fm)
 	:
-	timerManager(tm)
+	timerManager(tm),
+	player(p),
+	fieldManager(fm)
 {
 	timerManager->SetTimer(2000, [this] { 
 		int randomX = rand() % FIELD_WIDTH;
 		int randomY = rand() % FIELD_HEIGHT;
-		this->SpawnEnemies(randomX, randomY, player);
+		if (player)
+		{
+			this->SpawnEnemies(randomX, randomY, player);
+		}
 	}, true);
 }
 
 EnemyManager::~EnemyManager()
 {
-}
-
-void EnemyManager::InitPlayerPtr(Player* p)
-{
-	player = p;
 }
 
 void EnemyManager::SpawnEnemies(int x, int y, Player* p)
@@ -30,25 +31,36 @@ void EnemyManager::SpawnEnemies(int x, int y, Player* p)
 
 void EnemyManager::Update()
 {
-    auto e = enemies.begin();
-    while (e != enemies.end())
-    {
-		if (e->get() == nullptr)
+	//Save enemies position in occupiedPos
+	std::set<std::pair<int, int>> occupiedPos;
+	for (const auto& enemy : enemies)
+	{
+		if (enemy && !enemy->GetIsDead())
 		{
-			e = enemies.erase(e);
+			occupiedPos.insert({ enemy->GetX(), enemy->GetY() });
+		}
+	}
+
+    auto it = enemies.begin();
+    while (it != enemies.end())
+    {
+		if (!(*it) || (*it)->GetIsDead())
+		{
+			it = enemies.erase(it);
 			continue;
 		}
 
-		(*e)->Update();
+		int nextX, nextY;
+		(*it)->PredicNextPos(nextX, nextY);
 
-		if ((*e)->GetIsDead())
+		if (occupiedPos.count({ nextX,nextY }) == 0)
 		{
-			e = enemies.erase(e);
+			occupiedPos.erase({ (*it)->GetX(), (*it)->GetY() });
+			occupiedPos.insert({ nextX,nextY });
+			(*it)->SetX(nextX);
+			(*it)->SetY(nextY);
 		}
-		else
-		{
-			++e;
-		}
+		++it;
     }
 }
 
@@ -58,7 +70,7 @@ void EnemyManager::DrawAllEnemy()
 		int x = e->GetX();
 		int y = e->GetY();
 		if (x >= 0 && x < FIELD_WIDTH && y >= 0 && y < FIELD_HEIGHT) {
-			fieldManager.SetField(x, y, e->GetSymbol());
+			fieldManager->SetField(x, y, e->GetSymbol());
 		}
 	}
 }

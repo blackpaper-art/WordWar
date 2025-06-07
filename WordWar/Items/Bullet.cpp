@@ -25,37 +25,21 @@ void Bullet::Update()
 		//Check Dir
 		switch (direction)
 		{
-		case MoveDir::Up:
-			newY -= 1;
-			break;
-		case MoveDir::Down:
-			newY += 1;
-			break;
-		case MoveDir::Left:
-			newX -= 1;
-			break;
-		case MoveDir::Right:
-			newX += 1;
-			break;
-		default:
-			break;
+		case MoveDir::Up:    newY -= 1; break;
+		case MoveDir::Down:  newY += 1; break;
+		case MoveDir::Left:  newX -= 1; break;
+		case MoveDir::Right: newX += 1; break;
+		default: break;
 		}
 
-		int moveSpeed = 2;
-		for (int i = 0; i < moveSpeed; i++)
+		if (newX < 0 || newX >= FIELD_WIDTH || newY < 0 || newY >= FIELD_HEIGHT)
 		{
-			//Out of Field
-			if (newX < 0 || newX >= FIELD_WIDTH || newY < 0 || newY >= FIELD_HEIGHT)
-			{
-				isOutOfField = true;
-			}
-			//Set to new position
-			SetY(newY);
-			SetX(newX);
+			isOutOfField = true;
+			return;
 		}
-	}
-	else {
-		return;
+		//Set to new position
+		SetY(newY);
+		SetX(newX);
 	}
 }
 

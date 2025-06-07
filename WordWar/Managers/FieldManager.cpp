@@ -108,6 +108,6 @@ void FieldManager::DrawField()
 	printf("\n");
 
 	//4. ShowInfo
-	printf("Bullets Count: %d", bulletManager->GetAllBullet().size());
+	printf("Enemy Count: %d", enemyManager->GetAllEnemy().size());
 	printf(" Eliminated enemy Count: %d", bulletManager->GetEliminatedEnemyCount());
 }

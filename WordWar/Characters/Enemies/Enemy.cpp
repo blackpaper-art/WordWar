@@ -19,6 +19,18 @@ void Enemy::Update()
 	ApproachToPlayer();
 }
 
+void Enemy::PredicNextPos(int& outX, int& outY) const
+{
+	outX = GetX();
+	outY = GetY();
+	
+	if (player->GetX() > outX) outX++;
+	else if (player->GetX() < outX) outX--;
+
+	if (player->GetY() > outY) outY++;
+	else if (player->GetY() < outY) outY--;
+}
+
 void Enemy::ApproachToPlayer()
 {
 	//Movement
@@ -43,6 +55,9 @@ void Enemy::ApproachToPlayer()
 			newY--;
 		}
 		
+		preX = newX;
+		preY = newY;
+
 		SetX(newX);
 		SetY(newY);
 	}
