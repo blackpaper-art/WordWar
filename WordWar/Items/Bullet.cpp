@@ -1,8 +1,15 @@
 #include "Bullet.h"
 
+#define FIELD_WIDTH (16 * 3)
+#define FIELD_HEIGHT (9 * 3)
+
 Bullet::Bullet(int x, int y, MoveDir dir)
-	:CharacterBase(x, y, 1, 1, '.', false), direction(dir)
-{}
+	:
+	CharacterBase(x, y, 1, 1, '.', false), 
+	direction(dir),
+	isOutOfField(false)
+{
+}
 
 Bullet::~Bullet()
 {
@@ -13,37 +20,47 @@ void Bullet::Update()
 	if (!this->GetIsDead())
 	{
 		int newX = GetX(), newY = GetY();
+		//int postX = GetX() + 1, postY = GetX() + 1;
 
 		//Check Dir
 		switch (direction)
 		{
 		case MoveDir::Up:
-			newY--;
+			newY -= 1;
 			break;
 		case MoveDir::Down:
-			newY++;
+			newY += 1;
 			break;
 		case MoveDir::Left:
-			newX--;
+			newX -= 1;
 			break;
 		case MoveDir::Right:
-			newX++;
+			newX += 1;
 			break;
 		default:
 			break;
 		}
 
-		//Set to new position
-		SetY(newY);
-		SetX(newX);
-		//Out of Field
-		if (newY < 0 || newX < 0)
+		int moveSpeed = 2;
+		for (int i = 0; i < moveSpeed; i++)
 		{
-			SetIsDead(true);
+			//Out of Field
+			if (newX < 0 || newX >= FIELD_WIDTH || newY < 0 || newY >= FIELD_HEIGHT)
+			{
+				isOutOfField = true;
+			}
+			//Set to new position
+			SetY(newY);
+			SetX(newX);
 		}
 	}
 	else {
 		return;
 	}
+}
+
+bool Bullet::GetIsOutOfField()
+{
+	return isOutOfField;
 }
 

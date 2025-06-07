@@ -15,6 +15,9 @@ public:
 	~Bullet();
 
 	void Update();
+    bool GetIsOutOfField();
+
 private:
     MoveDir direction;
+    bool isOutOfField;
 };

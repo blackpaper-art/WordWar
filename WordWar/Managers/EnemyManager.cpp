@@ -7,7 +7,7 @@ EnemyManager::EnemyManager(TimerManager* tm)
 	:
 	timerManager(tm)
 {
-	timerManager->SetTimer(2000, [=] { 
+	timerManager->SetTimer(2000, [this] { 
 		int randomX = rand() % FIELD_WIDTH;
 		int randomY = rand() % FIELD_HEIGHT;
 		this->SpawnEnemies(randomX, randomY, player);
@@ -25,20 +25,36 @@ void EnemyManager::InitPlayerPtr(Player* p)
 
 void EnemyManager::SpawnEnemies(int x, int y, Player* p)
 {
-	enemies.push_back(new Enemy(x, y, p));
+	enemies.push_back(std::make_unique<Enemy>(x, y, p));
 }
 
 void EnemyManager::Update()
 {
-	for (Enemy* e : enemies)
-	{
-		if(e) e->Update();
-	}
+    auto e = enemies.begin();
+    while (e != enemies.end())
+    {
+		if (e->get() == nullptr)
+		{
+			e = enemies.erase(e);
+			continue;
+		}
+
+		(*e)->Update();
+
+		if ((*e)->GetIsDead())
+		{
+			e = enemies.erase(e);
+		}
+		else
+		{
+			++e;
+		}
+    }
 }
 
 void EnemyManager::DrawAllEnemy()
 {
-	for (Enemy* e : enemies) {
+	for (const auto& e : enemies) {
 		int x = e->GetX();
 		int y = e->GetY();
 		if (x >= 0 && x < FIELD_WIDTH && y >= 0 && y < FIELD_HEIGHT) {
@@ -47,7 +63,7 @@ void EnemyManager::DrawAllEnemy()
 	}
 }
 
-const std::vector<Enemy*>& EnemyManager::GetAllEnemy() const
+const std::vector<std::unique_ptr<Enemy>>& EnemyManager::GetAllEnemy() const
 {
 	return enemies;
 }

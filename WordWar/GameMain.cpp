@@ -9,40 +9,27 @@
 #include <conio.h>
 #include <time.h>
 
+//Create main pointers
 Player* player;
 TimerManager* timerManager = new TimerManager;
 EnemyManager* enemyManager = new EnemyManager(timerManager);
 FieldManager* fieldManager = new FieldManager;
 BulletManager* bulletManager = new BulletManager();
 
-void MainGameLoop() {
-	clock_t lastTime = clock();
-	while (true)
-	{
-		clock_t currentTime = clock();
-		//Auto update (by using clock)
-		if (currentTime >= lastTime + TIME_GAP)
-		{
-			lastTime = currentTime;
-
-			bulletManager->Update();
-			bulletManager->DrawAllBullets();
-			enemyManager->Update();
-			enemyManager->DrawAllEnemy();
-			fieldManager->Update();
-			fieldManager->DrawField();
-		}
-		//Manual Update (when player inputed)
-		if (_kbhit()) {
-			char playerInput = _getch();
-			player->Update(playerInput);
-			fieldManager->DrawField();
-		}
-	}
-}
-
 int main() {
 	//Initialize
+	InitializeMainGame();
+
+	//MainLoop
+	MainGameLoop();
+
+	//Shutdown
+	ShutdownGame();
+	return 0;
+}
+
+void InitializeMainGame()
+{
 	player = new Player(fieldManager->GetFieldWidth() / 2, fieldManager->GetFieldHeight() / 2, bulletManager, timerManager);
 
 	if (fieldManager)
@@ -56,11 +43,38 @@ int main() {
 	if (enemyManager)
 	{
 		enemyManager->InitPlayerPtr(player);
-		enemyManager->SpawnEnemies(1, 1, player);
 	}
+}
 
-	//MainLoop
-	MainGameLoop();
+void MainGameLoop() {
+	clock_t lastTime = clock();
+	while (true)
+	{
+		clock_t currentTime = clock();
+		//Auto update (by using clock)
+		if (currentTime >= lastTime + TIME_GAP)
+		{
+			lastTime = currentTime;
+			bulletManager->Update();
+			enemyManager->Update();
+
+			fieldManager->Update();
+			fieldManager->DrawField();
+		}
+		//Manual Update (when player inputed)
+		if (_kbhit()) {
+			char playerInput = _getch();
+			player->Update(playerInput);
+			fieldManager->DrawField();
+		}
+	}
+}
+
+void ShutdownGame()
+{
 	delete player;
-	return 0;
+	delete bulletManager;
+	delete enemyManager;
+	delete fieldManager;
+	delete timerManager;
 }

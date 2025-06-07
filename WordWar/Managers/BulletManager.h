@@ -16,7 +16,9 @@ public:
 	void DrawAllBullets();
 	void Update();
 	const std::vector<std::unique_ptr<Bullet>>& GetAllBullet() const;
+	const int GetEliminatedEnemyCount() const;
 private:
 	std::vector<std::unique_ptr<Bullet>> bullets;
 	FieldManager* fieldManager;
+	int eliminatedEnemyCount;
 };

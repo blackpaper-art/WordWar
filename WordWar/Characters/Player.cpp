@@ -7,9 +7,10 @@ Player::Player(int x, int y, BulletManager* bm, TimerManager* tm)
 	:
 	CharacterBase(x, y, 100, 1, 'P', false), 
 	bulletManager(bm), 
-	timerManager(tm)
+	timerManager(tm),
+	bulletLevel(1)
 {
-	timerManager->SetTimer(2000, [=] { bulletManager->SpawnBullet(GetX(), GetY(), MoveDir::Up); },  true);
+	timerManager->SetTimer(2000, [=] { FireBullets(3,1); },  true);
 }
 
 Player::~Player()
@@ -46,11 +47,28 @@ int Player::ShowPlayerInfo()
 	return GetHP();
 }
 
-void Player::FireBullets(int bulletCount, int rate)
+void Player::FireBullets(int bLevel, int rate)
 {
 	if (bulletManager)
 	{
-		bulletManager->SpawnBullet(GetX(), GetY(), MoveDir::Up);
+		//According bullet level to fire bullet
+		//level 1: One dir (UP)
+		//level 2: Two dir (UP & DOWN)
+		//level 3: Four dir (UP & DOWN & LEFT & RIGHT)
+		switch (bLevel)
+		{
+		case 1: bulletManager->SpawnBullet(GetX(), GetY() -1, MoveDir::Up); break;
+		case 2: 
+			bulletManager->SpawnBullet(GetX(), GetY() - 1, MoveDir::Up);
+			bulletManager->SpawnBullet(GetX(), GetY() + 1, MoveDir::Down); break;
+		case 3:
+			bulletManager->SpawnBullet(GetX(), GetY() - 1, MoveDir::Up);
+			bulletManager->SpawnBullet(GetX(), GetY() + 1, MoveDir::Down); 
+			bulletManager->SpawnBullet(GetX() - 1, GetY() , MoveDir::Left);
+			bulletManager->SpawnBullet(GetX() + 1, GetY(), MoveDir::Right); break;
+		default: break;
+		}
+		
 	}
 }
 

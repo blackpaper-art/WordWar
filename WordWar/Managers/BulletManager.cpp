@@ -38,9 +38,19 @@ void BulletManager::Update()
 	auto it = bullets.begin();
 	while (it != bullets.end())
 	{
+		//if this it is a nullptr then delete it
+		if (it->get() == nullptr) {
+			it = bullets.erase(it);
+			continue;
+		}
+
 		(*it)->Update();
-		if ((*it)->GetIsDead())
+		if ((*it)->GetIsDead() || (*it)->GetIsOutOfField())
 		{
+			if ((*it)->GetIsDead())
+			{
+				eliminatedEnemyCount++;
+			}
 			it = bullets.erase(it);
 		}
 		else { ++it; }
@@ -50,4 +60,9 @@ void BulletManager::Update()
 const std::vector<std::unique_ptr<Bullet>>& BulletManager::GetAllBullet() const
 {
 	return bullets;
+}
+
+const int BulletManager::GetEliminatedEnemyCount() const
+{
+	return eliminatedEnemyCount;
 }

@@ -15,8 +15,11 @@ public:
 
 	void Update(char input);
 	int ShowPlayerInfo();
-	void FireBullets(int bulletCount, int rate);
+	void FireBullets(int bLevel, int rate);
+
 private:
 	BulletManager* bulletManager;
 	TimerManager* timerManager;
+
+	int bulletLevel;
 };

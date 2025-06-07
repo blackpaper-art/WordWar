@@ -4,6 +4,7 @@
 #include "FieldManager.h"
 #include "TimerManager.h"
 #include <vector>
+#include <memory>
 
 class EnemyManager
 {
@@ -15,13 +16,14 @@ public:
 	void SpawnEnemies(int x, int y, Player* p);
 	void Update();
 	void DrawAllEnemy();
-	const std::vector<Enemy*>& GetAllEnemy() const;
+	const std::vector<std::unique_ptr<Enemy>>& GetAllEnemy() const;
 private:
-	std::vector<Enemy*> enemies;
+	std::vector<std::unique_ptr<Enemy>> enemies;
 
 	Player* player;
 	FieldManager fieldManager;
 	TimerManager* timerManager;
 
 	int spawnInterval;
+	int spawnTimerId;
 };

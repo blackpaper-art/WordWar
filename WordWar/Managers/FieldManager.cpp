@@ -38,12 +38,13 @@ void FieldManager::Update()
 	for (const auto& b : bulletManager->GetAllBullet()) {
 		if (!b || b->GetIsDead()) continue;
 
-		for (Enemy* e : enemyManager->GetAllEnemy()) {
+		for (const auto& e : enemyManager->GetAllEnemy()) {
 			if (!e || e->GetIsDead()) continue;
 
 			if (b->GetX() == e->GetX() && b->GetY() == e->GetY()) {
 				b->SetIsDead(true);
 				e->SetIsDead(true);
+				break; //Prevent collison with multi enemies
 			}
 		}
 	}
@@ -51,10 +52,10 @@ void FieldManager::Update()
 
 void FieldManager::DrawField()
 {
-	//Clean previous field
+	//1. Clean previous field
 	system("cls");
 
-	//Draw Field Top Wall
+	//2. Draw Field Top Wall
 	for (int x = 0; x < FIELD_WIDTH + 2; x++)
 	{
 		putchar(X_WALL);
@@ -65,7 +66,7 @@ void FieldManager::DrawField()
 	for (int y = 0; y < FIELD_HEIGHT; y++)
 	{
 		putchar(Y_WALL);
-		//Draw main field like player enemy etc.
+		//3. Draw main field like player enemy etc.
 		for (int x = 0; x < FIELD_WIDTH; x++)
 		{
 			char ch = FIELD_NULL;
@@ -73,7 +74,7 @@ void FieldManager::DrawField()
 			if (y == player->GetY() && x == player->GetX())
 				ch = player->GetSymbol();
 
-			for (Enemy* e : enemyManager->GetAllEnemy()) {
+			for (const auto& e : enemyManager->GetAllEnemy()) {
 				if (e && y == e->GetY() && x == e->GetX()) {
 					if (!e->GetIsDead())
 					{
@@ -83,7 +84,7 @@ void FieldManager::DrawField()
 				}
 			}
 
-			for (const std::unique_ptr<Bullet>& b : bulletManager->GetAllBullet()) {
+			for (const auto& b : bulletManager->GetAllBullet()) {
 				if (b && y == b->GetY() && x == b->GetX()) {
 					if (!b->GetIsDead())
 					{
@@ -106,6 +107,7 @@ void FieldManager::DrawField()
 	}
 	printf("\n");
 
-	//ShowInfo
+	//4. ShowInfo
 	printf("Bullets Count: %d", bulletManager->GetAllBullet().size());
+	printf(" Eliminated enemy Count: %d", bulletManager->GetEliminatedEnemyCount());
 }
