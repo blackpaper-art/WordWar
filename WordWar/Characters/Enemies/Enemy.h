@@ -13,7 +13,7 @@ public:
 	void Update();
 	void PredicNextPos(int& outX, int& outY) const;
 private:
-	void ApproachToPlayer();
+	//void ApproachToPlayer();
 	Player* player;
 	int preX, preY;
 };

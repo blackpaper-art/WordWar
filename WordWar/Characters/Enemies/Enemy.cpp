@@ -16,7 +16,7 @@ void Enemy::SpawnEnemy(int x, int y)
 
 void Enemy::Update() 
 {
-	ApproachToPlayer();
+	//ApproachToPlayer();
 }
 
 void Enemy::PredicNextPos(int& outX, int& outY) const
@@ -29,36 +29,4 @@ void Enemy::PredicNextPos(int& outX, int& outY) const
 
 	if (player->GetY() > outY) outY++;
 	else if (player->GetY() < outY) outY--;
-}
-
-void Enemy::ApproachToPlayer()
-{
-	//Movement
-	if (player)
-	{
-		int newX = GetX(), newY = GetY();
-
-		if (player->GetX() > newX)
-		{
-			newX++;
-		}
-		else if (player->GetX() < newX)
-		{
-			newX--;
-		}
-		if (player->GetY() > newY)
-		{
-			newY++;
-		}
-		else if (player->GetY() < newY)
-		{
-			newY--;
-		}
-		
-		preX = newX;
-		preY = newY;
-
-		SetX(newX);
-		SetY(newY);
-	}
 }

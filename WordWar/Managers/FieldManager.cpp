@@ -4,6 +4,11 @@
 #include "EnemyManager.h"
 #include "BulletManager.h"
 
+#include <windows.h>
+#include <algorithm>
+#include <vector>
+#include <memory>
+
 #define FIELD_WIDTH (16 * 3)
 #define FIELD_HEIGHT (9 * 3)
 
@@ -35,6 +40,7 @@ void FieldManager::InitializeManagers(Player* p, TimerManager* tm, EnemyManager*
 
 void FieldManager::Update()
 {
+	//Check collision
 	for (const auto& b : bulletManager->GetAllBullet()) {
 		if (!b || b->GetIsDead()) continue;
 
@@ -52,62 +58,95 @@ void FieldManager::Update()
 
 void FieldManager::DrawField()
 {
-	//1. Clean previous field
-	system("cls");
+	//1. Make a buffer and filled with null(" ") first
+	char fieldBuffer[fieldHeight][fieldWidth];
+	for (int y = 0; y < fieldHeight; y++)
+	{
+		for (int x = 0; x < fieldWidth; x++)
+		{
+			fieldBuffer[y][x] = FIELD_NULL;
+		}
+	}
 
-	//2. Draw Field Top Wall
+	//2.1 Add Enemy data to the buffer
+	if (enemyManager)
+	{
+		for (const auto& e : enemyManager->GetAllEnemy())
+		{
+			if (e && !e->GetIsDead())
+			{
+				fieldBuffer[e->GetY()][e->GetX()] = e->GetSymbol();
+			}
+		}
+	}
+
+	//2.2 Add Bullet data to the buffer
+	if (bulletManager)
+	{
+		for (const auto& b : bulletManager->GetAllBullet())
+		{
+			if (b && !b->GetIsDead())
+			{
+				fieldBuffer[b->GetY()][b->GetX()] = b->GetSymbol();
+			}
+		}
+	}
+
+	//2.3 Add Player data to the buffer
+	if (player)
+	{
+		fieldBuffer[player->GetY()][player->GetX()] = player->GetSymbol();
+	}
+	
+	//3. clean screen and display data
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD coordScreen = { 0, 0 };
+	SetConsoleCursorPosition(hConsole, coordScreen);
+
+	//3.1 Draw top wall
 	for (int x = 0; x < FIELD_WIDTH + 2; x++)
 	{
 		putchar(X_WALL);
 	}
 	printf("\n");
 
-	//Draw both Side Walls and main field
-	for (int y = 0; y < FIELD_HEIGHT; y++)
+	//3.2 Draw both Side Walls and Draw main field by the buffer
+	for (int y = 0; y < fieldHeight; y++)
 	{
+		//Left Wall
 		putchar(Y_WALL);
-		//3. Draw main field like player enemy etc.
-		for (int x = 0; x < FIELD_WIDTH; x++)
+
+		//Main field
+		for (int x = 0; x < fieldWidth; x++)
 		{
-			char ch = FIELD_NULL;
-
-			if (y == player->GetY() && x == player->GetX())
-				ch = player->GetSymbol();
-
-			for (const auto& e : enemyManager->GetAllEnemy()) {
-				if (e && y == e->GetY() && x == e->GetX()) {
-					if (!e->GetIsDead())
-					{
-						ch = e->GetSymbol();
-						break;
-					}
-				}
-			}
-
-			for (const auto& b : bulletManager->GetAllBullet()) {
-				if (b && y == b->GetY() && x == b->GetX()) {
-					if (!b->GetIsDead())
-					{
-						ch = b->GetSymbol();
-						break;
-					}
-				}
-			}
-
-			putchar(ch);
+			putchar(fieldBuffer[y][x]);
 		}
+
+		//Right Wall
 		putchar(Y_WALL);
 		printf("\n");
 	}
 
-	//Draw Field Down Walls
+	//3.3 Draw down wall
 	for (int x = 0; x < FIELD_WIDTH + 2; x++)
 	{
 		putchar(X_WALL);
 	}
 	printf("\n");
-
+	
 	//4. ShowInfo
-	printf("Enemy Count: %d", enemyManager->GetAllEnemy().size());
+	int liveEnemyCount = 0;
+	if (enemyManager)
+	{
+		const auto& enemies = enemyManager->GetAllEnemy();
+		liveEnemyCount = static_cast<int>(std::count_if(
+			enemies.begin(), 
+			enemies.end(), 
+			[](const std::unique_ptr<Enemy>& e) {
+			return e && !e->GetIsDead();
+		}
+			));
+	}
+	printf("Enemy Count: %d", liveEnemyCount);
 	printf(" Eliminated enemy Count: %d", bulletManager->GetEliminatedEnemyCount());
 }

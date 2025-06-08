@@ -57,15 +57,15 @@ void Player::FireBullets(int bLevel, int rate)
 		//level 3: Four dir (UP & DOWN & LEFT & RIGHT)
 		switch (bLevel)
 		{
-		case 1: bulletManager->SpawnBullet(GetX(), GetY() -1, MoveDir::Up); break;
+		case 1: bulletManager->SpawnBullet(GetX(), GetY(), MoveDir::Up); break;
 		case 2: 
-			bulletManager->SpawnBullet(GetX(), GetY() - 1, MoveDir::Up);
-			bulletManager->SpawnBullet(GetX(), GetY() + 1, MoveDir::Down); break;
+			bulletManager->SpawnBullet(GetX(), GetY(), MoveDir::Up);
+			bulletManager->SpawnBullet(GetX(), GetY(), MoveDir::Down); break;
 		case 3:
-			bulletManager->SpawnBullet(GetX(), GetY() - 1, MoveDir::Up);
-			bulletManager->SpawnBullet(GetX(), GetY() + 1, MoveDir::Down); 
-			bulletManager->SpawnBullet(GetX() - 1, GetY() , MoveDir::Left);
-			bulletManager->SpawnBullet(GetX() + 1, GetY(), MoveDir::Right); break;
+			bulletManager->SpawnBullet(GetX(), GetY(), MoveDir::Up);
+			bulletManager->SpawnBullet(GetX(), GetY(), MoveDir::Down); 
+			bulletManager->SpawnBullet(GetX(), GetY() , MoveDir::Left);
+			bulletManager->SpawnBullet(GetX(), GetY(), MoveDir::Right); break;
 		default: break;
 		}
 		

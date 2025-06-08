@@ -31,7 +31,7 @@ void EnemyManager::SpawnEnemies(int x, int y, Player* p)
 
 void EnemyManager::Update()
 {
-	//Save enemies position in occupiedPos
+	//Save all alive enemies current position in occupiedPos
 	std::set<std::pair<int, int>> occupiedPos;
 	for (const auto& enemy : enemies)
 	{
@@ -50,6 +50,7 @@ void EnemyManager::Update()
 			continue;
 		}
 
+		//Preidc next position
 		int nextX, nextY;
 		(*it)->PredicNextPos(nextX, nextY);
 
@@ -70,7 +71,10 @@ void EnemyManager::DrawAllEnemy()
 		int x = e->GetX();
 		int y = e->GetY();
 		if (x >= 0 && x < FIELD_WIDTH && y >= 0 && y < FIELD_HEIGHT) {
-			fieldManager->SetField(x, y, e->GetSymbol());
+			if (fieldManager)
+			{
+				fieldManager->SetField(x, y, e->GetSymbol());
+			}
 		}
 	}
 }

@@ -35,11 +35,11 @@ void InitializeMainGame()
 	fieldManager = std::make_unique<FieldManager>();
 	bulletManager = std::make_unique<BulletManager>();
 
+	//Initialize internal pointers for each manager
 	player = std::make_unique<Player>(fieldManager->GetFieldWidth() / 2, fieldManager->GetFieldHeight() / 2, bulletManager.get(), timerManager.get());
 
 	enemyManager = std::make_unique<EnemyManager>(timerManager.get(), player.get(), fieldManager.get());
 
-	//Initialize internal pointers for each manager
 	if (fieldManager)
 	{
 		fieldManager->InitializeManagers(player.get(), timerManager.get(), enemyManager.get(), bulletManager.get());
@@ -63,6 +63,7 @@ void MainGameLoop() {
 
 		//Auto update (by using clock)
 		clock_t currentTime = clock();
+		float deltaTime = currentTime - lastTime / CLOCKS_PER_SEC;
 		if (currentTime >= lastTime + TIME_GAP)
 		{
 			bulletManager->Update();
