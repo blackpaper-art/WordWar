@@ -1,3 +1,10 @@
+/*---------------------------------------------------------------------------------------------*
+ * Describe:                                                                                   *
+ *  FieldManager is responsible for managing the main game field, including rendering,         *
+ *  updating the field state, and handling collision detection between bullets, enemies,       *
+ *  and the player.                                                                            *
+ *---------------------------------------------------------------------------------------------*/
+
 #include "../Characters/Player.h"
 #include "FieldManager.h"
 #include "TimerManager.h"
@@ -48,9 +55,18 @@ void FieldManager::Update()
 			if (!e || e->GetIsDead()) continue;
 
 			if (b->GetX() == e->GetX() && b->GetY() == e->GetY()) {
-				b->SetIsDead(true);
-				e->SetIsDead(true);
+				e->UnderAttack(b->GetAttackPower());
+				b->UnderAttack(e->GetAttackPower());
+
+				enemyManager->AddEliminatedEnemyCount(1);
 				break; //Prevent collison with multi enemies
+			}
+			else if (player && player->GetX() == e->GetX() && player->GetY() == e->GetY()){
+				e->UnderAttack(b->GetAttackPower());
+				enemyManager->AddEliminatedEnemyCount(1);
+
+				player->UnderAttack(e->GetAttackPower());
+				break;
 			}
 		}
 	}
@@ -147,6 +163,6 @@ void FieldManager::DrawField()
 		}
 			));
 	}
-	printf("Enemy Count: %d", liveEnemyCount);
-	printf(" Eliminated enemy Count: %d", bulletManager->GetEliminatedEnemyCount());
+	printf("Player HP: %-4d", player->GetHP());
+	printf(" Eliminated enemy Count: %d", enemyManager->GetEliminatedEnemyCount());
 }

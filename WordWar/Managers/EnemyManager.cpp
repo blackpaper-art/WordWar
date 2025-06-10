@@ -8,9 +8,10 @@ EnemyManager::EnemyManager(TimerManager* tm, Player* p, FieldManager* fm)
 	:
 	timerManager(tm),
 	player(p),
-	fieldManager(fm)
+	fieldManager(fm),
+	eliminatedEnemyCount(0)
 {
-	timerManager->SetTimer(2000, [this] { 
+	timerManager->SetTimer(1000, [this] { 
 		int randomX = rand() % FIELD_WIDTH;
 		int randomY = rand() % FIELD_HEIGHT;
 		if (player)
@@ -82,4 +83,14 @@ void EnemyManager::DrawAllEnemy()
 const std::vector<std::unique_ptr<Enemy>>& EnemyManager::GetAllEnemy() const
 {
 	return enemies;
+}
+
+const int EnemyManager::GetEliminatedEnemyCount() const
+{
+	return eliminatedEnemyCount;
+}
+
+void EnemyManager::AddEliminatedEnemyCount(int count)
+{
+	eliminatedEnemyCount += count;
 }

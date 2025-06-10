@@ -52,7 +52,7 @@ void InitializeMainGame()
 
 void MainGameLoop() {
 	clock_t lastTime = clock();
-	while (true)
+	while (!player->GetIsDead())
 	{
 		//Manual Update (when player inputed)
 		if (_kbhit()) {
@@ -63,7 +63,7 @@ void MainGameLoop() {
 
 		//Auto update (by using clock)
 		clock_t currentTime = clock();
-		float deltaTime = currentTime - lastTime / CLOCKS_PER_SEC;
+		float deltaTime = currentTime - lastTime;
 		if (currentTime >= lastTime + TIME_GAP)
 		{
 			bulletManager->Update();

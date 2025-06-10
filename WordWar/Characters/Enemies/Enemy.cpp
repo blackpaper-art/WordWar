@@ -2,7 +2,7 @@
 
 Enemy::Enemy(int x, int y, Player* p)
 	:
-	CharacterBase(x, y, 1, 1, 'E', false), player(p)
+	CharacterBase(x, y, 1, 1, 'E', false, 1), player(p)
 {
 }
 

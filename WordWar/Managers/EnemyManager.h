@@ -17,6 +17,9 @@ public:
 	void Update();
 	void DrawAllEnemy();
 	const std::vector<std::unique_ptr<Enemy>>& GetAllEnemy() const;
+
+	void AddEliminatedEnemyCount(int count);
+	const int GetEliminatedEnemyCount() const;
 private:
 	std::vector<std::unique_ptr<Enemy>> enemies;
 
@@ -26,4 +29,5 @@ private:
 
 	int spawnInterval;
 	int spawnTimerId;
+	int eliminatedEnemyCount;
 };

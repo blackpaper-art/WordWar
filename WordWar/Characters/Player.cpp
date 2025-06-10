@@ -5,12 +5,12 @@
 
 Player::Player(int x, int y, BulletManager* bm, TimerManager* tm)
 	:
-	CharacterBase(x, y, 100, 1, 'P', false), 
+	CharacterBase(x, y, 100, 1, 'P', false, 1), 
 	bulletManager(bm), 
 	timerManager(tm),
 	bulletLevel(1)
 {
-	timerManager->SetTimer(2000, [=] { FireBullets(3,1); },  true);
+	timerManager->SetTimer(1000, [=] { FireBullets(3,1); },  true);
 }
 
 Player::~Player()
@@ -37,9 +37,6 @@ void Player::Update(char input)
 		SetX(newX);
 		SetY(newY);
 	}
-
-	//Fire
-
 }
 
 int Player::ShowPlayerInfo()

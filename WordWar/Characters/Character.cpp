@@ -1,27 +1,18 @@
 #include "Character.h"
 
-CharacterBase::CharacterBase(int x, int y, int hp, int speed, char symbol, bool isDead)
+CharacterBase::CharacterBase(int x, int y, int hp, int speed, char symbol, bool isDead, int attackPower)
     : 
     x(x), 
     y(y), 
     hp(hp), 
     speed(speed),
     symbol(symbol),
-    isDead(isDead)
+    isDead(isDead),
+    attackPower(attackPower)
 {}
 
 CharacterBase::~CharacterBase()
 {
-}
-
-void CharacterBase::Initialize(int x, int y, int hp, int speed, char symbol, bool isDead)
-{
-    this->x = x;
-    this->y = y;
-    this->hp = hp;
-    this->speed = speed;
-    this->symbol = symbol;
-    this->isDead = isDead;
 }
 
 int CharacterBase::GetX() const
@@ -37,6 +28,11 @@ int CharacterBase::GetY() const
 int CharacterBase::GetHP() const
 {
     return hp;
+}
+
+int CharacterBase::GetAttackPower() const
+{
+    return attackPower;
 }
 
 char CharacterBase::GetSymbol() const
@@ -57,6 +53,12 @@ void CharacterBase::SetX(int newX)
 void CharacterBase::SetY(int newY)
 {
     y = newY;
+}
+
+void CharacterBase::UnderAttack(int damage)
+{
+    hp -= damage;
+    SetIsDead(hp == 0);
 }
 
 void CharacterBase::SetIsDead(bool newState)

@@ -5,7 +5,7 @@
 
 Bullet::Bullet(int x, int y, MoveDir dir)
 	:
-	CharacterBase(x, y, 1, 1, '.', false), 
+	CharacterBase(x, y, 1, 1, '.', false, 1),
 	direction(dir),
 	isOutOfField(false)
 {
