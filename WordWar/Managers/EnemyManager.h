@@ -12,7 +12,6 @@ public:
 	EnemyManager(TimerManager* tm, Player* p, FieldManager* fm);
 	~EnemyManager();
 
-	//void InitPlayerPtr(Player* p);
 	void SpawnEnemies(int x, int y, Player* p);
 	void Update();
 	void DrawAllEnemy();

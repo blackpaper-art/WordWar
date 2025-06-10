@@ -11,9 +11,29 @@ EnemyManager::EnemyManager(TimerManager* tm, Player* p, FieldManager* fm)
 	fieldManager(fm),
 	eliminatedEnemyCount(0)
 {
-	timerManager->SetTimer(1000, [this] { 
-		int randomX = rand() % FIELD_WIDTH;
-		int randomY = rand() % FIELD_HEIGHT;
+	timerManager->SetTimer(2000, [this] { 
+		int randomX, randomY;
+		int edge = rand() % 4; // 0: top, 1: bottom, 2: left, 3: right
+
+		switch (edge) {
+		case 0: // top
+			randomY = 0;
+			randomX = rand() % FIELD_WIDTH;
+			break;
+		case 1: // bottom
+			randomY = FIELD_HEIGHT - 1;
+			randomX = rand() % FIELD_WIDTH;
+			break;
+		case 2: // left
+			randomX = 0;
+			randomY = rand() % FIELD_HEIGHT;
+			break;
+		case 3: // right
+			randomX = FIELD_WIDTH - 1;
+			randomY = rand() % FIELD_HEIGHT;
+			break;
+		}
+
 		if (player)
 		{
 			this->SpawnEnemies(randomX, randomY, player);

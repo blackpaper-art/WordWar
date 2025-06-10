@@ -5,12 +5,14 @@
 
 Player::Player(int x, int y, BulletManager* bm, TimerManager* tm)
 	:
-	CharacterBase(x, y, 100, 1, 'P', false, 1), 
-	bulletManager(bm), 
+	CharacterBase(x, y, 100, 1, 'P', false, 1),
+	bulletManager(bm),
 	timerManager(tm),
-	bulletLevel(1)
+	bulletLevel(1),
+	level(1),
+	bulletDir(0)
 {
-	timerManager->SetTimer(1000, [=] { FireBullets(3,1); },  true);
+	timerManager->SetTimer(50 / bulletLevel, [=] { FireBullets(level, bulletLevel); },  true);
 }
 
 Player::~Player()
@@ -24,10 +26,10 @@ void Player::Update(char input)
 
 	switch (input)
 	{
-	case 'w': newY--; break;
-	case 's': newY++; break;
-	case 'a': newX--; break;
-	case 'd': newX++; break;
+	case 'w': newY--; bulletDir = 0; break;
+	case 's': newY++; bulletDir = 1; break;
+	case 'a': newX--; bulletDir = 2; break;
+	case 'd': newX++; bulletDir = 3; break;
 	default: break;
 	}
 
@@ -52,20 +54,54 @@ void Player::FireBullets(int bLevel, int rate)
 		//level 1: One dir (UP)
 		//level 2: Two dir (UP & DOWN)
 		//level 3: Four dir (UP & DOWN & LEFT & RIGHT)
-		switch (bLevel)
+		//level 4: Eight dir (UP & DOWN & LEFT & RIGHT 
+		//					& UP LEFT & UP DOWN & DOWN LEFT & DOWN RIGHT)
+		std::vector<MoveDir> directions;
+
+		switch (bulletDir)
 		{
-		case 1: bulletManager->SpawnBullet(GetX(), GetY(), MoveDir::Up); break;
-		case 2: 
-			bulletManager->SpawnBullet(GetX(), GetY(), MoveDir::Up);
-			bulletManager->SpawnBullet(GetX(), GetY(), MoveDir::Down); break;
-		case 3:
-			bulletManager->SpawnBullet(GetX(), GetY(), MoveDir::Up);
-			bulletManager->SpawnBullet(GetX(), GetY(), MoveDir::Down); 
-			bulletManager->SpawnBullet(GetX(), GetY() , MoveDir::Left);
-			bulletManager->SpawnBullet(GetX(), GetY(), MoveDir::Right); break;
+		case 0:directions = { MoveDir::Up }; break;
+		case 1:directions = { MoveDir::Down }; break;
+		case 2:directions = { MoveDir::Left }; break;
+		case 3:directions = { MoveDir::Right }; break;
 		default: break;
+		}
+
+		/*switch (bLevel)
+		{
+		case 1:
+			directions = { MoveDir::Up };
+			break;
+		case 2:
+			directions = { MoveDir::Up, MoveDir::Down };
+			break;
+		case 3:
+			directions = { MoveDir::Up, MoveDir::Down, MoveDir::Left, MoveDir::Right };
+			break;
+		case 4:
+			directions = {
+				MoveDir::Up, MoveDir::Down, MoveDir::Left, MoveDir::Right,
+				MoveDir::UpLeft, MoveDir::UpRight, MoveDir::DownLeft, MoveDir::DownRight
+			};
+			break;
+		default: break;
+		}*/
+
+		for (const auto& dir : directions)
+		{
+			bulletManager->SpawnBullet(GetX(), GetY(), dir);
 		}
 		
 	}
+}
+
+int Player::GetPlayerLevel()
+{
+	return level;
+}
+
+void Player::LevelUp()
+{
+	level++;
 }
 

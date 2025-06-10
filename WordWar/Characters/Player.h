@@ -16,10 +16,15 @@ public:
 	void Update(char input);
 	int ShowPlayerInfo();
 	void FireBullets(int bLevel, int rate);
+	int GetPlayerLevel();
+	void LevelUp();
 
 private:
 	BulletManager* bulletManager;
 	TimerManager* timerManager;
+	EnemyManager* enemyManager;
 
 	int bulletLevel;
+	int level;
+	int bulletDir;
 };

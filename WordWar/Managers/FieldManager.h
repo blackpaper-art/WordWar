@@ -35,4 +35,7 @@ private:
 	static const int fieldWidth = 16 * 3;
 	static const int fieldHeight = 9 * 3;
 	char field[fieldHeight][fieldWidth];
+
+	void CountDownTimer();
+	int countDownTime;
 };

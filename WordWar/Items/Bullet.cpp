@@ -25,10 +25,14 @@ void Bullet::Update()
 		//Check Dir
 		switch (direction)
 		{
-		case MoveDir::Up:    newY -= 1; break;
-		case MoveDir::Down:  newY += 1; break;
-		case MoveDir::Left:  newX -= 1; break;
-		case MoveDir::Right: newX += 1; break;
+		case MoveDir::Up:			newY -= 1; break;
+		case MoveDir::Down:			newY += 1; break;
+		case MoveDir::Left:			newX -= 1; break;
+		case MoveDir::Right:		newX += 1; break;
+		case MoveDir::UpLeft:		newY += 1; newX -= 2; break;
+		case MoveDir::UpRight:		newY += 1; newX += 2; break;
+		case MoveDir::DownLeft:		newY -= 1; newX -= 2; break;
+		case MoveDir::DownRight:	newY -= 1; newX += 2; break;
 		default: break;
 		}
 

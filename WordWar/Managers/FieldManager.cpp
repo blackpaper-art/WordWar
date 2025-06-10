@@ -20,7 +20,10 @@
 #define FIELD_HEIGHT (9 * 3)
 
 FieldManager::FieldManager()
+	:
+	countDownTime(180)
 {
+	timerManager->SetTimer(1000, [=] {CountDownTimer(); }, true);
 }
 
 FieldManager::~FieldManager()
@@ -56,16 +59,16 @@ void FieldManager::Update()
 
 			if (b->GetX() == e->GetX() && b->GetY() == e->GetY()) {
 				e->UnderAttack(b->GetAttackPower());
-				b->UnderAttack(e->GetAttackPower());
+				b->UnderAttack(b->GetHP());
 
 				enemyManager->AddEliminatedEnemyCount(1);
 				break; //Prevent collison with multi enemies
 			}
 			else if (player && player->GetX() == e->GetX() && player->GetY() == e->GetY()){
-				e->UnderAttack(b->GetAttackPower());
-				enemyManager->AddEliminatedEnemyCount(1);
-
 				player->UnderAttack(e->GetAttackPower());
+				e->UnderAttack(b->GetAttackPower());
+
+				enemyManager->AddEliminatedEnemyCount(1);
 				break;
 			}
 		}
@@ -140,7 +143,23 @@ void FieldManager::DrawField()
 
 		//Right Wall
 		putchar(Y_WALL);
+
+		//Right Info board
+		if (y == 0)
+		{
+			printf(" Time Left: %-4d seconds", countDownTime);
+		}
+		else if (y == 1)
+		{
+			printf(" Player HP: %-4d", player->GetHP());
+		}
+		else if (y == 2){
+			printf(" Player Level: %d", player->GetPlayerLevel());
+	}
+
 		printf("\n");
+
+		
 	}
 
 	//3.3 Draw down wall
@@ -163,6 +182,16 @@ void FieldManager::DrawField()
 		}
 			));
 	}
-	printf("Player HP: %-4d", player->GetHP());
+	
 	printf(" Eliminated enemy Count: %d", enemyManager->GetEliminatedEnemyCount());
+}
+
+void FieldManager::CountDownTimer()
+{
+	countDownTime--;
+	// Time's up ¡ª force the player to die and end the game
+	if (countDownTime <= 0 && player)
+	{
+		player->UnderAttack(player->GetHP());
+	}
 }

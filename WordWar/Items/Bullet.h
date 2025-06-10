@@ -5,7 +5,11 @@ enum class MoveDir {
     Up,
     Down,
     Left,
-    Right
+    Right,
+    UpLeft,
+    UpRight,
+    DownLeft,
+    DownRight
 };
 
 class Bullet : public CharacterBase

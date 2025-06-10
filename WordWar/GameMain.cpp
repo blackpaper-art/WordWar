@@ -17,6 +17,11 @@ std::unique_ptr <FieldManager> fieldManager;
 std::unique_ptr <EnemyManager> enemyManager;
 std::unique_ptr <BulletManager> bulletManager;
 
+//TODO list: 
+// 1. friendly desgin tool for planners
+// 2. Player Level
+// 3. Addjust count of Enemy
+
 int main() {
 	//Initialize
 	InitializeMainGame();
