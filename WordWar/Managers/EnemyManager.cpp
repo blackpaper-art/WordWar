@@ -11,7 +11,7 @@ EnemyManager::EnemyManager(TimerManager* tm, Player* p, FieldManager* fm)
 	fieldManager(fm),
 	eliminatedEnemyCount(0)
 {
-	timerManager->SetTimer(2000, [this] { 
+	timerManager->SetTimer(1000, [this] { 
 		int randomX, randomY;
 		int edge = rand() % 4; // 0: top, 1: bottom, 2: left, 3: right
 

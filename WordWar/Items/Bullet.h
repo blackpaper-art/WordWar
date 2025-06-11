@@ -18,10 +18,13 @@ public:
 	Bullet(int x, int y, MoveDir dir);
 	~Bullet();
 
-	void Update();
+	void Update(float deltaTime);
     bool GetIsOutOfField();
-
+    bool CanMove(float deltaTime);
 private:
     MoveDir direction;
     bool isOutOfField;
+
+    float moveInterval;
+    float timeAccumulator;
 };

@@ -7,7 +7,9 @@ Bullet::Bullet(int x, int y, MoveDir dir)
 	:
 	CharacterBase(x, y, 1, 1, '.', false, 1),
 	direction(dir),
-	isOutOfField(false)
+	isOutOfField(false),
+	moveInterval(100.0f),
+	timeAccumulator(0.0f)
 {
 }
 
@@ -15,9 +17,9 @@ Bullet::~Bullet()
 {
 }
 
-void Bullet::Update()
+void Bullet::Update(float deltaTime)
 {
-	if (!this->GetIsDead())
+	if (!this->GetIsDead() && CanMove(deltaTime))
 	{
 		int newX = GetX(), newY = GetY();
 		//int postX = GetX() + 1, postY = GetX() + 1;
@@ -52,3 +54,13 @@ bool Bullet::GetIsOutOfField()
 	return isOutOfField;
 }
 
+bool Bullet::CanMove(float deltaTime)
+{
+	timeAccumulator += deltaTime;
+	if (timeAccumulator >= moveInterval)
+	{
+		timeAccumulator = 0.0f;
+		return true;
+	}
+	return false;
+}

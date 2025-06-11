@@ -71,7 +71,7 @@ void MainGameLoop() {
 		float deltaTime = currentTime - lastTime;
 		if (currentTime >= lastTime + TIME_GAP)
 		{
-			bulletManager->Update();
+			bulletManager->Update(deltaTime);
 			enemyManager->Update(deltaTime);
 			fieldManager->Update(deltaTime);
 

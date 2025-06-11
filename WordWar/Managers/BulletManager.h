@@ -14,7 +14,7 @@ public:
 	void InitFieldPtr(FieldManager* fm);
 	void SpawnBullet(int x, int y, MoveDir dir);
 	void DrawAllBullets();
-	void Update();
+	void Update(float deltaTime);
 	const std::vector<std::unique_ptr<Bullet>>& GetAllBullet() const;
 	const int GetEliminatedEnemyCount() const;
 private:

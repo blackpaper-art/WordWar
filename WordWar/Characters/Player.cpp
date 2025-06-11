@@ -12,7 +12,7 @@ Player::Player(int x, int y, BulletManager* bm, TimerManager* tm)
 	level(1),
 	bulletDir(0)
 {
-	timerManager->SetTimer(50 / bulletLevel, [=] { FireBullets(level, bulletLevel); },  true);
+	timerManager->SetTimer(1000 / bulletLevel, [=] { FireBullets(level, bulletLevel); },  true);
 }
 
 Player::~Player()

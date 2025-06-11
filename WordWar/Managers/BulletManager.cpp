@@ -33,7 +33,7 @@ void BulletManager::DrawAllBullets()
 	}
 }
 
-void BulletManager::Update() 
+void BulletManager::Update(float deltaTime)
 {
 	auto it = bullets.begin();
 	while (it != bullets.end())
@@ -44,7 +44,7 @@ void BulletManager::Update()
 			continue;
 		}
 
-		(*it)->Update();
+		(*it)->Update(deltaTime);
 		if ((*it)->GetIsDead() || (*it)->GetIsOutOfField())
 		{
 			if ((*it)->GetIsDead())
