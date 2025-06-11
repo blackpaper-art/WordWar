@@ -48,7 +48,7 @@ void FieldManager::InitializeManagers(Player* p, TimerManager* tm, EnemyManager*
 	bulletManager = bm;
 }
 
-void FieldManager::Update()
+void FieldManager::Update(float deltaTime)
 {
 	//Check collision
 	for (const auto& b : bulletManager->GetAllBullet()) {
@@ -66,13 +66,16 @@ void FieldManager::Update()
 			}
 			else if (player && player->GetX() == e->GetX() && player->GetY() == e->GetY()){
 				player->UnderAttack(e->GetAttackPower());
-				e->UnderAttack(b->GetAttackPower());
+				e->UnderAttack(e->GetAttackPower());
 
 				enemyManager->AddEliminatedEnemyCount(1);
 				break;
 			}
 		}
 	}
+
+	//Update deltaTime
+	myDeltaTime = deltaTime;
 }
 
 void FieldManager::DrawField()
@@ -155,7 +158,10 @@ void FieldManager::DrawField()
 		}
 		else if (y == 2){
 			printf(" Player Level: %d", player->GetPlayerLevel());
-	}
+		}
+		else if (y == 5) {
+			printf(" DeltaTime: %f", myDeltaTime);
+		}
 
 		printf("\n");
 

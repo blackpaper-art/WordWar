@@ -9,11 +9,12 @@ public:
 	Enemy(int x, int y, Player* p);
 	~Enemy();
 
-	void SpawnEnemy(int x, int y);
-	void Update();
+	bool CanMove(float deltaTime);
 	void PredicNextPos(int& outX, int& outY) const;
 private:
-	//void ApproachToPlayer();
 	Player* player;
 	int preX, preY;
+
+	float moveInterval;
+	float timeAccumulator;
 };

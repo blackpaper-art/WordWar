@@ -23,7 +23,7 @@ public:
 	char GetField(int x, int y);
 	void SetField(int x, int y, char intern);
 	void InitializeManagers(Player* p, TimerManager* tm, EnemyManager* em, BulletManager* bm);
-	void Update();
+	void Update(float deltaTime);
 	void DrawField();
 private:
 	Player* player;
@@ -38,4 +38,5 @@ private:
 
 	void CountDownTimer();
 	int countDownTime;
+	float myDeltaTime;
 };

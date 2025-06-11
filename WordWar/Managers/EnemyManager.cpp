@@ -50,9 +50,9 @@ void EnemyManager::SpawnEnemies(int x, int y, Player* p)
 	enemies.push_back(std::make_unique<Enemy>(x, y, p));
 }
 
-void EnemyManager::Update()
+void EnemyManager::Update(float deltaTime)
 {
-	//Save all alive enemies current position in occupiedPos
+	//Save the current positions of all alive enemies in occupiedPos
 	std::set<std::pair<int, int>> occupiedPos;
 	for (const auto& enemy : enemies)
 	{
@@ -65,23 +65,30 @@ void EnemyManager::Update()
     auto it = enemies.begin();
     while (it != enemies.end())
     {
+		//Remove dead enemies
 		if (!(*it) || (*it)->GetIsDead())
 		{
 			it = enemies.erase(it);
 			continue;
 		}
 
-		//Preidc next position
-		int nextX, nextY;
-		(*it)->PredicNextPos(nextX, nextY);
-
-		if (occupiedPos.count({ nextX,nextY }) == 0)
+		//Check if the enemy is ready to move (based on deltaTime)
+		if ((*it)->CanMove(deltaTime))
 		{
-			occupiedPos.erase({ (*it)->GetX(), (*it)->GetY() });
-			occupiedPos.insert({ nextX,nextY });
-			(*it)->SetX(nextX);
-			(*it)->SetY(nextY);
+			//Predict the next position
+			int nextX, nextY;
+			(*it)->PredicNextPos(nextX, nextY);
+
+			//Move if the next position is not occupied
+			if (occupiedPos.count({ nextX,nextY }) == 0)
+			{
+				occupiedPos.erase({ (*it)->GetX(), (*it)->GetY() });
+				occupiedPos.insert({ nextX,nextY });
+				(*it)->SetX(nextX);
+				(*it)->SetY(nextY);
+			}
 		}
+		//Move to the next enemy regardless of whether this one moved
 		++it;
     }
 }

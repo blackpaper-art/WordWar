@@ -2,7 +2,9 @@
 
 Enemy::Enemy(int x, int y, Player* p)
 	:
-	CharacterBase(x, y, 1, 1, 'E', false, 1), player(p)
+	CharacterBase(x, y, 1, 1, 'E', false, 1), player(p),
+	moveInterval(1000.0f),
+	timeAccumulator(0.0f)
 {
 }
 
@@ -10,13 +12,16 @@ Enemy::~Enemy()
 {
 }
 
-void Enemy::SpawnEnemy(int x, int y)
-{
-}
 
-void Enemy::Update() 
+bool Enemy::CanMove(float deltaTime)
 {
-	//ApproachToPlayer();
+	timeAccumulator += deltaTime;
+	if (timeAccumulator >= moveInterval)
+	{
+		timeAccumulator = 0.0f;
+		return true;
+	}
+	return false;
 }
 
 void Enemy::PredicNextPos(int& outX, int& outY) const

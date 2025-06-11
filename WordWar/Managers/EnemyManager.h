@@ -13,7 +13,7 @@ public:
 	~EnemyManager();
 
 	void SpawnEnemies(int x, int y, Player* p);
-	void Update();
+	void Update(float deltaTime);
 	void DrawAllEnemy();
 	const std::vector<std::unique_ptr<Enemy>>& GetAllEnemy() const;
 
