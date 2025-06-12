@@ -4,6 +4,7 @@
 #include "Managers/EnemyManager.h"
 #include "Managers/TimerManager.h"
 #include "Managers/FieldManager.h"
+#include "Managers/MainManager.h"
 
 #include <stdio.h>
 #include <conio.h>
@@ -16,6 +17,7 @@ std::unique_ptr <TimerManager> timerManager;
 std::unique_ptr <FieldManager> fieldManager;
 std::unique_ptr <EnemyManager> enemyManager;
 std::unique_ptr <BulletManager> bulletManager;
+std::unique_ptr <MainManager> mainManager;
 
 //TODO list: 
 // 1. friendly desgin tool for planners
@@ -37,21 +39,23 @@ int main() {
 void InitializeMainGame()
 {
 	//Create Manager objects
+	timerManager = std::make_unique<TimerManager>();
 	fieldManager = std::make_unique<FieldManager>();
 	bulletManager = std::make_unique<BulletManager>();
 
 	//Initialize internal pointers for each manager
-	player = std::make_unique<Player>(fieldManager->GetFieldWidth() / 2, fieldManager->GetFieldHeight() / 2, bulletManager.get(), timerManager.get());
+	player = std::make_unique<Player>(fieldManager->GetFieldWidth() / 2, fieldManager->GetFieldHeight() / 2, static_cast<IBulletSystem*>(bulletManager.get()), timerManager.get());
 
 	enemyManager = std::make_unique<EnemyManager>(timerManager.get(), player.get(), fieldManager.get());
 
 	if (fieldManager)
 	{
-		fieldManager->InitializeManagers(player.get(), timerManager.get(), enemyManager.get(), bulletManager.get());
-	}
-	if (bulletManager)
-	{
-		bulletManager->InitFieldPtr(fieldManager.get());
+		fieldManager->InitializeManagers(
+			player.get(), 
+			timerManager.get(), 
+			enemyManager.get(), 
+			bulletManager.get()
+		);
 	}
 }
 

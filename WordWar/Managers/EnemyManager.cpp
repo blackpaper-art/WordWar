@@ -93,20 +93,6 @@ void EnemyManager::Update(float deltaTime)
     }
 }
 
-void EnemyManager::DrawAllEnemy()
-{
-	for (const auto& e : enemies) {
-		int x = e->GetX();
-		int y = e->GetY();
-		if (x >= 0 && x < FIELD_WIDTH && y >= 0 && y < FIELD_HEIGHT) {
-			if (fieldManager)
-			{
-				fieldManager->SetField(x, y, e->GetSymbol());
-			}
-		}
-	}
-}
-
 const std::vector<std::unique_ptr<Enemy>>& EnemyManager::GetAllEnemy() const
 {
 	return enemies;

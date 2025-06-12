@@ -51,6 +51,9 @@
     <ClCompile Include="Characters\Player.cpp">
       <Filter>Resource Files\Characters</Filter>
     </ClCompile>
+    <ClCompile Include="Managers\MainManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMain.h">
@@ -79,6 +82,15 @@
     </ClInclude>
     <ClInclude Include="Characters\Player.h">
       <Filter>Resource Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\MainManager.h">
+      <Filter>Resource Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="IBulletSystem.h">
+      <Filter>Resource Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IEnemySystem.h">
+      <Filter>Resource Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

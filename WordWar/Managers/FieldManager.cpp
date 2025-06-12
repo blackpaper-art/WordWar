@@ -8,8 +8,8 @@
 #include "../Characters/Player.h"
 #include "FieldManager.h"
 #include "TimerManager.h"
-#include "EnemyManager.h"
-#include "BulletManager.h"
+#include "../Interface/IEnemySystem.h"
+#include "../IBulletSystem.h"
 
 #include <windows.h>
 #include <algorithm>
@@ -40,35 +40,37 @@ void FieldManager::SetField(int x, int y, char intern)
 	field[y][x] = intern;
 }
 
-void FieldManager::InitializeManagers(Player* p, TimerManager* tm, EnemyManager* em, BulletManager* bm)
+void FieldManager::InitializeManagers(Player* p, TimerManager* tm, IEnemySystem* es, IBulletSystem* bs)
 {
 	player = p;
 	timerManager = tm;
-	enemyManager = em;
-	bulletManager = bm;
+	enemySystem = es;
+	bulletSystem = bs;
 }
 
 void FieldManager::Update(float deltaTime)
 {
 	//Check collision
-	for (const auto& b : bulletManager->GetAllBullet()) {
+	for (const auto& b : bulletSystem->GetAllBullets()) {
 		if (!b || b->GetIsDead()) continue;
 
-		for (const auto& e : enemyManager->GetAllEnemy()) {
+		for (const auto& e : enemySystem->GetAllEnemy()) {
 			if (!e || e->GetIsDead()) continue;
 
 			if (b->GetX() == e->GetX() && b->GetY() == e->GetY()) {
 				e->UnderAttack(b->GetAttackPower());
 				b->UnderAttack(b->GetHP());
 
-				enemyManager->AddEliminatedEnemyCount(1);
+				enemySystem->AddEliminatedEnemyCount(1);
+				Beep(1500, 10);
 				break; //Prevent collison with multi enemies
 			}
 			else if (player && player->GetX() == e->GetX() && player->GetY() == e->GetY()){
 				player->UnderAttack(e->GetAttackPower());
 				e->UnderAttack(e->GetAttackPower());
 
-				enemyManager->AddEliminatedEnemyCount(1);
+				enemySystem->AddEliminatedEnemyCount(1);
+				Beep(300, 10);
 				break;
 			}
 		}
@@ -91,9 +93,9 @@ void FieldManager::DrawField()
 	}
 
 	//2.1 Add Enemy data to the buffer
-	if (enemyManager)
+	if (enemySystem)
 	{
-		for (const auto& e : enemyManager->GetAllEnemy())
+		for (const auto& e : enemySystem->GetAllEnemy())
 		{
 			if (e && !e->GetIsDead())
 			{
@@ -103,9 +105,9 @@ void FieldManager::DrawField()
 	}
 
 	//2.2 Add Bullet data to the buffer
-	if (bulletManager)
+	if (bulletSystem)
 	{
-		for (const auto& b : bulletManager->GetAllBullet())
+		for (const auto& b : bulletSystem->GetAllBullets())
 		{
 			if (b && !b->GetIsDead())
 			{
@@ -177,9 +179,9 @@ void FieldManager::DrawField()
 	
 	//4. ShowInfo
 	int liveEnemyCount = 0;
-	if (enemyManager)
+	if (enemySystem)
 	{
-		const auto& enemies = enemyManager->GetAllEnemy();
+		const auto& enemies = enemySystem->GetAllEnemy();
 		liveEnemyCount = static_cast<int>(std::count_if(
 			enemies.begin(), 
 			enemies.end(), 
@@ -189,7 +191,7 @@ void FieldManager::DrawField()
 			));
 	}
 	
-	printf(" Eliminated enemy Count: %d", enemyManager->GetEliminatedEnemyCount());
+	printf(" Eliminated enemy Count: %d", enemySystem->GetEliminatedEnemyCount());
 }
 
 void FieldManager::CountDownTimer()

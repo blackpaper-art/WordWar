@@ -1,24 +1,21 @@
 #pragma once
 #include "../Items/Bullet.h"
-#include "../Managers/FieldManager.h"
+#include "../IBulletSystem.h"
 
 #include <vector>
 #include <memory>
 
-class BulletManager
+class BulletManager : public IBulletSystem
 {
 public:
 	BulletManager();
 	~BulletManager();
 
-	void InitFieldPtr(FieldManager* fm);
-	void SpawnBullet(int x, int y, MoveDir dir);
-	void DrawAllBullets();
+	void SpawnBullet(int x, int y, MoveDir dir) override;
 	void Update(float deltaTime);
-	const std::vector<std::unique_ptr<Bullet>>& GetAllBullet() const;
-	const int GetEliminatedEnemyCount() const;
+	const std::vector<std::unique_ptr<Bullet>>& GetAllBullets() const override;
+	int GetBulletCount() const override;
+
 private:
 	std::vector<std::unique_ptr<Bullet>> bullets;
-	FieldManager* fieldManager;
-	int eliminatedEnemyCount;
 };

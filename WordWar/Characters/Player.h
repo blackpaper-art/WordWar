@@ -1,16 +1,18 @@
 #pragma once
+
+
 #include "Character.h"
-#include "../Managers/BulletManager.h"
+
 #include "../Managers/TimerManager.h"
 
 class Player;
-class BulletManager;
+class IBulletSystem;
 class TimerManager;
 
 class Player : public CharacterBase
 {
 public:
-	Player(int x, int y, BulletManager* bm, TimerManager* tm);
+	Player(int x, int y, IBulletSystem* bs, TimerManager* tm);
 	~Player();
 
 	void Update(char input);
@@ -20,9 +22,8 @@ public:
 	void LevelUp();
 
 private:
-	BulletManager* bulletManager;
+	IBulletSystem* bulletSystem;
 	TimerManager* timerManager;
-	EnemyManager* enemyManager;
 
 	int bulletLevel;
 	int level;

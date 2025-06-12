@@ -131,6 +131,7 @@
     <ClCompile Include="Managers\BulletManager.cpp" />
     <ClCompile Include="Managers\EnemyManager.cpp" />
     <ClCompile Include="Managers\FieldManager.cpp" />
+    <ClCompile Include="Managers\MainManager.cpp" />
     <ClCompile Include="Managers\TimerManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -138,10 +139,13 @@
     <ClInclude Include="Characters\Enemies\Enemy.h" />
     <ClInclude Include="Characters\Player.h" />
     <ClInclude Include="GameMain.h" />
+    <ClInclude Include="IBulletSystem.h" />
+    <ClInclude Include="Interface\IEnemySystem.h" />
     <ClInclude Include="Items\Bullet.h" />
     <ClInclude Include="Managers\BulletManager.h" />
     <ClInclude Include="Managers\EnemyManager.h" />
     <ClInclude Include="Managers\FieldManager.h" />
+    <ClInclude Include="Managers\MainManager.h" />
     <ClInclude Include="Managers\TimerManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,12 +1,14 @@
 #include "Player.h"
+#include "../IBulletSystem.h"
+#include "../Items/Bullet.h"
 
 #define FIELD_WIDTH (16 * 3)
 #define FIELD_HEIGHT (9 * 3)
 
-Player::Player(int x, int y, BulletManager* bm, TimerManager* tm)
+Player::Player(int x, int y, IBulletSystem* bs, TimerManager* tm)
 	:
 	CharacterBase(x, y, 100, 1, 'P', false, 1),
-	bulletManager(bm),
+	bulletSystem(bs),
 	timerManager(tm),
 	bulletLevel(1),
 	level(1),
@@ -48,7 +50,7 @@ int Player::ShowPlayerInfo()
 
 void Player::FireBullets(int bLevel, int rate)
 {
-	if (bulletManager)
+	if (bulletSystem)
 	{
 		//According bullet level to fire bullet
 		//level 1: One dir (UP)
@@ -89,7 +91,7 @@ void Player::FireBullets(int bLevel, int rate)
 
 		for (const auto& dir : directions)
 		{
-			bulletManager->SpawnBullet(GetX(), GetY(), dir);
+			bulletSystem->SpawnBullet(GetX(), GetY(), dir);
 		}
 		
 	}

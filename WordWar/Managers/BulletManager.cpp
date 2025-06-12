@@ -11,26 +11,10 @@ BulletManager::~BulletManager()
 {
 }
 
-void BulletManager::InitFieldPtr(FieldManager* fm)
-{
-	fieldManager = fm;
-}
 
 void BulletManager::SpawnBullet(int x, int y, MoveDir dir)
 {
 	bullets.push_back(std::make_unique<Bullet>(x, y, dir));
-}
-
-void BulletManager::DrawAllBullets()
-{
-	for (const auto& b : bullets)
-	{
-		int x = b->GetX();
-		int y = b->GetY();
-		if (x >= 0 && x < FIELD_WIDTH && y >= 0 && y < FIELD_HEIGHT) {
-			fieldManager->SetField(x, y, b->GetSymbol());
-		}
-	}
 }
 
 void BulletManager::Update(float deltaTime)
@@ -47,22 +31,18 @@ void BulletManager::Update(float deltaTime)
 		(*it)->Update(deltaTime);
 		if ((*it)->GetIsDead() || (*it)->GetIsOutOfField())
 		{
-			if ((*it)->GetIsDead())
-			{
-				eliminatedEnemyCount++;
-			}
 			it = bullets.erase(it);
 		}
 		else { ++it; }
 	}
 }
 
-const std::vector<std::unique_ptr<Bullet>>& BulletManager::GetAllBullet() const
+const std::vector<std::unique_ptr<Bullet>>& BulletManager::GetAllBullets() const
 {
 	return bullets;
 }
 
-const int BulletManager::GetEliminatedEnemyCount() const
+int BulletManager::GetBulletCount() const
 {
-	return eliminatedEnemyCount;
+	return static_cast<int>(bullets.size());;
 }

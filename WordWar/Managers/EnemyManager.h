@@ -3,22 +3,25 @@
 #include "../Characters/Player.h"
 #include "FieldManager.h"
 #include "TimerManager.h"
+#include "MainManager.h"
+#include "../Interface/IEnemySystem.h"
+
 #include <vector>
 #include <memory>
 
-class EnemyManager
+class EnemyManager : public IEnemySystem
 {
 public:
 	EnemyManager(TimerManager* tm, Player* p, FieldManager* fm);
 	~EnemyManager();
 
-	void SpawnEnemies(int x, int y, Player* p);
+	void SpawnEnemies(int x, int y, Player* p) override;
 	void Update(float deltaTime);
-	void DrawAllEnemy();
-	const std::vector<std::unique_ptr<Enemy>>& GetAllEnemy() const;
 
-	void AddEliminatedEnemyCount(int count);
-	const int GetEliminatedEnemyCount() const;
+	const std::vector<std::unique_ptr<Enemy>>& GetAllEnemy() const override;
+
+	void AddEliminatedEnemyCount(int count) override;
+	const int GetEliminatedEnemyCount() const override;
 private:
 	std::vector<std::unique_ptr<Enemy>> enemies;
 

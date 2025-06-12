@@ -1,7 +1,7 @@
 #pragma once
+
 #include "../Character.h"
 #include "../../Characters/Player.h"
-#include "../../Managers/BulletManager.h"
 
 class Enemy :public CharacterBase
 {

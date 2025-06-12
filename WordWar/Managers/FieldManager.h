@@ -9,7 +9,8 @@
 class EnemyManager;
 class Player;
 class TimerManager;
-class BulletManager;
+class IBulletSystem;
+class IEnemySystem;
 
 class FieldManager
 {
@@ -22,15 +23,15 @@ public:
 
 	char GetField(int x, int y);
 	void SetField(int x, int y, char intern);
-	void InitializeManagers(Player* p, TimerManager* tm, EnemyManager* em, BulletManager* bm);
+	void InitializeManagers(Player* p, TimerManager* tm, IEnemySystem* es, IBulletSystem* bs);
 	void Update(float deltaTime);
 	void DrawField();
 private:
 	Player* player;
 
 	TimerManager* timerManager;
-	EnemyManager* enemyManager;
-	BulletManager* bulletManager;
+	IEnemySystem* enemySystem;
+	IBulletSystem* bulletSystem;
 
 	static const int fieldWidth = 16 * 3;
 	static const int fieldHeight = 9 * 3;
