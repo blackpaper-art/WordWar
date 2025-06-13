@@ -4,14 +4,14 @@
 #define FIELD_WIDTH (16 * 3)
 #define FIELD_HEIGHT (9 * 3)
 
-EnemyManager::EnemyManager(TimerManager* tm, Player* p, FieldManager* fm)
+EnemyManager::EnemyManager(TimerManager* tm, IPlayerSystem* ps, FieldManager* fm)
 	:
 	timerManager(tm),
-	player(p),
+	playerSystem(ps),
 	fieldManager(fm),
 	eliminatedEnemyCount(0)
 {
-	timerManager->SetTimer(1000, [this] { 
+	timerManager->SetTimer(400 / ps->GetPlayerLevel() , [this] {
 		int randomX, randomY;
 		int edge = rand() % 4; // 0: top, 1: bottom, 2: left, 3: right
 
@@ -34,9 +34,9 @@ EnemyManager::EnemyManager(TimerManager* tm, Player* p, FieldManager* fm)
 			break;
 		}
 
-		if (player)
+		if (playerSystem)
 		{
-			this->SpawnEnemies(randomX, randomY, player);
+			this->SpawnEnemies(randomX, randomY, playerSystem);
 		}
 	}, true);
 }
@@ -45,9 +45,9 @@ EnemyManager::~EnemyManager()
 {
 }
 
-void EnemyManager::SpawnEnemies(int x, int y, Player* p)
+void EnemyManager::SpawnEnemies(int x, int y, IPlayerSystem* ps)
 {
-	enemies.push_back(std::make_unique<Enemy>(x, y, p));
+	enemies.push_back(std::make_unique<Enemy>(x, y, ps));
 }
 
 void EnemyManager::Update(float deltaTime)

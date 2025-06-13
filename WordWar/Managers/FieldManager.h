@@ -6,10 +6,10 @@
 #define FIELD_NULL ' '
 
 class EnemyManager;
-class Player;
 class TimerManager;
 class IBulletSystem;
 class IEnemySystem;
+class IPlayerSystem;
 
 class FieldManager
 {
@@ -20,16 +20,15 @@ public:
 	const int GetFieldWidth() { return fieldWidth; }
 	const int GetFieldHeight(){ return fieldHeight; }
 
-	char GetField(int x, int y);
-	void SetField(int x, int y, char intern);
-	void InitializeManagers(Player* p, TimerManager* tm, IEnemySystem* es, IBulletSystem* bs);
+	void InitializeManagers(IPlayerSystem* ps, TimerManager* tm, IEnemySystem* es, IBulletSystem* bs);
 	void Update(float deltaTime);
 	void DrawField();
 private:
-	Player* player;
 
 	TimerManager* timerManager;
+
 	IEnemySystem* enemySystem;
+	IPlayerSystem* playerSystem;
 	IBulletSystem* bulletSystem;
 
 	static const int fieldWidth = 16 * 3;

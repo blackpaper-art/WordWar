@@ -1,8 +1,8 @@
 #include "Enemy.h"
 
-Enemy::Enemy(int x, int y, Player* p)
+Enemy::Enemy(int x, int y, IPlayerSystem* ps)
 	:
-	CharacterBase(x, y, 1, 1, 'E', false, 1), player(p),
+	CharacterBase(x, y, 1, 1, 'i', false, 1), playerSystem(ps),
 	moveInterval(1000.0f),
 	timeAccumulator(0.0f)
 {
@@ -29,9 +29,9 @@ void Enemy::PredicNextPos(int& outX, int& outY) const
 	outX = GetX();
 	outY = GetY();
 	
-	if (player->GetX() > outX) outX++;
-	else if (player->GetX() < outX) outX--;
+	if (playerSystem->GetX() > outX) outX++;
+	else if (playerSystem->GetX() < outX) outX--;
 
-	if (player->GetY() > outY) outY++;
-	else if (player->GetY() < outY) outY--;
+	if (playerSystem->GetY() > outY) outY++;
+	else if (playerSystem->GetY() < outY) outY--;
 }

@@ -1,10 +1,10 @@
 #pragma once
-class Player;
 class IBulletSystem;
 class IEnemySystem;
+class IPlayerSystem;
 
 class CollisionSystem
 {
 public:
-	void HandleCollision(Player* p, IBulletSystem* bs, IEnemySystem* es);
+	void HandleCollision(IPlayerSystem* ps, IBulletSystem* bs, IEnemySystem* es);
 };

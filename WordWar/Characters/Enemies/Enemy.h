@@ -6,13 +6,13 @@
 class Enemy :public CharacterBase
 {
 public:
-	Enemy(int x, int y, Player* p);
+	Enemy(int x, int y, IPlayerSystem* ps);
 	~Enemy();
 
 	bool CanMove(float deltaTime);
 	void PredicNextPos(int& outX, int& outY) const;
 private:
-	Player* player;
+	IPlayerSystem* playerSystem;
 	int preX, preY;
 
 	float moveInterval;

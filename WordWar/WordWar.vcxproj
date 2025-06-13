@@ -142,6 +142,7 @@
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="IBulletSystem.h" />
     <ClInclude Include="Interface\IEnemySystem.h" />
+    <ClInclude Include="Interface\IPlayerSystem.h" />
     <ClInclude Include="Items\Bullet.h" />
     <ClInclude Include="Managers\BulletManager.h" />
     <ClInclude Include="Managers\EnemyManager.h" />

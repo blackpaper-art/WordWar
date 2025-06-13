@@ -58,7 +58,7 @@ void CharacterBase::SetY(int newY)
 void CharacterBase::UnderAttack(int damage)
 {
     hp -= damage;
-    SetIsDead(hp == 0);
+    SetIsDead(hp <= 0);
 }
 
 void CharacterBase::SetIsDead(bool newState)

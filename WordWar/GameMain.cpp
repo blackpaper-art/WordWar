@@ -49,7 +49,7 @@ void InitializeMainGame()
 	//Initialize internal pointers for each manager
 	player = std::make_unique<Player>(fieldManager->GetFieldWidth() / 2, fieldManager->GetFieldHeight() / 2, static_cast<IBulletSystem*>(bulletManager.get()), timerManager.get());
 
-	enemyManager = std::make_unique<EnemyManager>(timerManager.get(), player.get(), fieldManager.get());
+	enemyManager = std::make_unique<EnemyManager>(timerManager.get(), static_cast<IPlayerSystem*>(player.get()), fieldManager.get());
 
 	if (fieldManager)
 	{

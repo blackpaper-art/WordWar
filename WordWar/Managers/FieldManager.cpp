@@ -1,15 +1,18 @@
-/*---------------------------------------------------------------------------------------------*
- * Describe:                                                                                   *
- *  FieldManager is responsible for managing the main game field, including rendering,         *
- *  updating the field state, and handling collision detection between bullets, enemies,       *
- *  and the player.                                                                            *
+﻿/*---------------------------------------------------------------------------------------------*
+ * Description / 説明 :                                                                         *
+ *  FieldManager is responsible for managing the game field, including rendering,              *
+ *  updating the field state, and delegating collision detection between bullets,              *
+ *  enemies, and the player to the CollisionSystem.                                            *
+ *                                                                                             *
+ *  FieldManager クラスはゲームフィールドの管理を担当します。描画処理、状態の更新、                      *
+ *  そして弾丸・敵・プレイヤー間の衝突判定を CollisionSystem に委託します。                            *
  *---------------------------------------------------------------------------------------------*/
 
-#include "../Characters/Player.h"
 #include "FieldManager.h"
 #include "TimerManager.h"
 #include "../Interface/IEnemySystem.h"
 #include "../Interface/IBulletSystem.h"
+#include "../Interface/IPlayerSystem.h"
 #include "../System/CollisionSystem.h"
 
 #include <windows.h>
@@ -23,30 +26,19 @@
 FieldManager::FieldManager()
 	:
 	countDownTime(180)
-{
-	timerManager->SetTimer(1000, [=] {CountDownTimer(); }, true);
-}
+{}
 
 FieldManager::~FieldManager()
 {
 }
 
-char FieldManager::GetField(int x, int y)
+void FieldManager::InitializeManagers(IPlayerSystem* ps, TimerManager* tm, IEnemySystem* es, IBulletSystem* bs)
 {
-	return field[y][x];
-}
-
-void FieldManager::SetField(int x, int y, char intern)
-{
-	field[y][x] = intern;
-}
-
-void FieldManager::InitializeManagers(Player* p, TimerManager* tm, IEnemySystem* es, IBulletSystem* bs)
-{
-	player = p;
+	playerSystem = ps;
 	timerManager = tm;
 	enemySystem = es;
 	bulletSystem = bs;
+	timerManager->SetTimer(1000, [=] {CountDownTimer(); }, true);
 }
 
 void FieldManager::Update(float deltaTime)
@@ -92,9 +84,9 @@ void FieldManager::DrawField()
 	}
 
 	//2.3 Add Player data to the buffer
-	if (player)
+	if (playerSystem)
 	{
-		fieldBuffer[player->GetY()][player->GetX()] = player->GetSymbol();
+		fieldBuffer[playerSystem->GetY()][playerSystem->GetX()] = playerSystem->GetSymbol();
 	}
 	
 	//3. clean screen and display data
@@ -131,13 +123,16 @@ void FieldManager::DrawField()
 		}
 		else if (y == 1)
 		{
-			printf(" Player HP: %-4d", player->GetHP());
+			printf(" Player HP: %-4d", playerSystem->GetHP());
 		}
 		else if (y == 2){
-			printf(" Player Level: %d", player->GetPlayerLevel());
+			printf(" Player Level: %d", playerSystem->GetPlayerLevel());
 		}
 		else if (y == 5) {
 			printf(" DeltaTime: %f", myDeltaTime);
+		}
+		else if (y == 6) {
+			printf(" Player Bullet Level: %d", 2000/playerSystem->GetPlayerBulletLevel());
 		}
 
 		printf("\n");
@@ -172,9 +167,9 @@ void FieldManager::DrawField()
 void FieldManager::CountDownTimer()
 {
 	countDownTime--;
-	// Time's up �� force the player to die and end the game
-	if (countDownTime <= 0 && player)
+	// Time's up — force the player to die and end the game
+	if (countDownTime <= 0 && playerSystem)
 	{
-		player->UnderAttack(player->GetHP());
+		playerSystem->UnderAttack(playerSystem->GetHP());
 	}
 }

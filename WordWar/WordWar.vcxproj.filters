@@ -104,5 +104,8 @@
     <ClInclude Include="System\CollisionSystem.h">
       <Filter>Resource Files\System</Filter>
     </ClInclude>
+    <ClInclude Include="Interface\IPlayerSystem.h">
+      <Filter>Resource Files\Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

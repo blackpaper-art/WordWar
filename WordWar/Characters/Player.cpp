@@ -7,14 +7,16 @@
 
 Player::Player(int x, int y, IBulletSystem* bs, TimerManager* tm)
 	:
-	CharacterBase(x, y, 100, 1, 'P', false, 1),
+	CharacterBase(x, y, 10, 1, 'O', false, 1),
 	bulletSystem(bs),
 	timerManager(tm),
 	bulletLevel(1),
-	level(1),
+	level(1), 
+	killCount(0), 
+	nextLevelKills(10),
 	bulletDir(0)
 {
-	timerManager->SetTimer(1000 / bulletLevel, [=] { FireBullets(level, bulletLevel); },  true);
+	timerManager->SetTimer(2000 / bulletLevel, [=] { FireBullets(level, bulletLevel); },  true);
 }
 
 Player::~Player()
@@ -24,7 +26,7 @@ Player::~Player()
 void Player::Update(char input)
 {
 	//Movement
-	int newX = GetX(), newY = GetY();
+	int newX = CharacterBase::GetX(), newY = CharacterBase::GetY();
 
 	switch (input)
 	{
@@ -43,67 +45,135 @@ void Player::Update(char input)
 	}
 }
 
-int Player::ShowPlayerInfo()
+void Player::AddKillCount(int count)
 {
-	return GetHP();
+	killCount += count;
+	TryLevelUp();
+}
+
+void Player::TryLevelUp()
+{
+	if (killCount >= nextLevelKills)
+	{
+		killCount -= nextLevelKills;
+		level++;
+		bulletLevel++;
+		nextLevelKills = level * 10 * 1.5f;
+	}
 }
 
 void Player::FireBullets(int bLevel, int rate)
 {
+	//According player direction and player level to fire bullet
+	//level 1: One dir (UP)
+	//level 2: Two dir (UP & DOWN)
+	//level 3: Four dir (UP & DOWN & LEFT & RIGHT)
+	//level 4: Eight dir (UP & DOWN & LEFT & RIGHT 
+	//						 & UP LEFT & UP DOWN & DOWN LEFT & DOWN RIGHT)
+
 	if (bulletSystem)
 	{
-		//According bullet level to fire bullet
-		//level 1: One dir (UP)
-		//level 2: Two dir (UP & DOWN)
-		//level 3: Four dir (UP & DOWN & LEFT & RIGHT)
-		//level 4: Eight dir (UP & DOWN & LEFT & RIGHT 
-		//					& UP LEFT & UP DOWN & DOWN LEFT & DOWN RIGHT)
 		std::vector<MoveDir> directions;
 
 		switch (bulletDir)
 		{
-		case 0:directions = { MoveDir::Up }; break;
-		case 1:directions = { MoveDir::Down }; break;
-		case 2:directions = { MoveDir::Left }; break;
-		case 3:directions = { MoveDir::Right }; break;
-		default: break;
+		case 0: // Up
+			directions.push_back(MoveDir::Up);
+			if (bLevel >= 2) directions.push_back(MoveDir::Down);
+			if (bLevel >= 3) {
+				directions.push_back(MoveDir::Left);
+				directions.push_back(MoveDir::Right);
+			}
+			if (bLevel >= 4) {
+				directions.push_back(MoveDir::UpLeft);
+				directions.push_back(MoveDir::UpRight);
+				directions.push_back(MoveDir::DownLeft);
+				directions.push_back(MoveDir::DownRight);
+			}
+			break;
+		case 1: // Down
+			directions.push_back(MoveDir::Down);
+			if (bLevel >= 2) directions.push_back(MoveDir::Up);
+			if (bLevel >= 3) {
+				directions.push_back(MoveDir::Left);
+				directions.push_back(MoveDir::Right);
+			}
+			if (bLevel >= 4) {
+				directions.push_back(MoveDir::UpLeft);
+				directions.push_back(MoveDir::UpRight);
+				directions.push_back(MoveDir::DownLeft);
+				directions.push_back(MoveDir::DownRight);
+			}
+			break;
+		case 2: // Left
+			directions.push_back(MoveDir::Left);
+			if (bLevel >= 2) directions.push_back(MoveDir::Right);
+			if (bLevel >= 3) {
+				directions.push_back(MoveDir::Up);
+				directions.push_back(MoveDir::Down);
+			}
+			if (bLevel >= 4) {
+				directions.push_back(MoveDir::UpLeft);
+				directions.push_back(MoveDir::UpRight);
+				directions.push_back(MoveDir::DownLeft);
+				directions.push_back(MoveDir::DownRight);
+			}
+			break;
+		case 3: // Right
+			directions.push_back(MoveDir::Right);
+			if (bLevel >= 2) directions.push_back(MoveDir::Left);
+			if (bLevel >= 3) {
+				directions.push_back(MoveDir::Up);
+				directions.push_back(MoveDir::Down);
+			}
+			if (bLevel >= 4) {
+				directions.push_back(MoveDir::UpLeft);
+				directions.push_back(MoveDir::UpRight);
+				directions.push_back(MoveDir::DownLeft);
+				directions.push_back(MoveDir::DownRight);
+			}
+			break;
+		default:
+			directions.push_back(MoveDir::Up);
+			break;
 		}
-
-		/*switch (bLevel)
-		{
-		case 1:
-			directions = { MoveDir::Up };
-			break;
-		case 2:
-			directions = { MoveDir::Up, MoveDir::Down };
-			break;
-		case 3:
-			directions = { MoveDir::Up, MoveDir::Down, MoveDir::Left, MoveDir::Right };
-			break;
-		case 4:
-			directions = {
-				MoveDir::Up, MoveDir::Down, MoveDir::Left, MoveDir::Right,
-				MoveDir::UpLeft, MoveDir::UpRight, MoveDir::DownLeft, MoveDir::DownRight
-			};
-			break;
-		default: break;
-		}*/
 
 		for (const auto& dir : directions)
 		{
-			bulletSystem->SpawnBullet(GetX(), GetY(), dir);
+			bulletSystem->SpawnBullet(CharacterBase::GetX(), CharacterBase::GetY(), dir);
 		}
-		
 	}
 }
 
+//Interfaces
 int Player::GetPlayerLevel()
 {
 	return level;
 }
 
-void Player::LevelUp()
+int Player::GetPlayerBulletLevel()
 {
-	level++;
+	return bulletLevel;
 }
 
+int Player::GetX() const {
+	return CharacterBase::GetX();
+}
+
+int Player::GetY() const {
+	return CharacterBase::GetY();
+}
+
+int Player::GetHP() const {
+	return CharacterBase::GetHP();
+}
+
+char Player::GetSymbol() const
+{
+	return CharacterBase::GetSymbol();
+}
+
+
+void Player::UnderAttack(int damage) {
+	CharacterBase::UnderAttack(damage);
+}

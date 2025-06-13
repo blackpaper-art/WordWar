@@ -1,10 +1,10 @@
 #pragma once
 #include "../Characters/Enemies/Enemy.h"
-#include "../Characters/Player.h"
 #include "FieldManager.h"
 #include "TimerManager.h"
 #include "MainManager.h"
 #include "../Interface/IEnemySystem.h"
+#include "../Interface/IPlayerSystem.h"
 
 #include <vector>
 #include <memory>
@@ -12,10 +12,10 @@
 class EnemyManager : public IEnemySystem
 {
 public:
-	EnemyManager(TimerManager* tm, Player* p, FieldManager* fm);
+	EnemyManager(TimerManager* tm, IPlayerSystem* p, FieldManager* fm);
 	~EnemyManager();
 
-	void SpawnEnemies(int x, int y, Player* p) override;
+	void SpawnEnemies(int x, int y, IPlayerSystem* p) override;
 	void Update(float deltaTime);
 
 	const std::vector<std::unique_ptr<Enemy>>& GetAllEnemy() const override;
@@ -25,7 +25,7 @@ public:
 private:
 	std::vector<std::unique_ptr<Enemy>> enemies;
 
-	Player* player;
+	IPlayerSystem* playerSystem;
 	FieldManager* fieldManager;
 	TimerManager* timerManager;
 
