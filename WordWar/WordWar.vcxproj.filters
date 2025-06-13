@@ -28,6 +28,9 @@
     <Filter Include="Resource Files\System">
       <UniqueIdentifier>{3d984d8a-fa0c-4eef-9dde-ea8a7ad8f2fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Items">
+      <UniqueIdentifier>{7b5b7c78-edf2-4952-80cb-5e2442488cd1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameMain.cpp">
@@ -48,9 +51,6 @@
     <ClCompile Include="Characters\Enemies\Enemy.cpp">
       <Filter>Resource Files\Characters\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Items\Bullet.cpp">
-      <Filter>Resource Files\Characters</Filter>
-    </ClCompile>
     <ClCompile Include="Characters\Character.cpp">
       <Filter>Resource Files\Characters</Filter>
     </ClCompile>
@@ -62,6 +62,12 @@
     </ClCompile>
     <ClCompile Include="System\CollisionSystem.cpp">
       <Filter>Resource Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\Bullet.cpp">
+      <Filter>Resource Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\HealthPack.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,9 +89,6 @@
     <ClInclude Include="Characters\Enemies\Enemy.h">
       <Filter>Resource Files\Characters\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Items\Bullet.h">
-      <Filter>Resource Files\Characters</Filter>
-    </ClInclude>
     <ClInclude Include="Characters\Character.h">
       <Filter>Resource Files\Characters</Filter>
     </ClInclude>
@@ -106,6 +109,12 @@
     </ClInclude>
     <ClInclude Include="Interface\IPlayerSystem.h">
       <Filter>Resource Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\HealthPack.h">
+      <Filter>Resource Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\Bullet.h">
+      <Filter>Resource Files\Items</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

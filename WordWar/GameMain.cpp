@@ -5,6 +5,7 @@
 #include "Managers/TimerManager.h"
 #include "Managers/FieldManager.h"
 #include "Managers/MainManager.h"
+#include "Items/HealthPack.h"
 
 #include "System/CollisionSystem.h"
 
@@ -20,7 +21,10 @@ std::unique_ptr <FieldManager> fieldManager;
 std::unique_ptr <EnemyManager> enemyManager;
 std::unique_ptr <BulletManager> bulletManager;
 std::unique_ptr <MainManager> mainManager;
+
 std::unique_ptr <CollisionSystem> collisionSystem;
+
+std::unique_ptr <HealthPack> healthPack;
 
 //TODO list: 
 // 1. friendly desgin tool for planners
@@ -51,13 +55,15 @@ void InitializeMainGame()
 
 	enemyManager = std::make_unique<EnemyManager>(timerManager.get(), static_cast<IPlayerSystem*>(player.get()), fieldManager.get());
 
+	healthPack = std::make_unique<HealthPack>(timerManager.get());
 	if (fieldManager)
 	{
 		fieldManager->InitializeManagers(
-			player.get(), 
-			timerManager.get(), 
-			enemyManager.get(), 
-			bulletManager.get()
+			player.get(),
+			timerManager.get(),
+			enemyManager.get(),
+			bulletManager.get(),
+			healthPack.get()
 		);
 	}
 }
@@ -81,7 +87,12 @@ void MainGameLoop() {
 			bulletManager->Update(deltaTime);
 			enemyManager->Update(deltaTime);
 			fieldManager->Update(deltaTime);
-			collisionSystem->HandleCollision(player.get(), static_cast<IBulletSystem*>(bulletManager.get()), static_cast<IEnemySystem*>(enemyManager.get()));
+			collisionSystem->HandleCollision(
+				static_cast<IPlayerSystem*>(player.get()), 
+				static_cast<IBulletSystem*>(bulletManager.get()), 
+				static_cast<IEnemySystem*>(enemyManager.get()),
+				healthPack.get()
+			);
 			fieldManager->DrawField();
 			lastTime = currentTime;
 		}

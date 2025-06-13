@@ -10,6 +10,7 @@
 
 #include "FieldManager.h"
 #include "TimerManager.h"
+#include "../Items/HealthPack.h"
 #include "../Interface/IEnemySystem.h"
 #include "../Interface/IBulletSystem.h"
 #include "../Interface/IPlayerSystem.h"
@@ -32,13 +33,14 @@ FieldManager::~FieldManager()
 {
 }
 
-void FieldManager::InitializeManagers(IPlayerSystem* ps, TimerManager* tm, IEnemySystem* es, IBulletSystem* bs)
+void FieldManager::InitializeManagers(IPlayerSystem* ps, TimerManager* tm, IEnemySystem* es, IBulletSystem* bs, HealthPack* hp)
 {
 	playerSystem = ps;
 	timerManager = tm;
 	enemySystem = es;
 	bulletSystem = bs;
 	timerManager->SetTimer(1000, [=] {CountDownTimer(); }, true);
+	healthPack = hp;
 }
 
 void FieldManager::Update(float deltaTime)
@@ -87,6 +89,12 @@ void FieldManager::DrawField()
 	if (playerSystem)
 	{
 		fieldBuffer[playerSystem->GetY()][playerSystem->GetX()] = playerSystem->GetSymbol();
+	}
+	
+	//2.4 Add Health Pack data to the buffer
+	if (healthPack && !healthPack->GetIsDead())
+	{
+		fieldBuffer[healthPack->GetY()][healthPack->GetX()] = healthPack->GetSymbol();
 	}
 	
 	//3. clean screen and display data

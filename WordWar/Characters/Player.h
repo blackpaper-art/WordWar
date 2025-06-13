@@ -14,8 +14,6 @@ public:
 
 	void Update(char input);
 
-	
-
 	//interfaces
 	int GetX() const override;
 	int GetY() const;
@@ -28,6 +26,7 @@ public:
 	void TryLevelUp() override;
 	void FireBullets(int bLevel, int rate) override;
 	void UnderAttack(int damage) override;
+	void AddHP() override;
 
 private:
 	IBulletSystem* bulletSystem;

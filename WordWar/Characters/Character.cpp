@@ -1,10 +1,11 @@
 #include "Character.h"
 
 CharacterBase::CharacterBase(int x, int y, int hp, int speed, char symbol, bool isDead, int attackPower)
-    : 
-    x(x), 
-    y(y), 
-    hp(hp), 
+    :
+    x(x),
+    y(y),
+    hp(hp),
+    maxHP(hp),
     speed(speed),
     symbol(symbol),
     isDead(isDead),
@@ -53,6 +54,17 @@ void CharacterBase::SetX(int newX)
 void CharacterBase::SetY(int newY)
 {
     y = newY;
+}
+
+void CharacterBase::SetHP(int addedHP)
+{
+    if (hp + addedHP > maxHP)
+    {
+        hp = maxHP;
+    }
+    else {
+        hp += addedHP;
+    }
 }
 
 void CharacterBase::UnderAttack(int damage)

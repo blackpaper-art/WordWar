@@ -20,6 +20,7 @@ public:
 
 	void SetX(int newX);
 	void SetY(int newY);
+	void SetHP(int addedHP);
 	void UnderAttack(int damage);
 
 	Position ShowInfo();
@@ -27,6 +28,7 @@ public:
 private:
 	int x,y;
 	int hp;
+	int maxHP;
 	int speed;
 	int attackPower;
 	char symbol;

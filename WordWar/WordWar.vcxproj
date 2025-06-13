@@ -128,6 +128,7 @@
     <ClCompile Include="Characters\Player.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Items\Bullet.cpp" />
+    <ClCompile Include="Items\HealthPack.cpp" />
     <ClCompile Include="Managers\BulletManager.cpp" />
     <ClCompile Include="Managers\EnemyManager.cpp" />
     <ClCompile Include="Managers\FieldManager.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Interface\IEnemySystem.h" />
     <ClInclude Include="Interface\IPlayerSystem.h" />
     <ClInclude Include="Items\Bullet.h" />
+    <ClInclude Include="Items\HealthPack.h" />
     <ClInclude Include="Managers\BulletManager.h" />
     <ClInclude Include="Managers\EnemyManager.h" />
     <ClInclude Include="Managers\FieldManager.h" />

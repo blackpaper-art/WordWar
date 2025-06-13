@@ -177,3 +177,8 @@ char Player::GetSymbol() const
 void Player::UnderAttack(int damage) {
 	CharacterBase::UnderAttack(damage);
 }
+
+void Player::AddHP()
+{
+	CharacterBase::SetHP(10);
+}

@@ -10,6 +10,7 @@ class TimerManager;
 class IBulletSystem;
 class IEnemySystem;
 class IPlayerSystem;
+class HealthPack;
 
 class FieldManager
 {
@@ -20,7 +21,7 @@ public:
 	const int GetFieldWidth() { return fieldWidth; }
 	const int GetFieldHeight(){ return fieldHeight; }
 
-	void InitializeManagers(IPlayerSystem* ps, TimerManager* tm, IEnemySystem* es, IBulletSystem* bs);
+	void InitializeManagers(IPlayerSystem* ps, TimerManager* tm, IEnemySystem* es, IBulletSystem* bs, HealthPack* hp);
 	void Update(float deltaTime);
 	void DrawField();
 private:
@@ -30,6 +31,7 @@ private:
 	IEnemySystem* enemySystem;
 	IPlayerSystem* playerSystem;
 	IBulletSystem* bulletSystem;
+	HealthPack* healthPack;
 
 	static const int fieldWidth = 16 * 3;
 	static const int fieldHeight = 9 * 3;

@@ -21,6 +21,7 @@ public:
 	virtual void FireBullets(int bLevel, int rate) = 0;
 	virtual void AddKillCount(int count) = 0;
 	virtual void TryLevelUp() = 0;
+	virtual void AddHP() = 0;
 
 	virtual ~IPlayerSystem() {};
 };
