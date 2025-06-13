@@ -6,6 +6,8 @@
 #include "Managers/FieldManager.h"
 #include "Managers/MainManager.h"
 
+#include "System/CollisionSystem.h"
+
 #include <stdio.h>
 #include <conio.h>
 #include <time.h>
@@ -18,6 +20,7 @@ std::unique_ptr <FieldManager> fieldManager;
 std::unique_ptr <EnemyManager> enemyManager;
 std::unique_ptr <BulletManager> bulletManager;
 std::unique_ptr <MainManager> mainManager;
+std::unique_ptr <CollisionSystem> collisionSystem;
 
 //TODO list: 
 // 1. friendly desgin tool for planners
@@ -78,7 +81,7 @@ void MainGameLoop() {
 			bulletManager->Update(deltaTime);
 			enemyManager->Update(deltaTime);
 			fieldManager->Update(deltaTime);
-
+			collisionSystem->HandleCollision(player.get(), static_cast<IBulletSystem*>(bulletManager.get()), static_cast<IEnemySystem*>(enemyManager.get()));
 			fieldManager->DrawField();
 			lastTime = currentTime;
 		}

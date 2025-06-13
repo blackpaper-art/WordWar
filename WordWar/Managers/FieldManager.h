@@ -1,5 +1,4 @@
 #pragma once
-#include <windows.h>
 #include <stdio.h>
 
 #define X_WALL 'X'

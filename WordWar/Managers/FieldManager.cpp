@@ -9,7 +9,8 @@
 #include "FieldManager.h"
 #include "TimerManager.h"
 #include "../Interface/IEnemySystem.h"
-#include "../IBulletSystem.h"
+#include "../Interface/IBulletSystem.h"
+#include "../System/CollisionSystem.h"
 
 #include <windows.h>
 #include <algorithm>
@@ -50,32 +51,6 @@ void FieldManager::InitializeManagers(Player* p, TimerManager* tm, IEnemySystem*
 
 void FieldManager::Update(float deltaTime)
 {
-	//Check collision
-	for (const auto& b : bulletSystem->GetAllBullets()) {
-		if (!b || b->GetIsDead()) continue;
-
-		for (const auto& e : enemySystem->GetAllEnemy()) {
-			if (!e || e->GetIsDead()) continue;
-
-			if (b->GetX() == e->GetX() && b->GetY() == e->GetY()) {
-				e->UnderAttack(b->GetAttackPower());
-				b->UnderAttack(b->GetHP());
-
-				enemySystem->AddEliminatedEnemyCount(1);
-				Beep(1500, 10);
-				break; //Prevent collison with multi enemies
-			}
-			else if (player && player->GetX() == e->GetX() && player->GetY() == e->GetY()){
-				player->UnderAttack(e->GetAttackPower());
-				e->UnderAttack(e->GetAttackPower());
-
-				enemySystem->AddEliminatedEnemyCount(1);
-				Beep(300, 10);
-				break;
-			}
-		}
-	}
-
 	//Update deltaTime
 	myDeltaTime = deltaTime;
 }

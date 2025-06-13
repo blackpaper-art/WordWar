@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "../IBulletSystem.h"
+#include "../Interface/IBulletSystem.h"
 #include "../Items/Bullet.h"
 
 #define FIELD_WIDTH (16 * 3)
