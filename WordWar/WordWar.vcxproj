@@ -132,7 +132,6 @@
     <ClCompile Include="Managers\BulletManager.cpp" />
     <ClCompile Include="Managers\EnemyManager.cpp" />
     <ClCompile Include="Managers\FieldManager.cpp" />
-    <ClCompile Include="Managers\MainManager.cpp" />
     <ClCompile Include="Managers\TimerManager.cpp" />
     <ClCompile Include="System\CollisionSystem.cpp" />
   </ItemGroup>
@@ -149,7 +148,6 @@
     <ClInclude Include="Managers\BulletManager.h" />
     <ClInclude Include="Managers\EnemyManager.h" />
     <ClInclude Include="Managers\FieldManager.h" />
-    <ClInclude Include="Managers\MainManager.h" />
     <ClInclude Include="Managers\TimerManager.h" />
     <ClInclude Include="System\CollisionSystem.h" />
   </ItemGroup>

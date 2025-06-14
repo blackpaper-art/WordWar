@@ -11,38 +11,50 @@ EnemyManager::EnemyManager(TimerManager* tm, IPlayerSystem* ps, FieldManager* fm
 	fieldManager(fm),
 	eliminatedEnemyCount(0)
 {
-	timerManager->SetTimer(400 / ps->GetPlayerLevel() , [this] {
-		int randomX, randomY;
-		int edge = rand() % 4; // 0: top, 1: bottom, 2: left, 3: right
-
-		switch (edge) {
-		case 0: // top
-			randomY = 0;
-			randomX = rand() % FIELD_WIDTH;
-			break;
-		case 1: // bottom
-			randomY = FIELD_HEIGHT - 1;
-			randomX = rand() % FIELD_WIDTH;
-			break;
-		case 2: // left
-			randomX = 0;
-			randomY = rand() % FIELD_HEIGHT;
-			break;
-		case 3: // right
-			randomX = FIELD_WIDTH - 1;
-			randomY = rand() % FIELD_HEIGHT;
-			break;
-		}
-
-		if (playerSystem)
-		{
-			this->SpawnEnemies(randomX, randomY, playerSystem);
-		}
-	}, true);
 }
 
 EnemyManager::~EnemyManager()
 {
+	if (spawnTimer) {
+		spawnTimer->isActive = false;
+	}
+}
+
+void EnemyManager::StartSpawn()
+{
+	auto self = shared_from_this();
+	spawnTimer = timerManager->SetTimer(
+		200 / playerSystem->GetPlayerLevel(),
+		[weakSelf = std::weak_ptr<EnemyManager>(self)] {
+			if (auto s = weakSelf.lock()) {
+				int randomX, randomY;
+				int edge = rand() % 4; // 0: top, 1: bottom, 2: left, 3: right
+
+				switch (edge) {
+				case 0: // top
+					randomY = 0;
+					randomX = rand() % FIELD_WIDTH;
+					break;
+				case 1: // bottom
+					randomY = FIELD_HEIGHT - 1;
+					randomX = rand() % FIELD_WIDTH;
+					break;
+				case 2: // left
+					randomX = 0;
+					randomY = rand() % FIELD_HEIGHT;
+					break;
+				case 3: // right
+					randomX = FIELD_WIDTH - 1;
+					randomY = rand() % FIELD_HEIGHT;
+					break;
+				}
+
+				if (s->playerSystem) {
+					s->SpawnEnemies(randomX, randomY, s->playerSystem);
+				}
+			}
+		},
+		true);
 }
 
 void EnemyManager::SpawnEnemies(int x, int y, IPlayerSystem* ps)

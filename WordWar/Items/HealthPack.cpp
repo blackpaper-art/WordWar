@@ -9,11 +9,10 @@
 
 HealthPack::HealthPack(TimerManager* tm)
 	:
-	CharacterBase(rand() % FIELD_WIDTH, rand() % FIELD_HEIGHT, 1, 0, 'H', false, 0),
-	timerManager(tm)
+	CharacterBase(rand() % FIELD_WIDTH, rand() % FIELD_HEIGHT, 1, 0, '+', false, 0)
 {
 	//Spawn HealthPack at random position in 1 mins 60000ms
-	timerManager->SetTimer(1000 * 60, [this] {
+	healthPackSpawnTimer = tm->SetTimer(1000 * 60, [this] {
 
 		int randomX, randomY;
 

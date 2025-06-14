@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Items/Bullet.h";
+#include "../Items/Bullet.h"
 
 #include <vector>
 #include <memory>

@@ -15,12 +15,13 @@ Player::Player(int x, int y, IBulletSystem* bs, TimerManager* tm)
 	killCount(0), 
 	nextLevelKills(10),
 	bulletDir(0)
-{
-	timerManager->SetTimer(2000 / bulletLevel, [=] { FireBullets(level, bulletLevel); },  true);
-}
+{}
 
 Player::~Player()
 {
+	if (fireTimer) {
+		fireTimer->isActive = false;
+	}
 }
 
 void Player::Update(char input)
@@ -53,12 +54,16 @@ void Player::AddKillCount(int count)
 
 void Player::TryLevelUp()
 {
+	int baseKills = 5;
+	float growthFactor = 1.5f;
+
 	if (killCount >= nextLevelKills)
 	{
 		killCount -= nextLevelKills;
 		level++;
 		bulletLevel++;
-		nextLevelKills = level * 10 * 1.5f;
+
+		nextLevelKills = baseKills * level * growthFactor;
 	}
 }
 
@@ -156,6 +161,11 @@ int Player::GetPlayerBulletLevel()
 	return bulletLevel;
 }
 
+int Player::GetEXPRemain()
+{
+	return nextLevelKills - killCount;
+}
+
 int Player::GetX() const {
 	return CharacterBase::GetX();
 }
@@ -173,6 +183,14 @@ char Player::GetSymbol() const
 	return CharacterBase::GetSymbol();
 }
 
+void Player::Initialize() {
+	auto self = shared_from_this();
+	fireTimer = timerManager->SetTimer(1000, [weakSelf = std::weak_ptr<Player>(self)] {
+		if (auto s = weakSelf.lock()) {
+			s->FireBullets(s->bulletLevel, s->level);
+		}
+		}, true);
+}
 
 void Player::UnderAttack(int damage) {
 	CharacterBase::UnderAttack(damage);

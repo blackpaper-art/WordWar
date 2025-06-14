@@ -1,5 +1,7 @@
 #pragma once
 #include <stdio.h>
+#include <memory>
+#include "TimerManager.h"
 
 #define X_WALL 'X'
 #define Y_WALL 'Y'
@@ -12,21 +14,21 @@ class IEnemySystem;
 class IPlayerSystem;
 class HealthPack;
 
-class FieldManager
+class FieldManager : public std::enable_shared_from_this<FieldManager>
 {
 public:
+	std::shared_ptr<TimerHandle> countDownTimer;
+
 	FieldManager();
 	~FieldManager();
 
 	const int GetFieldWidth() { return fieldWidth; }
 	const int GetFieldHeight(){ return fieldHeight; }
 
-	void InitializeManagers(IPlayerSystem* ps, TimerManager* tm, IEnemySystem* es, IBulletSystem* bs, HealthPack* hp);
+	void InitializeManagers(IPlayerSystem* ps, IEnemySystem* es, IBulletSystem* bs, HealthPack* hp, TimerManager* tm);
 	void Update(float deltaTime);
 	void DrawField();
 private:
-
-	TimerManager* timerManager;
 
 	IEnemySystem* enemySystem;
 	IPlayerSystem* playerSystem;

@@ -12,7 +12,8 @@ Enemy::~Enemy()
 {
 }
 
-
+// Check can move
+// 移動可能判定
 bool Enemy::CanMove(float deltaTime)
 {
 	timeAccumulator += deltaTime;
@@ -24,6 +25,8 @@ bool Enemy::CanMove(float deltaTime)
 	return false;
 }
 
+// Move one step toward player
+// プレイヤー方向へ一歩
 void Enemy::PredicNextPos(int& outX, int& outY) const
 {
 	outX = GetX();

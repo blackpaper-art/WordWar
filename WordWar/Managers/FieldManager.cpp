@@ -27,20 +27,29 @@
 FieldManager::FieldManager()
 	:
 	countDownTime(180)
-{}
+{
+	if (countDownTimer) {
+		countDownTimer->isActive = false;
+	}
+}
 
 FieldManager::~FieldManager()
 {
 }
 
-void FieldManager::InitializeManagers(IPlayerSystem* ps, TimerManager* tm, IEnemySystem* es, IBulletSystem* bs, HealthPack* hp)
+void FieldManager::InitializeManagers(IPlayerSystem* ps, IEnemySystem* es, IBulletSystem* bs, HealthPack* hp, TimerManager* tm)
 {
 	playerSystem = ps;
-	timerManager = tm;
 	enemySystem = es;
 	bulletSystem = bs;
-	timerManager->SetTimer(1000, [=] {CountDownTimer(); }, true);
 	healthPack = hp;
+
+	auto self = shared_from_this();
+	countDownTimer = tm->SetTimer(1000, [weakSelf = std::weak_ptr<FieldManager>(self)] {
+		if (auto s = weakSelf.lock()) {
+			s->CountDownTimer();
+		}
+		}, true);
 }
 
 void FieldManager::Update(float deltaTime)
@@ -51,6 +60,7 @@ void FieldManager::Update(float deltaTime)
 
 void FieldManager::DrawField()
 {
+
 	//1. Make a buffer and filled with null(" ") first
 	char fieldBuffer[fieldHeight][fieldWidth];
 	for (int y = 0; y < fieldHeight; y++)
@@ -118,7 +128,22 @@ void FieldManager::DrawField()
 		//Main field
 		for (int x = 0; x < fieldWidth; x++)
 		{
-			putchar(fieldBuffer[y][x]);
+			char c = fieldBuffer[y][x];
+			if (c == healthPack->GetSymbol()) {
+				SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+				putchar(c);
+				SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+			}
+			else if (c == playerSystem->GetSymbol())
+			{
+				SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
+				putchar(c);
+				SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+			}
+			else {
+				putchar(c);
+			}
+			
 		}
 
 		//Right Wall
@@ -136,13 +161,18 @@ void FieldManager::DrawField()
 		else if (y == 2){
 			printf(" Player Level: %d", playerSystem->GetPlayerLevel());
 		}
+		else if (y == 3) {
+			printf(" Next Level: %-4d enemies left", playerSystem->GetEXPRemain());
+		}
 		else if (y == 5) {
-			printf(" DeltaTime: %f", myDeltaTime);
+			printf(" ---DEBUG INFO---");
 		}
 		else if (y == 6) {
-			printf(" Player Bullet Level: %d", 2000/playerSystem->GetPlayerBulletLevel());
+			printf(" DeltaTime: %f", myDeltaTime);
 		}
-
+		else if (y == 7) {
+			printf(" Player Bullet Interval: %-4d ms", 1000 / playerSystem->GetPlayerBulletLevel());
+		}
 		printf("\n");
 
 		

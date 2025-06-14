@@ -42,9 +42,6 @@
     <ClCompile Include="Managers\FieldManager.cpp">
       <Filter>Resource Files\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="Managers\TimerManager.cpp">
-      <Filter>Resource Files\Managers</Filter>
-    </ClCompile>
     <ClCompile Include="Managers\EnemyManager.cpp">
       <Filter>Resource Files\Managers</Filter>
     </ClCompile>
@@ -57,17 +54,17 @@
     <ClCompile Include="Characters\Player.cpp">
       <Filter>Resource Files\Characters</Filter>
     </ClCompile>
-    <ClCompile Include="Managers\MainManager.cpp">
-      <Filter>Resource Files\Managers</Filter>
-    </ClCompile>
     <ClCompile Include="System\CollisionSystem.cpp">
       <Filter>Resource Files\System</Filter>
     </ClCompile>
     <ClCompile Include="Items\Bullet.cpp">
       <Filter>Resource Files\Items</Filter>
     </ClCompile>
+    <ClCompile Include="Managers\TimerManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
     <ClCompile Include="Items\HealthPack.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Resource Files\Items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -94,9 +91,6 @@
     </ClInclude>
     <ClInclude Include="Characters\Player.h">
       <Filter>Resource Files\Characters</Filter>
-    </ClInclude>
-    <ClInclude Include="Managers\MainManager.h">
-      <Filter>Resource Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="Interface\IEnemySystem.h">
       <Filter>Resource Files\Interfaces</Filter>

@@ -1,22 +1,17 @@
 #include "TimerManager.h"
 
-#include <thread>
+#include <chrono>
 
-TimerManager::TimerManager()
-{
-}
+std::shared_ptr<TimerHandle> TimerManager::SetTimer(int intervalMs, std::function<void()> func, bool isRepeating) {
+    auto handle = std::make_shared<TimerHandle>(intervalMs, isRepeating, func);
 
-TimerManager::~TimerManager()
-{
-}
-
-void TimerManager::SetTimer(int intervalMs, std::function<void()> func, bool isRepeating)
-{
-    std::thread([=]()
-        {
-            do {
-                std::this_thread::sleep_for(std::chrono::milliseconds(intervalMs));
-                func();
-            } while (isRepeating);
+    std::thread([handle]() {
+        do {
+            std::this_thread::sleep_for(std::chrono::milliseconds(handle->intervalMs));
+            if (!handle->isActive) break;
+            handle->callback();
+        } while (handle->isRepeating && handle->isActive);
         }).detach();
+
+    return handle;
 }
