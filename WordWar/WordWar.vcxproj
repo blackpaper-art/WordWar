@@ -140,7 +140,7 @@
     <ClInclude Include="Characters\Enemies\Enemy.h" />
     <ClInclude Include="Characters\Player.h" />
     <ClInclude Include="GameMain.h" />
-    <ClInclude Include="IBulletSystem.h" />
+    <ClInclude Include="Interface\IBulletSystem.h" />
     <ClInclude Include="Interface\IEnemySystem.h" />
     <ClInclude Include="Interface\IPlayerSystem.h" />
     <ClInclude Include="Items\Bullet.h" />

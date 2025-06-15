@@ -31,11 +31,11 @@
     <Filter Include="Resource Files\Items">
       <UniqueIdentifier>{7b5b7c78-edf2-4952-80cb-5e2442488cd1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Main">
+      <UniqueIdentifier>{2af0e54e-1bc1-47d4-8a5b-1b1e150a3ab2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameMain.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="Managers\BulletManager.cpp">
       <Filter>Resource Files\Managers</Filter>
     </ClCompile>
@@ -66,11 +66,11 @@
     <ClCompile Include="Items\HealthPack.cpp">
       <Filter>Resource Files\Items</Filter>
     </ClCompile>
+    <ClCompile Include="GameMain.cpp">
+      <Filter>Resource Files\Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameMain.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
     <ClInclude Include="Managers\BulletManager.h">
       <Filter>Resource Files\Managers</Filter>
     </ClInclude>
@@ -95,9 +95,6 @@
     <ClInclude Include="Interface\IEnemySystem.h">
       <Filter>Resource Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="IBulletSystem.h">
-      <Filter>Resource Files\Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="System\CollisionSystem.h">
       <Filter>Resource Files\System</Filter>
     </ClInclude>
@@ -109,6 +106,12 @@
     </ClInclude>
     <ClInclude Include="Items\Bullet.h">
       <Filter>Resource Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IBulletSystem.h">
+      <Filter>Resource Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMain.h">
+      <Filter>Resource Files\Main</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
