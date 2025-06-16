@@ -1,0 +1,36 @@
+{
+  "field": {
+    "width": 48,
+    "height": 27
+  },
+  "player": {
+    "initialHP": 20,
+    "initialAP": 1,
+    "symbol": "O",
+    "levelUpBaseKills": 5,
+    "levelUpGrowthFactor": 1.5,
+    "fireIntervalMs": 2000
+  },
+  "enemy": {
+    "initialHP": 1,
+    "initialAP": 1,
+    "symbol": "i",
+    "baseSpawnIntervalMs": 1000,
+    "moveIntervalMs": 1000
+  },
+  "bullet": {
+    "initialHP": 1,
+    "initialAP": 1,
+    "symbol": ".",
+    "moveIntervalMs": 100
+  },
+  "healthPack": {
+    "symbol": "+",
+    "spawnIntervalMs": 60000,
+    "healAmount": 10
+  },
+  "game": {
+    "fps": 30,
+    "countdownSeconds": 300
+  }
+}

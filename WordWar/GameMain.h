@@ -1,5 +1,6 @@
 #pragma once
-#define FPS (30)
+#include "Managers/ConfigManager.h"
+#define FPS (ConfigManager::GetInstance().GetGameFPS())
 #define TIME_GAP (CLOCKS_PER_SEC / FPS)
 
 void ShowStartScreen();

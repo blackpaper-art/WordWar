@@ -1,13 +1,11 @@
 #pragma once
 #include "../Characters/Character.h"
 
-class TimerManager;
-
 class HealthPack : public CharacterBase
 {
 public:
-	std::shared_ptr<TimerHandle> healthPackSpawnTimer;
+    HealthPack(int x, int y);
+    ~HealthPack();
 
-	HealthPack(TimerManager* tm);
-	~HealthPack();
+    char GetSymbol() const;
 };

@@ -1,4 +1,5 @@
 #include "EnemyManager.h"
+#include "../Managers/ConfigManager.h"
 #include <set>
 
 #define FIELD_WIDTH (16 * 3)
@@ -22,9 +23,10 @@ EnemyManager::~EnemyManager()
 
 void EnemyManager::StartSpawn()
 {
+	int spawnInterval = ConfigManager::GetInstance().GetEnemyBaseSpawnInterval();
 	auto self = shared_from_this();
 	spawnTimer = timerManager->SetTimer(
-		200 / playerSystem->GetPlayerLevel(),
+		spawnInterval / playerSystem->GetPlayerLevel(),
 		[weakSelf = std::weak_ptr<EnemyManager>(self)] {
 			if (auto s = weakSelf.lock()) {
 				int randomX, randomY;

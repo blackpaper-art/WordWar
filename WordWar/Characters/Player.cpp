@@ -1,13 +1,20 @@
 #include "Player.h"
 #include "../Interface/IBulletSystem.h"
 #include "../Items/Bullet.h"
+#include "../Managers/ConfigManager.h"
 
 #define FIELD_WIDTH (16 * 3)
 #define FIELD_HEIGHT (9 * 3)
 
 Player::Player(int x, int y, IBulletSystem* bs, TimerManager* tm)
 	:
-	CharacterBase(x, y, 10, 1, 'O', false, 1),
+	CharacterBase(x, y, 
+		ConfigManager::GetInstance().GetPlayerInitialHP(),
+		1,
+		ConfigManager::GetInstance().GetPlayerSymbol()[0],
+		false,
+		ConfigManager::GetInstance().GetPlayerInitialAP()
+	),
 	bulletSystem(bs),
 	timerManager(tm),
 	bulletLevel(1),
@@ -185,7 +192,7 @@ char Player::GetSymbol() const
 
 void Player::Initialize() {
 	auto self = shared_from_this();
-	fireTimer = timerManager->SetTimer(1000, [weakSelf = std::weak_ptr<Player>(self)] {
+	fireTimer = timerManager->SetTimer(ConfigManager::GetInstance().GetPlayerFireInterval(), [weakSelf = std::weak_ptr<Player>(self)] {
 		if (auto s = weakSelf.lock()) {
 			s->FireBullets(s->bulletLevel, s->level);
 		}

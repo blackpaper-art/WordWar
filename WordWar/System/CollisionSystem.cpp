@@ -1,12 +1,14 @@
 #include "../Interface/IBulletSystem.h"
 #include "../Interface/IEnemySystem.h"
 #include "../Interface/IPlayerSystem.h"
+#include "../Interface/IHealthPackSystem.h"
+
 #include "../Items/HealthPack.h"
 
 #include "CollisionSystem.h"
 #include <windows.h> //For Beep()
 
-void CollisionSystem::HandleCollision(IPlayerSystem* ps, IBulletSystem* bs, IEnemySystem* es, HealthPack* hp)
+void CollisionSystem::HandleCollision(IPlayerSystem* ps, IBulletSystem* bs, IEnemySystem* es, IHealthPackSystem* hps)
 {
     //Check collision
     std::vector<std::pair<Bullet*, Enemy*>> bulletEnemyHits;
@@ -38,10 +40,15 @@ void CollisionSystem::HandleCollision(IPlayerSystem* ps, IBulletSystem* bs, IEne
     }
 
     //Player & HealthPack
-    if (hp && !hp->GetIsDead() &&
-        ps->GetX() == hp->GetX() && ps->GetY() == hp->GetY()) {
-        playerHealthPackHit.push_back(hp);
+    for (const auto& hp : hps->GetAllHealthPacks()) {
+        if (!hp->GetIsDead() && ps->GetX() == hp->GetX() && ps->GetY() == hp->GetY()) {
+            hp->UnderAttack(hp->GetHP());
+            ps->AddHP();
+            Beep(880, 10);
+            Beep(1200, 10);
+        }
     }
+    hps->ClearDeadPacks();
 
     //Handle bullet and enemy
     for (auto& pair : bulletEnemyHits) {
@@ -69,9 +76,12 @@ void CollisionSystem::HandleCollision(IPlayerSystem* ps, IBulletSystem* bs, IEne
     }
 
     //Handle player and health pack
-    for (auto& h : playerHealthPackHit) {
-        if (!h->GetIsDead()) {
-            h->UnderAttack(h->GetHP());
+    for (auto& hp : hps->GetAllHealthPacks()) {
+        if (!hp->GetIsDead() &&
+            ps->GetX() == hp->GetX() &&
+            ps->GetY() == hp->GetY()) {
+
+            hp->UnderAttack(hp->GetHP()); // ÉèÖÃËÀµô
             ps->AddHP();
             Beep(880, 10);
             Beep(1200, 10);

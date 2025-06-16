@@ -2,10 +2,10 @@
 class IBulletSystem;
 class IEnemySystem;
 class IPlayerSystem;
-class HealthPack;
+class IHealthPackSystem;
 
 class CollisionSystem
 {
 public:
-	void HandleCollision(IPlayerSystem* ps, IBulletSystem* bs, IEnemySystem* es, HealthPack* hp);
+	void HandleCollision(IPlayerSystem* ps, IBulletSystem* bs, IEnemySystem* es, IHealthPackSystem* hp);
 };

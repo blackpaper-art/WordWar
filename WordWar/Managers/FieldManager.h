@@ -1,7 +1,9 @@
 #pragma once
+#include "TimerManager.h"
+
 #include <stdio.h>
 #include <memory>
-#include "TimerManager.h"
+#include <vector>
 
 #define X_WALL 'X'
 #define Y_WALL 'Y'
@@ -12,7 +14,8 @@ class TimerManager;
 class IBulletSystem;
 class IEnemySystem;
 class IPlayerSystem;
-class HealthPack;
+class IHealthPackSystem;
+
 
 class FieldManager : public std::enable_shared_from_this<FieldManager>
 {
@@ -25,7 +28,7 @@ public:
 	const int GetFieldWidth() { return fieldWidth; }
 	const int GetFieldHeight(){ return fieldHeight; }
 
-	void InitializeManagers(IPlayerSystem* ps, IEnemySystem* es, IBulletSystem* bs, HealthPack* hp, TimerManager* tm);
+	void InitializeManagers(IPlayerSystem* ps, IEnemySystem* es, IBulletSystem* bs, IHealthPackSystem* hps, TimerManager* tm);
 	void Update(float deltaTime);
 	void DrawField();
 private:
@@ -33,11 +36,11 @@ private:
 	IEnemySystem* enemySystem;
 	IPlayerSystem* playerSystem;
 	IBulletSystem* bulletSystem;
-	HealthPack* healthPack;
+	IHealthPackSystem* healthPackSystem;
 
-	static const int fieldWidth = 16 * 3;
-	static const int fieldHeight = 9 * 3;
-	char field[fieldHeight][fieldWidth];
+	int fieldWidth;
+	int fieldHeight;
+	std::vector<std::vector<char>> fieldBuffer;
 
 	void CountDownTimer();
 	int countDownTime;

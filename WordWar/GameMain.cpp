@@ -1,10 +1,13 @@
 #include "GameMain.h"
+
 #include "Characters/Player.h"
+
 #include "Managers/BulletManager.h"
 #include "Managers/EnemyManager.h"
 #include "Managers/TimerManager.h"
 #include "Managers/FieldManager.h"
-#include "Items/HealthPack.h"
+#include "Managers/ConfigManager.h"
+#include "Managers/HealthPackManager.h"  
 
 #include "System/CollisionSystem.h"
 
@@ -14,19 +17,14 @@
 #include <memory>
 
 //Create main smart pointers
-std::shared_ptr<Player> player;
-std::shared_ptr<FieldManager> fieldManager;
-std::shared_ptr<EnemyManager> enemyManager;
+std::shared_ptr <Player> player;
+std::shared_ptr <FieldManager> fieldManager;
+std::shared_ptr <EnemyManager> enemyManager;
 
 std::unique_ptr <TimerManager> timerManager;
 std::unique_ptr <BulletManager> bulletManager;
 std::unique_ptr <CollisionSystem> collisionSystem;
-std::unique_ptr <HealthPack> healthPack;
-
-//TODO list: 
-// 1. friendly desgin tool for planners
-// 2. Player Level
-// 3. Addjust count of Enemy
+std::unique_ptr <HealthPackManager> healthPackManager;
 
 int main() {
 	while (true)
@@ -57,9 +55,12 @@ void ShowStartScreen()
 	printf("  Controls / 操作方法:\n");
 	printf("    [W][A][S][D] : Move / 移動\n");
 	printf("    Kill enemies to level up! / 敵を倒してレベルアップ！\n");
-	printf("    Collect [H] to recover HP / [H]でHP回復\n\n");
+	printf("    Collect [+] to recover HP / [+]でHP回復\n\n");
 	printf("=========================================================\n");
 	printf("  Press [ENTER] to Start / [ENTER]キーで開始\n");
+	printf("=========================================================\n");
+	printf("\n  Thanks / 感謝:\n");
+	printf("    - nlohmann/json (https://github.com/nlohmann/json)\n");
 	printf("=========================================================\n");
 
 	while (getchar() != '\n') {} // Wait player press Enter key
@@ -68,6 +69,8 @@ void ShowStartScreen()
 void InitializeMainGame()
 {
 	system("cls");
+
+	ConfigManager::GetInstance().LoadConfig("Settings/config.json");
 
 	timerManager = std::make_unique<TimerManager>();
 	fieldManager = std::make_shared<FieldManager>();
@@ -87,13 +90,13 @@ void InitializeMainGame()
 	);
 
 	collisionSystem = std::make_unique<CollisionSystem>();
-	healthPack = std::make_unique<HealthPack>(timerManager.get());
+	healthPackManager = std::make_unique<HealthPackManager>(timerManager.get());
 
 	fieldManager->InitializeManagers(
 		player.get(),
 		enemyManager.get(),
 		bulletManager.get(),
-		healthPack.get(),
+		healthPackManager.get(),
 		timerManager.get()
 	);
 
@@ -124,7 +127,7 @@ void MainGameLoop() {
 				static_cast<IPlayerSystem*>(player.get()), 
 				static_cast<IBulletSystem*>(bulletManager.get()), 
 				static_cast<IEnemySystem*>(enemyManager.get()),
-				healthPack.get()
+				static_cast<IHealthPackSystem*>(healthPackManager.get())
 			);
 			fieldManager->DrawField();
 			lastTime = currentTime;

@@ -69,6 +69,12 @@
     <ClCompile Include="GameMain.cpp">
       <Filter>Resource Files\Main</Filter>
     </ClCompile>
+    <ClCompile Include="Managers\ConfigManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\HealthPackManager.cpp">
+      <Filter>Resource Files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Managers\BulletManager.h">
@@ -112,6 +118,15 @@
     </ClInclude>
     <ClInclude Include="GameMain.h">
       <Filter>Resource Files\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\ConfigManager.h">
+      <Filter>Resource Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\HealthPackManager.h">
+      <Filter>Resource Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IHealthPackSystem.h">
+      <Filter>Resource Files\Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

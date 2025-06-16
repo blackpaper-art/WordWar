@@ -10,10 +10,15 @@
 
 #include "FieldManager.h"
 #include "TimerManager.h"
+#include "ConfigManager.h"
+
 #include "../Items/HealthPack.h"
+
 #include "../Interface/IEnemySystem.h"
 #include "../Interface/IBulletSystem.h"
 #include "../Interface/IPlayerSystem.h"
+#include "../Interface/IHealthPackSystem.h"
+
 #include "../System/CollisionSystem.h"
 
 #include <windows.h>
@@ -26,8 +31,11 @@
 
 FieldManager::FieldManager()
 	:
-	countDownTime(180)
+	countDownTime(ConfigManager::GetInstance().GetGameCountDownTime()),
+	fieldWidth(ConfigManager::GetInstance().GetFieldWidth()),
+	fieldHeight(ConfigManager::GetInstance().GetFieldHeight())
 {
+	fieldBuffer.resize(fieldHeight, std::vector<char>(fieldWidth, FIELD_NULL));
 	if (countDownTimer) {
 		countDownTimer->isActive = false;
 	}
@@ -37,12 +45,12 @@ FieldManager::~FieldManager()
 {
 }
 
-void FieldManager::InitializeManagers(IPlayerSystem* ps, IEnemySystem* es, IBulletSystem* bs, HealthPack* hp, TimerManager* tm)
+void FieldManager::InitializeManagers(IPlayerSystem* ps, IEnemySystem* es, IBulletSystem* bs, IHealthPackSystem* hps, TimerManager* tm)
 {
 	playerSystem = ps;
 	enemySystem = es;
 	bulletSystem = bs;
-	healthPack = hp;
+	healthPackSystem = hps;
 
 	auto self = shared_from_this();
 	countDownTimer = tm->SetTimer(1000, [weakSelf = std::weak_ptr<FieldManager>(self)] {
@@ -62,7 +70,6 @@ void FieldManager::DrawField()
 {
 
 	//1. Make a buffer and filled with null(" ") first
-	char fieldBuffer[fieldHeight][fieldWidth];
 	for (int y = 0; y < fieldHeight; y++)
 	{
 		for (int x = 0; x < fieldWidth; x++)
@@ -102,9 +109,13 @@ void FieldManager::DrawField()
 	}
 	
 	//2.4 Add Health Pack data to the buffer
-	if (healthPack && !healthPack->GetIsDead())
+	if (healthPackSystem)
 	{
-		fieldBuffer[healthPack->GetY()][healthPack->GetX()] = healthPack->GetSymbol();
+		for (const auto& hp : healthPackSystem->GetAllHealthPacks()) {
+			if (hp && !hp->GetIsDead()) {
+				fieldBuffer[hp->GetY()][hp->GetX()] = hp->GetSymbol();
+			}
+		}
 	}
 	
 	//3. clean screen and display data
@@ -129,7 +140,7 @@ void FieldManager::DrawField()
 		for (int x = 0; x < fieldWidth; x++)
 		{
 			char c = fieldBuffer[y][x];
-			if (c == healthPack->GetSymbol()) {
+			if (c == ConfigManager::GetInstance().GetHealthPackSymbol()[0]) {
 				SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 				putchar(c);
 				SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
@@ -171,7 +182,13 @@ void FieldManager::DrawField()
 			printf(" DeltaTime: %f", myDeltaTime);
 		}
 		else if (y == 7) {
-			printf(" Player Bullet Interval: %-4d ms", 1000 / playerSystem->GetPlayerBulletLevel());
+			printf(" Player Bullet Interval: %-4d ms", ConfigManager::GetInstance().GetPlayerFireInterval());
+		}
+		else if (y == 8) {
+			printf(" Enemy Spawn Interval: %-4d ms", ConfigManager::GetInstance().GetEnemyBaseSpawnInterval());
+		}
+		else if (y == 10) {
+			printf(" HealthPack Spawn Interval: %-4d ms", ConfigManager::GetInstance().GetHealthPackSpawnInterval());
 		}
 		printf("\n");
 

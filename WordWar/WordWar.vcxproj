@@ -130,8 +130,10 @@
     <ClCompile Include="Items\Bullet.cpp" />
     <ClCompile Include="Items\HealthPack.cpp" />
     <ClCompile Include="Managers\BulletManager.cpp" />
+    <ClCompile Include="Managers\ConfigManager.cpp" />
     <ClCompile Include="Managers\EnemyManager.cpp" />
     <ClCompile Include="Managers\FieldManager.cpp" />
+    <ClCompile Include="Managers\HealthPackManager.cpp" />
     <ClCompile Include="Managers\TimerManager.cpp" />
     <ClCompile Include="System\CollisionSystem.cpp" />
   </ItemGroup>
@@ -142,12 +144,15 @@
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="Interface\IBulletSystem.h" />
     <ClInclude Include="Interface\IEnemySystem.h" />
+    <ClInclude Include="Interface\IHealthPackSystem.h" />
     <ClInclude Include="Interface\IPlayerSystem.h" />
     <ClInclude Include="Items\Bullet.h" />
     <ClInclude Include="Items\HealthPack.h" />
     <ClInclude Include="Managers\BulletManager.h" />
+    <ClInclude Include="Managers\ConfigManager.h" />
     <ClInclude Include="Managers\EnemyManager.h" />
     <ClInclude Include="Managers\FieldManager.h" />
+    <ClInclude Include="Managers\HealthPackManager.h" />
     <ClInclude Include="Managers\TimerManager.h" />
     <ClInclude Include="System\CollisionSystem.h" />
   </ItemGroup>
