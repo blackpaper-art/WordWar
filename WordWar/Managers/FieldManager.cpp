@@ -182,10 +182,10 @@ void FieldManager::DrawField()
 			printf(" DeltaTime: %f", myDeltaTime);
 		}
 		else if (y == 7) {
-			printf(" Player Bullet Interval: %-4d ms", ConfigManager::GetInstance().GetPlayerFireInterval());
+			printf(" Player Bullet Interval: %-4d ms", ConfigManager::GetInstance().GetPlayerFireInterval() / playerSystem->GetPlayerBulletLevel());
 		}
 		else if (y == 8) {
-			printf(" Enemy Spawn Interval: %-4d ms", ConfigManager::GetInstance().GetEnemyBaseSpawnInterval());
+			printf(" Enemy Spawn Interval: %-4d ms", ConfigManager::GetInstance().GetEnemyBaseSpawnInterval() / playerSystem->GetPlayerBulletLevel());
 		}
 		else if (y == 10) {
 			printf(" HealthPack Spawn Interval: %-4d ms", ConfigManager::GetInstance().GetHealthPackSpawnInterval());

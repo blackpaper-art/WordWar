@@ -17,6 +17,12 @@ public:
     void ClearDeadPacks() override;
     const std::vector<std::unique_ptr<HealthPack>>& GetAllHealthPacks() const override;
 
+    void Shutdown() {
+        if (spawnTimer) {
+            spawnTimer->Stop();
+            spawnTimer.reset();
+        }
+    }
 private:
     std::vector<std::unique_ptr<HealthPack>> healthPacks;
     std::shared_ptr<TimerHandle> spawnTimer;

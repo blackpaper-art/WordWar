@@ -1,36 +1,32 @@
 #pragma once
 #include "../Characters/Enemies/Enemy.h"
 #include "FieldManager.h"
-#include "TimerManager.h"
 #include "../Interface/IEnemySystem.h"
 #include "../Interface/IPlayerSystem.h"
 
 #include <vector>
 #include <memory>
 
-class EnemyManager : public IEnemySystem, public std::enable_shared_from_this<EnemyManager>
+class EnemyManager : public IEnemySystem
 {
 public:
-	EnemyManager(TimerManager* tm, IPlayerSystem* p, FieldManager* fm);
-	~EnemyManager();
+    EnemyManager(IPlayerSystem* p, FieldManager* fm);
+    ~EnemyManager();
 
-	void StartSpawn();
-	void SpawnEnemies(int x, int y, IPlayerSystem* p) override;
-	void Update(float deltaTime);
+    void SpawnEnemies(int x, int y, IPlayerSystem* p) override;
+    void Update(float deltaTime);
 
-	const std::vector<std::unique_ptr<Enemy>>& GetAllEnemy() const override;
+    const std::vector<std::unique_ptr<Enemy>>& GetAllEnemy() const override;
 
-	void AddEliminatedEnemyCount(int count) override;
-	const int GetEliminatedEnemyCount() const override;
+    void AddEliminatedEnemyCount(int count) override;
+    const int GetEliminatedEnemyCount() const override;
+
 private:
-	std::shared_ptr<TimerHandle> spawnTimer;
-	std::vector<std::unique_ptr<Enemy>> enemies;
+    std::vector<std::unique_ptr<Enemy>> enemies;
 
-	IPlayerSystem* playerSystem;
-	FieldManager* fieldManager;
-	TimerManager* timerManager;
+    IPlayerSystem* playerSystem;
+    FieldManager* fieldManager;
 
-	int spawnInterval;
-	int spawnTimerId;
-	int eliminatedEnemyCount;
+    float elapsedTime = 0.0f;
+    int eliminatedEnemyCount = 0;
 };

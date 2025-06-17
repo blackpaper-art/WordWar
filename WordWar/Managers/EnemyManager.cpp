@@ -5,119 +5,75 @@
 #define FIELD_WIDTH (16 * 3)
 #define FIELD_HEIGHT (9 * 3)
 
-EnemyManager::EnemyManager(TimerManager* tm, IPlayerSystem* ps, FieldManager* fm)
-	:
-	timerManager(tm),
-	playerSystem(ps),
-	fieldManager(fm),
-	eliminatedEnemyCount(0)
-{
+EnemyManager::EnemyManager(IPlayerSystem* ps, FieldManager* fm)
+    : playerSystem(ps), fieldManager(fm) {
 }
 
-EnemyManager::~EnemyManager()
-{
-	if (spawnTimer) {
-		spawnTimer->isActive = false;
-	}
-}
-
-void EnemyManager::StartSpawn()
-{
-	int spawnInterval = ConfigManager::GetInstance().GetEnemyBaseSpawnInterval();
-	auto self = shared_from_this();
-	spawnTimer = timerManager->SetTimer(
-		spawnInterval / playerSystem->GetPlayerLevel(),
-		[weakSelf = std::weak_ptr<EnemyManager>(self)] {
-			if (auto s = weakSelf.lock()) {
-				int randomX, randomY;
-				int edge = rand() % 4; // 0: top, 1: bottom, 2: left, 3: right
-
-				switch (edge) {
-				case 0: // top
-					randomY = 0;
-					randomX = rand() % FIELD_WIDTH;
-					break;
-				case 1: // bottom
-					randomY = FIELD_HEIGHT - 1;
-					randomX = rand() % FIELD_WIDTH;
-					break;
-				case 2: // left
-					randomX = 0;
-					randomY = rand() % FIELD_HEIGHT;
-					break;
-				case 3: // right
-					randomX = FIELD_WIDTH - 1;
-					randomY = rand() % FIELD_HEIGHT;
-					break;
-				}
-
-				if (s->playerSystem) {
-					s->SpawnEnemies(randomX, randomY, s->playerSystem);
-				}
-			}
-		},
-		true);
-}
-
-void EnemyManager::SpawnEnemies(int x, int y, IPlayerSystem* ps)
-{
-	enemies.push_back(std::make_unique<Enemy>(x, y, ps));
-}
+EnemyManager::~EnemyManager() {}
 
 void EnemyManager::Update(float deltaTime)
 {
-	//Save the current positions of all alive enemies in occupiedPos
-	std::set<std::pair<int, int>> occupiedPos;
-	for (const auto& enemy : enemies)
-	{
-		if (enemy && !enemy->GetIsDead())
-		{
-			occupiedPos.insert({ enemy->GetX(), enemy->GetY() });
-		}
-	}
+    int baseMs = ConfigManager::GetInstance().GetEnemyBaseSpawnInterval();
+    int lvl = std::max(playerSystem->GetPlayerLevel(), 1);
+    float spawnInterval = static_cast<float>(baseMs) / lvl;
+
+    elapsedTime += deltaTime;
+
+    if (elapsedTime >= spawnInterval) {
+        elapsedTime = 0.0f;
+        int x = rand() % ConfigManager::GetInstance().GetFieldWidth();
+        int y = rand() % ConfigManager::GetInstance().GetFieldHeight();
+        SpawnEnemies(x, y, playerSystem);
+    }
+
+    std::set<std::pair<int, int>> occupiedPos;
+    for (const auto& enemy : enemies)
+    {
+        if (enemy && !enemy->GetIsDead()) {
+            occupiedPos.insert({ enemy->GetX(), enemy->GetY() });
+        }
+    }
 
     auto it = enemies.begin();
     while (it != enemies.end())
     {
-		//Remove dead enemies
-		if (!(*it) || (*it)->GetIsDead())
-		{
-			it = enemies.erase(it);
-			continue;
-		}
+        if (!(*it) || (*it)->GetIsDead()) {
+            it = enemies.erase(it);
+            continue;
+        }
 
-		//Check if the enemy is ready to move (based on deltaTime)
-		if ((*it)->CanMove(deltaTime))
-		{
-			//Predict the next position
-			int nextX, nextY;
-			(*it)->PredicNextPos(nextX, nextY);
-
-			//Move if the next position is not occupied
-			if (occupiedPos.count({ nextX,nextY }) == 0)
-			{
-				occupiedPos.erase({ (*it)->GetX(), (*it)->GetY() });
-				occupiedPos.insert({ nextX,nextY });
-				(*it)->SetX(nextX);
-				(*it)->SetY(nextY);
-			}
-		}
-		//Move to the next enemy regardless of whether this one moved
-		++it;
+        if ((*it)->CanMove(deltaTime))
+        {
+            int nextX, nextY;
+            (*it)->PredicNextPos(nextX, nextY);
+            if (occupiedPos.count({ nextX, nextY }) == 0)
+            {
+                occupiedPos.erase({ (*it)->GetX(), (*it)->GetY() });
+                occupiedPos.insert({ nextX, nextY });
+                (*it)->SetX(nextX);
+                (*it)->SetY(nextY);
+            }
+        }
+        ++it;
     }
+}
+
+void EnemyManager::SpawnEnemies(int x, int y, IPlayerSystem* ps)
+{
+    enemies.push_back(std::make_unique<Enemy>(x, y, ps));
 }
 
 const std::vector<std::unique_ptr<Enemy>>& EnemyManager::GetAllEnemy() const
 {
-	return enemies;
+    return enemies;
 }
 
 const int EnemyManager::GetEliminatedEnemyCount() const
 {
-	return eliminatedEnemyCount;
+    return eliminatedEnemyCount;
 }
 
 void EnemyManager::AddEliminatedEnemyCount(int count)
 {
-	eliminatedEnemyCount += count;
+    eliminatedEnemyCount += count;
 }

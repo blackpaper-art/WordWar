@@ -32,6 +32,7 @@ public:
 	void UnderAttack(int damage) override;
 	void AddHP() override;
 
+	void Shutdown();
 private:
 	IBulletSystem* bulletSystem;
 	TimerManager* timerManager;

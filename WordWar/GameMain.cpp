@@ -84,7 +84,6 @@ void InitializeMainGame()
 	);
 
 	enemyManager = std::make_shared<EnemyManager>(
-		timerManager.get(),
 		static_cast<IPlayerSystem*>(player.get()),
 		fieldManager.get()
 	);
@@ -101,11 +100,12 @@ void InitializeMainGame()
 	);
 
 	player->Initialize();
-	enemyManager->StartSpawn();
 }
 
 void MainGameLoop() {
 	clock_t lastTime = clock();
+	int lastLevel = player->GetPlayerLevel();
+
 	while (!player->GetIsDead())
 	{
 		//Manual Update (when player inputed)
@@ -132,13 +132,23 @@ void MainGameLoop() {
 			fieldManager->DrawField();
 			lastTime = currentTime;
 		}
-		
 	}
 }
 
 void ShutdownGame()
 {
 	ShowGameOverScreen(enemyManager.get()->GetEliminatedEnemyCount(), player.get()->GetPlayerLevel());
+
+	if (player) player->Shutdown();
+	if (healthPackManager) healthPackManager->Shutdown();
+
+	timerManager.reset();
+	bulletManager.reset();
+	collisionSystem.reset();
+	fieldManager.reset();
+	player.reset();
+	enemyManager.reset();
+	healthPackManager.reset();
 }
 
 void ShowGameOverScreen(int totalKills, int maxLevel)

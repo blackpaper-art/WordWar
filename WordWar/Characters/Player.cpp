@@ -192,7 +192,7 @@ char Player::GetSymbol() const
 
 void Player::Initialize() {
 	auto self = shared_from_this();
-	fireTimer = timerManager->SetTimer(ConfigManager::GetInstance().GetPlayerFireInterval(), [weakSelf = std::weak_ptr<Player>(self)] {
+	fireTimer = timerManager->SetTimer(ConfigManager::GetInstance().GetPlayerFireInterval() / bulletLevel, [weakSelf = std::weak_ptr<Player>(self)] {
 		if (auto s = weakSelf.lock()) {
 			s->FireBullets(s->bulletLevel, s->level);
 		}
@@ -206,4 +206,12 @@ void Player::UnderAttack(int damage) {
 void Player::AddHP()
 {
 	CharacterBase::SetHP(10);
+}
+
+void Player::Shutdown()
+{
+	if (fireTimer) {
+		fireTimer->Stop();
+		fireTimer.reset();
+	}
 }
