@@ -21,8 +21,30 @@ void EnemyManager::Update(float deltaTime)
 
     if (elapsedTime >= spawnInterval) {
         elapsedTime = 0.0f;
-        int x = rand() % ConfigManager::GetInstance().GetFieldWidth();
-        int y = rand() % ConfigManager::GetInstance().GetFieldHeight();
+        int width = ConfigManager::GetInstance().GetFieldWidth();
+        int height = ConfigManager::GetInstance().GetFieldHeight();
+
+        int x = 0, y = 0;
+        int side = rand() % 4;  // 0: top, 1: bottom, 2: left, 3: right
+
+        switch (side) {
+        case 0: // top
+            y = 0;
+            x = rand() % width;
+            break;
+        case 1: // bottom
+            y = height - 1;
+            x = rand() % width;
+            break;
+        case 2: // left
+            x = 0;
+            y = rand() % height;
+            break;
+        case 3: // right
+            x = width - 1;
+            y = rand() % height;
+            break;
+        }
         SpawnEnemies(x, y, playerSystem);
     }
 

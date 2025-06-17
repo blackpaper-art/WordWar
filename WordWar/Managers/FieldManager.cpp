@@ -52,12 +52,15 @@ void FieldManager::InitializeManagers(IPlayerSystem* ps, IEnemySystem* es, IBull
 	bulletSystem = bs;
 	healthPackSystem = hps;
 
-	auto self = shared_from_this();
-	countDownTimer = tm->SetTimer(1000, [weakSelf = std::weak_ptr<FieldManager>(self)] {
-		if (auto s = weakSelf.lock()) {
-			s->CountDownTimer();
-		}
-		}, true);
+	if (ConfigManager::GetInstance().GetGameCountDownTime() != 0)
+	{
+		auto self = shared_from_this();
+		countDownTimer = tm->SetTimer(1000, [weakSelf = std::weak_ptr<FieldManager>(self)] {
+			if (auto s = weakSelf.lock()) {
+				s->CountDownTimer();
+			}
+			}, true);
+	}
 }
 
 void FieldManager::Update(float deltaTime)
@@ -161,7 +164,7 @@ void FieldManager::DrawField()
 		putchar(Y_WALL);
 
 		//Right Info board
-		if (y == 0)
+		if (y == 0 && ConfigManager::GetInstance().GetGameCountDownTime() != 0)
 		{
 			printf(" Time Left: %-4d seconds", countDownTime);
 		}

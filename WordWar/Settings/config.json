@@ -31,6 +31,6 @@
   },
   "game": {
     "fps": 30,
-    "countdownSeconds": 180
+    "countdownSeconds": 0
   }
 }
