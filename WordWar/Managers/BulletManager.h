@@ -11,7 +11,7 @@ public:
 	BulletManager();
 	~BulletManager();
 
-	void SpawnBullet(int x, int y, MoveDir dir) override;
+	void SpawnBullet(int x, int y, MoveDir dir, int bulletLevel) override;
 	void Update(float deltaTime);
 	const std::vector<std::unique_ptr<Bullet>>& GetAllBullets() const override;
 	int GetBulletCount() const override;

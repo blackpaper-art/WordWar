@@ -8,7 +8,7 @@
 class IBulletSystem
 {
 public:
-	virtual void SpawnBullet(int x, int y, MoveDir dir) = 0;
+	virtual void SpawnBullet(int x, int y, MoveDir dir, int bulletLevel) = 0;
 	virtual const std::vector<std::unique_ptr<Bullet>>& GetAllBullets() const = 0;
 	virtual int GetBulletCount() const = 0;
 	virtual ~IBulletSystem() {}

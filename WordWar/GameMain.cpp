@@ -112,6 +112,7 @@ void MainGameLoop() {
 		if (_kbhit()) {
 			char playerInput = _getch();
 			player->Update(playerInput);
+			fieldManager->ShowDebugInfo(playerInput);
 			fieldManager->DrawField();
 		}
 

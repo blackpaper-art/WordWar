@@ -15,7 +15,7 @@ enum class MoveDir {
 class Bullet : public CharacterBase
 {
 public:
-	Bullet(int x, int y, MoveDir dir);
+	Bullet(int x, int y, MoveDir dir, int bulletLevel);
 	~Bullet();
 
 	void Update(float deltaTime);

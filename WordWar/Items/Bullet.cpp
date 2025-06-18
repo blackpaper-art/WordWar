@@ -3,9 +3,9 @@
 #define FIELD_WIDTH (16 * 3)
 #define FIELD_HEIGHT (9 * 3)
 
-Bullet::Bullet(int x, int y, MoveDir dir)
+Bullet::Bullet(int x, int y, MoveDir dir, int bulletLevel)
 	:
-	CharacterBase(x, y, 1, 1, '.', false, 1),
+	CharacterBase(x, y, bulletLevel, 1, '.', false, 1),
 	direction(dir),
 	isOutOfField(false),
 	moveInterval(100.0f),

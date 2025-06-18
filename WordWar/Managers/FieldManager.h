@@ -31,6 +31,7 @@ public:
 	void InitializeManagers(IPlayerSystem* ps, IEnemySystem* es, IBulletSystem* bs, IHealthPackSystem* hps, TimerManager* tm);
 	void Update(float deltaTime);
 	void DrawField();
+	void ShowDebugInfo(char input);
 private:
 
 	IEnemySystem* enemySystem;
@@ -45,4 +46,6 @@ private:
 	void CountDownTimer();
 	int countDownTime;
 	float myDeltaTime;
+
+	bool showDebugMessage;
 };

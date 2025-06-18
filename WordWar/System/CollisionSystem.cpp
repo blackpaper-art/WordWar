@@ -56,8 +56,8 @@ void CollisionSystem::HandleCollision(IPlayerSystem* ps, IBulletSystem* bs, IEne
         Enemy* e = pair.second;
 
         if (!b->GetIsDead() && !e->GetIsDead()) {
+            b->UnderAttack(e->GetHP());
             e->UnderAttack(b->GetAttackPower());
-            b->UnderAttack(b->GetHP());
             es->AddEliminatedEnemyCount(1);
             ps->AddKillCount(1);
             Beep(1500, 10);

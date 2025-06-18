@@ -61,16 +61,19 @@ void Player::AddKillCount(int count)
 
 void Player::TryLevelUp()
 {
-	int baseKills = 5;
+	int baseKills = 10;
 	float growthFactor = 1.5f;
 
-	if (killCount >= nextLevelKills)
+	while (killCount >= nextLevelKills)
 	{
 		killCount -= nextLevelKills;
 		level++;
-		bulletLevel++;
-
 		nextLevelKills = baseKills * level * growthFactor;
+
+		// Every 3 player level up 1 player level
+		if (level % 3 == 0) {
+			bulletLevel++;
+		}
 	}
 }
 
@@ -152,7 +155,7 @@ void Player::FireBullets(int bLevel, int rate)
 
 		for (const auto& dir : directions)
 		{
-			bulletSystem->SpawnBullet(CharacterBase::GetX(), CharacterBase::GetY(), dir);
+			bulletSystem->SpawnBullet(CharacterBase::GetX(), CharacterBase::GetY(), dir, bulletLevel);
 		}
 	}
 }
@@ -192,9 +195,9 @@ char Player::GetSymbol() const
 
 void Player::Initialize() {
 	auto self = shared_from_this();
-	fireTimer = timerManager->SetTimer(ConfigManager::GetInstance().GetPlayerFireInterval() / bulletLevel, [weakSelf = std::weak_ptr<Player>(self)] {
+	fireTimer = timerManager->SetTimer(ConfigManager::GetInstance().GetPlayerFireInterval() / GetPlayerLevel(), [weakSelf = std::weak_ptr<Player>(self)] {
 		if (auto s = weakSelf.lock()) {
-			s->FireBullets(s->bulletLevel, s->level);
+			s->FireBullets(s->GetPlayerLevel(), s->level);
 		}
 		}, true);
 }

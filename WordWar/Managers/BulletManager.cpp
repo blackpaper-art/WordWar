@@ -12,9 +12,9 @@ BulletManager::~BulletManager()
 }
 
 
-void BulletManager::SpawnBullet(int x, int y, MoveDir dir)
+void BulletManager::SpawnBullet(int x, int y, MoveDir dir, int bulletLevel)
 {
-	bullets.push_back(std::make_unique<Bullet>(x, y, dir));
+	bullets.push_back(std::make_unique<Bullet>(x, y, dir, bulletLevel));
 }
 
 void BulletManager::Update(float deltaTime)

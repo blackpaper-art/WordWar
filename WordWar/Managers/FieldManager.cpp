@@ -33,7 +33,8 @@ FieldManager::FieldManager()
 	:
 	countDownTime(ConfigManager::GetInstance().GetGameCountDownTime()),
 	fieldWidth(ConfigManager::GetInstance().GetFieldWidth()),
-	fieldHeight(ConfigManager::GetInstance().GetFieldHeight())
+	fieldHeight(ConfigManager::GetInstance().GetFieldHeight()),
+	showDebugMessage(false)
 {
 	fieldBuffer.resize(fieldHeight, std::vector<char>(fieldWidth, FIELD_NULL));
 	if (countDownTimer) {
@@ -176,23 +177,32 @@ void FieldManager::DrawField()
 			printf(" Player Level: %d", playerSystem->GetPlayerLevel());
 		}
 		else if (y == 3) {
+			printf(" Player Bullet Level: %-4d", playerSystem->GetPlayerBulletLevel());
+		}
+		else if (y == 4) {
 			printf(" Next Level: %-4d enemies left", playerSystem->GetEXPRemain());
 		}
-		else if (y == 5) {
-			printf(" ---DEBUG INFO---");
+
+		// Show debug messages
+		if (showDebugMessage)
+		{
+			if (y == 6) {
+				printf(" ---DEBUG INFO---");
+			}
+			else if (y == 7) {
+				printf(" DeltaTime: %f", myDeltaTime);
+			}
+			else if (y == 9) {
+				printf(" Player Bullet Interval: %-4d ms", ConfigManager::GetInstance().GetPlayerFireInterval() / playerSystem->GetPlayerLevel());
+			}
+			else if (y == 10) {
+				printf(" Enemy Spawn Interval: %-4d ms", ConfigManager::GetInstance().GetEnemyBaseSpawnInterval() / playerSystem->GetPlayerLevel());
+			}
+			else if (y == 11) {
+				printf(" HealthPack Spawn Interval: %-4d ms", ConfigManager::GetInstance().GetHealthPackSpawnInterval());
+			}
 		}
-		else if (y == 6) {
-			printf(" DeltaTime: %f", myDeltaTime);
-		}
-		else if (y == 7) {
-			printf(" Player Bullet Interval: %-4d ms", ConfigManager::GetInstance().GetPlayerFireInterval() / playerSystem->GetPlayerBulletLevel());
-		}
-		else if (y == 8) {
-			printf(" Enemy Spawn Interval: %-4d ms", ConfigManager::GetInstance().GetEnemyBaseSpawnInterval() / playerSystem->GetPlayerBulletLevel());
-		}
-		else if (y == 10) {
-			printf(" HealthPack Spawn Interval: %-4d ms", ConfigManager::GetInstance().GetHealthPackSpawnInterval());
-		}
+		
 		printf("\n");
 
 		
@@ -220,6 +230,19 @@ void FieldManager::DrawField()
 	}
 	
 	printf(" Eliminated enemy Count: %d", enemySystem->GetEliminatedEnemyCount());
+}
+
+void FieldManager::ShowDebugInfo(char input)
+{
+
+	switch (input)
+	{
+	case '0': 
+		system("cls");
+		showDebugMessage = !showDebugMessage; 
+		break;
+	default: break;
+	}
 }
 
 void FieldManager::CountDownTimer()
