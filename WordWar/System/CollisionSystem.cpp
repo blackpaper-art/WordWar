@@ -6,16 +6,23 @@
 #include "../Items/HealthPack.h"
 
 #include "CollisionSystem.h"
-#include <windows.h> //For Beep()
+#include <windows.h> // For Beep()
 
-void CollisionSystem::HandleCollision(IPlayerSystem* ps, IBulletSystem* bs, IEnemySystem* es, IHealthPackSystem* hps)
+// Handle all collisions between bullets, enemies, player, and health packs
+// 弾、敵、プレイヤー、回復アイテム間の全ての衝突を処理
+void CollisionSystem::HandleCollision(
+    IPlayerSystem* ps,
+    IBulletSystem* bs,
+    IEnemySystem* es,
+    IHealthPackSystem* hps)
 {
-    //Check collision
+    // Prepare hit records
+    // 当たり判定の結果を記録
     std::vector<std::pair<Bullet*, Enemy*>> bulletEnemyHits;
     std::vector<Enemy*> playerEnemyHits;
-    std::vector<HealthPack*> playerHealthPackHit;
 
-    //Bullet & Enemy
+    // Bullet & Enemy collision
+    // 弾と敵の衝突
     for (const auto& b : bs->GetAllBullets()) {
         if (!b || b->GetIsDead()) continue;
 
@@ -29,7 +36,8 @@ void CollisionSystem::HandleCollision(IPlayerSystem* ps, IBulletSystem* bs, IEne
         }
     }
 
-    //Player & Enemy
+    // Player & Enemy collision
+    // プレイヤーと敵の衝突
     for (const auto& e : es->GetAllEnemy()) {
         if (!e || e->GetIsDead()) continue;
 
@@ -39,49 +47,55 @@ void CollisionSystem::HandleCollision(IPlayerSystem* ps, IBulletSystem* bs, IEne
         }
     }
 
-    //Player & HealthPack
+    // Player & HealthPack collision
+    // プレイヤーと回復アイテムの衝突
     for (const auto& hp : hps->GetAllHealthPacks()) {
         if (!hp->GetIsDead() && ps->GetX() == hp->GetX() && ps->GetY() == hp->GetY()) {
-            hp->UnderAttack(hp->GetHP());
-            ps->AddHP();
+            hp->UnderAttack(hp->GetHP()); // Mark as used / 使用済みにする
+            ps->AddHP();                  // Player gains HP / HP回復
             Beep(880, 10);
             Beep(1200, 10);
         }
     }
+    // Clean up used health packs
+    // 使用済みの回復アイテムを削除
     hps->ClearDeadPacks();
 
-    //Handle bullet and enemy
+    // Handle bullet & enemy damage
+    // 弾と敵のダメージ処理
     for (auto& pair : bulletEnemyHits) {
         Bullet* b = pair.first;
         Enemy* e = pair.second;
 
         if (!b->GetIsDead() && !e->GetIsDead()) {
-            b->UnderAttack(e->GetHP());
-            e->UnderAttack(b->GetAttackPower());
-            es->AddEliminatedEnemyCount(1);
-            ps->AddKillCount(1);
+            b->UnderAttack(e->GetHP());          // Bullet takes damage / 弾にダメージ
+            e->UnderAttack(b->GetAttackPower()); // Enemy takes damage / 敵にダメージ
+            es->AddEliminatedEnemyCount(1);      // Increment eliminated count / 撃破数加算
+            ps->AddKillCount(1);                 // Player kill count +1 / プレイヤー撃破数+1
             Beep(1500, 10);
         }
     }
 
-    //Handle player and enemy
+    // Handle player & enemy damage
+    // プレイヤーと敵のダメージ処理
     for (auto& e : playerEnemyHits) {
         if (!e->GetIsDead()) {
-            ps->UnderAttack(e->GetAttackPower());
-            e->UnderAttack(e->GetHP());
-            es->AddEliminatedEnemyCount(1);
-            ps->AddKillCount(1);
+            ps->UnderAttack(e->GetAttackPower()); // Player takes damage / プレイヤーにダメージ
+            e->UnderAttack(e->GetHP());           // Enemy dies / 敵は即死
+            es->AddEliminatedEnemyCount(1);       // 撃破数加算
+            ps->AddKillCount(1);                  // プレイヤー撃破数+1
             Beep(300, 10);
         }
     }
 
-    //Handle player and health pack
+    // Redundant double-check for player & health pack (safe guard)
+    // プレイヤーと回復アイテムの二重チェック（安全策）
     for (auto& hp : hps->GetAllHealthPacks()) {
         if (!hp->GetIsDead() &&
             ps->GetX() == hp->GetX() &&
             ps->GetY() == hp->GetY()) {
 
-            hp->UnderAttack(hp->GetHP()); // 设置死掉
+            hp->UnderAttack(hp->GetHP());
             ps->AddHP();
             Beep(880, 10);
             Beep(1200, 10);

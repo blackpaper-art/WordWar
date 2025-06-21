@@ -16,7 +16,8 @@
 #include <time.h>
 #include <memory>
 
-//Create main smart pointers
+// Create main smart pointers
+// 主要なスマートポインタの作成
 std::shared_ptr <Player> player;
 std::shared_ptr <FieldManager> fieldManager;
 std::shared_ptr <EnemyManager> enemyManager;
@@ -29,24 +30,32 @@ std::unique_ptr <HealthPackManager> healthPackManager;
 int main() {
 	while (true)
 	{
-		//Start Screen
+		// Show start screen
+		// スタート画面を表示
 		ShowStartScreen();
 
-		//Initialize
+		// Initialize game
+		// ゲーム初期化
 		InitializeMainGame();
 
-		//MainLoop
+		// Main game loop
+		// メインゲームループ
 		MainGameLoop();
 
-		//Shutdown
+		// Shutdown and cleanup
+		// シャットダウンと後片付け
 		ShutdownGame();
 	}
 	return 0;
 }
 
+// Display start screen
+// スタート画面表示
 void ShowStartScreen()
 {
-	system("cls"); //Clean screen
+	// Clear console screen
+	// 画面クリア
+	system("cls");
 
 	printf("\n\n\n\n\n");
 	printf("=========================================================\n");
@@ -63,9 +72,13 @@ void ShowStartScreen()
 	printf("    - nlohmann/json (https://github.com/nlohmann/json)\n");
 	printf("=========================================================\n");
 
-	while (getchar() != '\n') {} // Wait player press Enter key
+	// Wait until [ENTER] pressed
+	// [ENTER]が押されるまで待機
+	while (getchar() != '\n') {}
 }
 
+// Initialize game systems and managers
+// ゲームの各システムとマネージャーを初期化
 void InitializeMainGame()
 {
 	system("cls");
@@ -102,13 +115,16 @@ void InitializeMainGame()
 	player->Initialize();
 }
 
+// Main game loop
+// メインゲームループ
 void MainGameLoop() {
 	clock_t lastTime = clock();
 	int lastLevel = player->GetPlayerLevel();
 
 	while (!player->GetIsDead())
 	{
-		//Manual Update (when player inputed)
+		// Manual update (when player inputs)
+		// プレイヤー操作時の手動更新
 		if (_kbhit()) {
 			char playerInput = _getch();
 			player->Update(playerInput);
@@ -116,7 +132,8 @@ void MainGameLoop() {
 			fieldManager->DrawField();
 		}
 
-		//Auto update (by using clock)
+		// Auto update (using clock)
+		// 自動更新（時間経過による）
 		clock_t currentTime = clock();
 		float deltaTime = currentTime - lastTime;
 		if (currentTime >= lastTime + TIME_GAP)
@@ -136,6 +153,8 @@ void MainGameLoop() {
 	}
 }
 
+// Clean up resources after game ends
+// ゲーム終了後のリソース解放
 void ShutdownGame()
 {
 	ShowGameOverScreen(enemyManager.get()->GetEliminatedEnemyCount(), player.get()->GetPlayerLevel());
@@ -152,6 +171,8 @@ void ShutdownGame()
 	healthPackManager.reset();
 }
 
+// Display game over screen
+// ゲームオーバー画面を表示
 void ShowGameOverScreen(int totalKills, int maxLevel)
 {
 	system("cls");
@@ -165,5 +186,8 @@ void ShowGameOverScreen(int totalKills, int maxLevel)
 	printf("	Thanks for playing! / プレイありがとう！\n\n");
 	printf("=========================================================\n");
 	system("pause"); 
-	while (getchar() != '\n') {} // Wait player press Enter key
+
+	// Wait until [ENTER] pressed
+	// [ENTER]が押されるまで待機
+	while (getchar() != '\n') {} 
 }
