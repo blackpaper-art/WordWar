@@ -103,6 +103,26 @@ int ConfigManager::GetPlayerBulletUpBaseLevel() const
 //------------------------------------------------------------------------------------------------
 // ENEMY
 //------------------------------------------------------------------------------------------------
+// Get enemy symbol
+// 敵のシンボルを取得
+std::string ConfigManager::GetEnemySymbol() const
+{
+    return configData["enemy"]["symbol"].get<std::string>();
+}
+
+// Get enemy's initial HP
+// 敵の初期HPを取得
+int ConfigManager::GetEnemyInitialHP() const {
+    return configData["enemy"]["initialHP"];
+}
+
+// Get enemy's initial attack power (AP)
+// 敵の初期攻撃力を取得
+int ConfigManager::GetEnemyInitialAP() const
+{
+    return configData["enemy"]["initialAP"];
+}
+
 // Get enemy base spawn interval in ms
 // 敵の基本スポーン間隔(ms)を取得
 int ConfigManager::GetEnemyBaseSpawnInterval() const {

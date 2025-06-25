@@ -18,9 +18,11 @@
     "bulletUpBaseLevel": 5
   },
   "enemy": {
+	"symbol": "i",
+ 
     "initialHP": 1,
     "initialAP": 1,
-    "symbol": "i",
+
     "baseSpawnIntervalMs": 1000,
     "moveIntervalMs": 1000
   },

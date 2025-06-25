@@ -47,6 +47,11 @@ public:
 
 	// Get enemy info
 	// ”³ÇéˆóÈ¡µÃ
+	std::string GetEnemySymbol() const;
+
+	int GetEnemyInitialHP() const;
+	int GetEnemyInitialAP() const;
+
 	int GetEnemyBaseSpawnInterval() const;
 	float GetEnemyMoveInterval() const;
 

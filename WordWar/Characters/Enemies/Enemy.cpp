@@ -1,11 +1,17 @@
 #include "Enemy.h"
+#include "../../Managers/ConfigManager.h"
 
 // Constructor: initialize enemy position and movement interval
 // •≥•Û•π•»•È•Ø•ø£∫î≥§ŒŒª÷√§»“∆Ñ”Èg∏Ù§Ú≥ı∆⁄ªØ
 Enemy::Enemy(int x, int y, IPlayerSystem* ps)
-    : CharacterBase(x, y, 1, 1, 'i', false, 1),
+    : CharacterBase(
+        x, y, 
+        ConfigManager::GetInstance().GetEnemyInitialHP(), 
+        ConfigManager::GetInstance().GetEnemyInitialAP(),
+        ConfigManager::GetInstance().GetEnemySymbol()[0],
+        false, 1),
     playerSystem(ps),
-    moveInterval(1000.0f),
+    moveInterval(ConfigManager::GetInstance().GetEnemyMoveInterval()),
     timeAccumulator(0.0f)
 {
 }
