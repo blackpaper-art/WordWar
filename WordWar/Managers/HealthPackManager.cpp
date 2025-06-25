@@ -1,9 +1,6 @@
 #include "HealthPackManager.h"
 #include "../Managers/ConfigManager.h"
 
-#define FIELD_WIDTH (16 * 3)
-#define FIELD_HEIGHT (9 * 3)
-
 // Constructor: initialize health pack spawn timer
 // コンストラクタ：回復アイテムのスポーンタイマーを初期化
 HealthPackManager::HealthPackManager(TimerManager* tm)
@@ -26,8 +23,8 @@ HealthPackManager::~HealthPackManager() {}
 // ランダムな位置に新しい回復アイテムを生成
 void HealthPackManager::SpawnHealthPack()
 {
-    int x = rand() % FIELD_WIDTH;
-    int y = rand() % FIELD_HEIGHT;
+    int x = rand() % ConfigManager::GetInstance().GetFieldWidth();
+    int y = rand() % ConfigManager::GetInstance().GetFieldHeight();
     healthPacks.push_back(std::make_unique<HealthPack>(x, y));
 }
 

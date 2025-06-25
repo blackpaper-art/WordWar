@@ -4,12 +4,18 @@
     "height": 27
   },
   "player": {
+	 "symbol": "O",
+	 
     "initialHP": 20,
-    "initialAP": 1,
-    "symbol": "O",
-    "levelUpBaseKills": 5,
+	"initialAP": 1,
+	"initialPlayerLevel": 1,
+	"initialBulletLevel": 1,
+	"initialFireIntervalMs": 2000,
+    
+    "levelUpBaseKills": 10,
     "levelUpGrowthFactor": 1.5,
-    "fireIntervalMs": 2000
+	
+    "bulletUpBaseLevel": 5
   },
   "enemy": {
     "initialHP": 1,

@@ -23,20 +23,9 @@ void ConfigManager::LoadConfig(const std::string& configFilePath)
     }
 }
 
-// Get player symbol
-// プレイヤーのシンボルを取得
-std::string ConfigManager::GetPlayerSymbol() const
-{
-    return configData["player"]["symbol"].get<std::string>();
-}
-
-// Get player's initial attack power (AP)
-// プレイヤーの初期攻撃力を取得
-int ConfigManager::GetPlayerInitialAP() const
-{
-    return configData["player"]["initialAP"];
-}
-
+//------------------------------------------------------------------------------------------------
+// FIELD
+//------------------------------------------------------------------------------------------------
 // Get field width
 // フィールドの幅を取得
 int ConfigManager::GetFieldWidth() const {
@@ -49,18 +38,71 @@ int ConfigManager::GetFieldHeight() const {
     return configData["field"]["height"];
 }
 
+//------------------------------------------------------------------------------------------------
+// PLAYER
+//------------------------------------------------------------------------------------------------
+// Get player symbol
+// プレイヤーのシンボルを取得
+std::string ConfigManager::GetPlayerSymbol() const
+{
+    return configData["player"]["symbol"].get<std::string>();
+}
+
 // Get player's initial HP
 // プレイヤーの初期HPを取得
 int ConfigManager::GetPlayerInitialHP() const {
     return configData["player"]["initialHP"];
 }
 
-// Get player's firing interval in ms
-// プレイヤーの弾発射間隔(ms)を取得
-int ConfigManager::GetPlayerFireInterval() const {
-    return configData["player"]["fireIntervalMs"];
+// Get player's initial attack power (AP)
+// プレイヤーの初期攻撃力を取得
+int ConfigManager::GetPlayerInitialAP() const
+{
+    return configData["player"]["initialAP"];
 }
 
+// Get player's initial level
+// プレイヤーの初期レベルを取得
+int ConfigManager::GetPlayerInitialPlayerLevel() const
+{
+    return configData["player"]["initialPlayerLevel"];
+}
+
+// Get player's initial bullet level
+// プレイヤーの初期弾レベルを取得
+int ConfigManager::GetPlayerInitialBulletLevel() const
+{
+    return configData["player"]["initialBulletLevel"];
+}
+
+// Get player's firing interval in ms
+// プレイヤーの弾発射間隔(ms)を取得
+int ConfigManager::GetPlayerInitialFireInterval() const {
+    return configData["player"]["initialFireIntervalMs"];
+}
+
+// Get player's level up base kills
+// プレイヤーのレベルアップの基本撃破数を取得
+int ConfigManager::GetPlayerLevelUpBaseKills() const
+{
+    return configData["player"]["levelUpBaseKills"];
+}
+
+// Get player's level up growth factor
+// プレイヤーのレベルアップの成長係数を取得
+float ConfigManager::GetPlayerLevelUpGrowthFactor() const
+{
+    return configData["player"]["levelUpGrowthFactor"];
+}
+
+int ConfigManager::GetPlayerBulletUpBaseLevel() const
+{
+    return configData["player"]["bulletUpBaseLevel"];;
+}
+
+//------------------------------------------------------------------------------------------------
+// ENEMY
+//------------------------------------------------------------------------------------------------
 // Get enemy base spawn interval in ms
 // 敵の基本スポーン間隔(ms)を取得
 int ConfigManager::GetEnemyBaseSpawnInterval() const {
@@ -73,6 +115,9 @@ float ConfigManager::GetEnemyMoveInterval() const {
     return configData["enemy"]["moveIntervalMs"];
 }
 
+//------------------------------------------------------------------------------------------------
+// ITEMS (BULLETS & HP Packs)
+//------------------------------------------------------------------------------------------------
 // Get bullet move interval in ms
 // 弾の移動間隔(ms)を取得
 float ConfigManager::GetBulletMoveInterval() const {
@@ -93,6 +138,14 @@ int ConfigManager::GetHealthPackSpawnInterval() const
     return configData["healthPack"]["spawnIntervalMs"];
 }
 
+int ConfigManager::GetHealthPackHealAmount() const
+{
+    return configData["healthPack"]["healAmount"];
+}
+
+//------------------------------------------------------------------------------------------------
+// GAME SETTINGS
+// ------------------------------------------------------------------------------------------------
 // Get game FPS
 // ゲームのFPSを取得
 int ConfigManager::GetGameFPS() const {

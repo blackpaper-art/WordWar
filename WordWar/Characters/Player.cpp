@@ -3,9 +3,6 @@
 #include "../Items/Bullet.h"
 #include "../Managers/ConfigManager.h"
 
-#define FIELD_WIDTH (16 * 3)
-#define FIELD_HEIGHT (9 * 3)
-
 // Constructor: initialize player properties
 // •≥•Û•π•»•È•Ø•ø£∫•◊•Ï•§•‰©`§Œ≥ı∆⁄Çé§Ú‘O∂®
 Player::Player(int x, int y, IBulletSystem* bs, TimerManager* tm)
@@ -18,10 +15,10 @@ Player::Player(int x, int y, IBulletSystem* bs, TimerManager* tm)
     ),
     bulletSystem(bs),
     timerManager(tm),
-    bulletLevel(1),
-    level(1),
+    bulletLevel(ConfigManager::GetInstance().GetPlayerInitialBulletLevel()),
+    level(ConfigManager::GetInstance().GetPlayerInitialPlayerLevel()),
     killCount(0),
-    nextLevelKills(10),
+    nextLevelKills(ConfigManager::GetInstance().GetPlayerLevelUpBaseKills()),
     bulletDir(0)
 {
 }
@@ -50,8 +47,8 @@ void Player::Update(char input)
     default: break;
     }
 
-    if (newX >= 0 && newX < FIELD_WIDTH &&
-        newY >= 0 && newY < FIELD_HEIGHT)
+    if (newX >= 0 && newX < ConfigManager::GetInstance().GetFieldWidth() &&
+        newY >= 0 && newY < ConfigManager::GetInstance().GetFieldHeight())
     {
         SetX(newX);
         SetY(newY);
@@ -71,7 +68,7 @@ void Player::AddKillCount(int count)
 void Player::TryLevelUp()
 {
     int baseKills = 10;
-    float growthFactor = 1.5f;
+    float growthFactor = ConfigManager::GetInstance().GetPlayerLevelUpGrowthFactor();
 
     while (killCount >= nextLevelKills)
     {
@@ -79,9 +76,9 @@ void Player::TryLevelUp()
         level++;
         nextLevelKills = baseKills * level * growthFactor;
 
-        // Every 3 levels, increase bullet level
-        // 3•Ï•Ÿ•Î§¥§»§Àèé•Ï•Ÿ•Î§Ú•¢•√•◊
-        if (level % 3 == 0) {
+        // Every ' PlayerLevelUpBaseKills ' levels, increase bullet level
+        // °∏PlayerLevelUpBaseKills°π§Œ•Ï•Ÿ•Î§¥§»§Àèé•Ï•Ÿ•Î§Ú•¢•√•◊
+        if (level % ConfigManager::GetInstance().GetPlayerLevelUpBaseKills() == 0) {
             bulletLevel++;
         }
     }
@@ -202,7 +199,7 @@ char Player::GetSymbol() const { return CharacterBase::GetSymbol(); }
 void Player::Initialize() {
     auto self = shared_from_this();
     fireTimer = timerManager->SetTimer(
-        ConfigManager::GetInstance().GetPlayerFireInterval() / GetPlayerLevel(),
+        ConfigManager::GetInstance().GetPlayerInitialFireInterval() / GetPlayerLevel(),
         [weakSelf = std::weak_ptr<Player>(self)] {
             if (auto s = weakSelf.lock()) {
                 s->FireBullets(s->GetPlayerLevel(), s->level);
@@ -219,7 +216,7 @@ void Player::UnderAttack(int damage) {
 // Restore HP
 // HP§ÚªÿèÕ
 void Player::AddHP() {
-    CharacterBase::SetHP(10);
+    CharacterBase::SetHP(ConfigManager::GetInstance().GetHealthPackHealAmount());
 }
 
 // Shutdown: stop fire timer safely

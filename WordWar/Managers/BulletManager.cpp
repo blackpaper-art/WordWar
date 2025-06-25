@@ -1,8 +1,5 @@
 #include "../Managers/BulletManager.h"
 
-#define FIELD_WIDTH (16 * 3)
-#define FIELD_HEIGHT (9 * 3)
-
 // Constructor
 // コンストラクタ
 BulletManager::BulletManager() {}

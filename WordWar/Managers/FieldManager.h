@@ -26,9 +26,6 @@ public:
     FieldManager();   // Constructor / コンストラクタ
     ~FieldManager();  // Destructor / デストラクタ
 
-    const int GetFieldWidth() { return fieldWidth; }   // Get field width / フィールド幅取得
-    const int GetFieldHeight() { return fieldHeight; } // Get field height / フィールド高さ取得
-
     void InitializeManagers(
         IPlayerSystem* ps,
         IEnemySystem* es,

@@ -32,9 +32,18 @@ public:
 	// Get Player info
 	// プレイヤー情報取得
 	std::string GetPlayerSymbol() const;
-	int GetPlayerInitialAP() const;
+
 	int GetPlayerInitialHP() const;
-	int GetPlayerFireInterval() const;
+	int GetPlayerInitialAP() const;
+
+	int GetPlayerInitialPlayerLevel() const;
+	int GetPlayerInitialBulletLevel() const;
+	int GetPlayerInitialFireInterval() const;
+
+	int GetPlayerLevelUpBaseKills() const;
+	float GetPlayerLevelUpGrowthFactor() const;
+
+	int GetPlayerBulletUpBaseLevel() const;
 
 	// Get enemy info
 	// 敵情報取得
@@ -49,6 +58,7 @@ public:
 	// 回復アイテム情報取得
 	std::string GetHealthPackSymbol() const;
 	int GetHealthPackSpawnInterval() const;
+	int GetHealthPackHealAmount() const;
 
 	// Get game settings
 	// ゲーム設定取得

@@ -24,9 +24,6 @@
 #include <vector>
 #include <memory>
 
-#define FIELD_WIDTH (16 * 3)
-#define FIELD_HEIGHT (9 * 3)
-
  // Constructor
  // コンストラクタ
 FieldManager::FieldManager()
@@ -127,7 +124,7 @@ void FieldManager::DrawField()
     SetConsoleCursorPosition(hConsole, coordScreen);
 
     // Top wall
-    for (int x = 0; x < FIELD_WIDTH + 2; x++) {
+    for (int x = 0; x < ConfigManager::GetInstance().GetFieldWidth() + 2; x++) {
         putchar(X_WALL);
     }
     printf("\n");
@@ -181,7 +178,7 @@ void FieldManager::DrawField()
                 printf(" DeltaTime: %f", myDeltaTime);
             }
             else if (y == 9) {
-                printf(" Player Bullet Interval: %-4d ms", ConfigManager::GetInstance().GetPlayerFireInterval() / playerSystem->GetPlayerLevel());
+                printf(" Player Bullet Interval: %-4d ms", ConfigManager::GetInstance().GetPlayerInitialFireInterval() / playerSystem->GetPlayerLevel());
             }
             else if (y == 10) {
                 printf(" Enemy Spawn Interval: %-4d ms", ConfigManager::GetInstance().GetEnemyBaseSpawnInterval() / playerSystem->GetPlayerLevel());
@@ -195,7 +192,7 @@ void FieldManager::DrawField()
     }
 
     // Bottom wall
-    for (int x = 0; x < FIELD_WIDTH + 2; x++) {
+    for (int x = 0; x < ConfigManager::GetInstance().GetFieldWidth() + 2; x++) {
         putchar(X_WALL);
     }
     printf("\n");

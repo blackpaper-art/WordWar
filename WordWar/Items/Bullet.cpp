@@ -1,7 +1,5 @@
 #include "Bullet.h"
-
-#define FIELD_WIDTH (16 * 3)
-#define FIELD_HEIGHT (9 * 3)
+#include "../Managers/ConfigManager.h"
 
 // Constructor: initialize bullet with level and direction
 // コンストラクタ：弾をレベルと方向で初期化
@@ -43,7 +41,7 @@ void Bullet::Update(float deltaTime)
 
         // Check if bullet is out of field
         // フィールド外に出たか判定
-        if (newX < 0 || newX >= FIELD_WIDTH || newY < 0 || newY >= FIELD_HEIGHT)
+        if (newX < 0 || newX >= ConfigManager::GetInstance().GetFieldWidth() || newY < 0 || newY >= ConfigManager::GetInstance().GetFieldHeight())
         {
             isOutOfField = true;
             return;

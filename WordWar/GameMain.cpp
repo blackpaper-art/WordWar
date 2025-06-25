@@ -90,8 +90,8 @@ void InitializeMainGame()
 	bulletManager = std::make_unique<BulletManager>();
 
 	player = std::make_shared<Player>(
-		fieldManager->GetFieldWidth() / 2,
-		fieldManager->GetFieldHeight() / 2,
+		ConfigManager::GetInstance().GetFieldWidth() / 2,
+		ConfigManager::GetInstance().GetFieldHeight() / 2,
 		static_cast<IBulletSystem*>(bulletManager.get()),
 		timerManager.get()
 	);
