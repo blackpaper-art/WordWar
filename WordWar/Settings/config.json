@@ -27,9 +27,10 @@
     "moveIntervalMs": 1000
   },
   "bullet": {
-    "initialHP": 1,
+	"symbol": ".",
+	
     "initialAP": 1,
-    "symbol": ".",
+
     "moveIntervalMs": 100
   },
   "healthPack": {

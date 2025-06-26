@@ -4,10 +4,16 @@
 // Constructor: initialize bullet with level and direction
 // コンストラクタ：弾をレベルと方向で初期化
 Bullet::Bullet(int x, int y, MoveDir dir, int bulletLevel)
-    : CharacterBase(x, y, bulletLevel, 1, '.', false, 1),
+    : CharacterBase
+    (
+        x, y, bulletLevel, 1,
+        ConfigManager::GetInstance().GetBulletSymbol()[0],
+        false,
+        ConfigManager::GetInstance().GetBulletInitialAP()
+    ),
     direction(dir),
     isOutOfField(false),
-    moveInterval(100.0f),
+    moveInterval(ConfigManager::GetInstance().GetBulletMoveInterval()),
     timeAccumulator(0.0f)
 {
 }

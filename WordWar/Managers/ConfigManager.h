@@ -57,6 +57,11 @@ public:
 
 	// Get bullet info
 	// èé«ÈàÛ»°µ√
+	std::string GetBulletSymbol() const;
+
+	int GetBulletInitialHP() const;
+	int GetBulletInitialAP() const;
+
 	float GetBulletMoveInterval() const;
 
 	// Get health pack info

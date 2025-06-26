@@ -138,6 +138,27 @@ float ConfigManager::GetEnemyMoveInterval() const {
 //------------------------------------------------------------------------------------------------
 // ITEMS (BULLETS & HP Packs)
 //------------------------------------------------------------------------------------------------
+// Get bullet symbol
+// 弾のシンボルを取得
+std::string ConfigManager::GetBulletSymbol() const
+{
+    return configData["bullet"]["symbol"].get<std::string>();
+}
+
+// Get bullet initial HP
+// 弾の初期HPを取得
+int ConfigManager::GetBulletInitialHP() const
+{
+    return configData["bullet"]["initialHP"];
+}
+
+// Get bullet initial attack power (AP)
+// 弾の初期攻撃力を取得
+int ConfigManager::GetBulletInitialAP() const
+{
+    return configData["bullet"]["initialAP"];
+}
+
 // Get bullet move interval in ms
 // 弾の移動間隔(ms)を取得
 float ConfigManager::GetBulletMoveInterval() const {
