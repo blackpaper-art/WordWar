@@ -33,7 +33,7 @@ public:
 
     void AddKillCount(int count) override; // Add kill count / 撃破数加算
     void TryLevelUp() override;            // Try to level up / レベルアップ判定
-    void FireBullets(int bLevel, int rate); // Fire bullets / 弾発射
+    void FireBullets(int bLevel); // Fire bullets / 弾発射
     void UnderAttack(int damage) override;  // Take damage / ダメージ処理
     void AddHP() override;                  // Restore HP / HP回復
 

@@ -95,6 +95,22 @@ float ConfigManager::GetPlayerLevelUpGrowthFactor() const
     return configData["player"]["levelUpGrowthFactor"];
 }
 
+// Get player's minimum firing interval in ms
+// プレイヤーの最小弾発射間隔(ms)を取得
+int ConfigManager::GetPlayerMinFireInterval() const
+{
+    return configData["player"]["initialFireIntervalMs"];
+}
+
+// Get player's firing interval scale
+// プレイヤーの弾発射間隔スケールを取得
+int ConfigManager::GetPlayerFireIntervalScale() const
+{
+    return configData["player"]["fireIntervalScale"];
+}
+
+// Get bullet upgrade base player level
+// 弾アップグレードの基本プレイヤーレベルを取得
 int ConfigManager::GetPlayerBulletUpBaseLevel() const
 {
     return configData["player"]["bulletUpBaseLevel"];;

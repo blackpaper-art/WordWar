@@ -40,11 +40,26 @@ void Player::Update(char input)
 
     switch (input)
     {
-    case 'w': newY--; bulletDir = 0; break; // Up
-    case 's': newY++; bulletDir = 1; break; // Down
-    case 'a': newX--; bulletDir = 2; break; // Left
-    case 'd': newX++; bulletDir = 3; break; // Right
-    default: break;
+    case 'w': case 'W':
+        newY--;
+        bulletDir = 0;
+        break;
+
+    case 's': case 'S':
+        newY++;
+        bulletDir = 1;
+        break;
+
+    case 'a': case 'A':
+        newX--;
+        bulletDir = 2;
+        break;
+
+    case 'd': case 'D':
+        newX++;
+        bulletDir = 3;
+        break;
+
     }
 
     if (newX >= 0 && newX < ConfigManager::GetInstance().GetFieldWidth() &&
@@ -76,17 +91,32 @@ void Player::TryLevelUp()
         level++;
         nextLevelKills = baseKills * level * growthFactor;
 
-        // Every ' PlayerLevelUpBaseKills ' levels, increase bullet level
-        // 「PlayerLevelUpBaseKills」のレベルごとに弾レベルをアップ
-        if (level % ConfigManager::GetInstance().GetPlayerLevelUpBaseKills() == 0) {
+        // Every ' GetPlayerBulletUpBaseLevel ' levels, increase bullet level
+        // 「GetPlayerBulletUpBaseLevel」のレベルごとに弾レベルをアップ
+        if (level % ConfigManager::GetInstance().GetPlayerBulletUpBaseLevel() == 0) {
             bulletLevel++;
         }
+
+		// Update fire timer interval based on new level
+		// 新しいレベルに応じて発射タイマーの間隔を更新
+        if (fireTimer) {
+            fireTimer->Stop();
+        }
+
+        auto self = shared_from_this();
+        fireTimer = timerManager->SetTimer(
+            ConfigManager::GetInstance().GetPlayerInitialFireInterval() / GetPlayerLevel(),
+            [weakSelf = std::weak_ptr<Player>(self)] {
+                if (auto s = weakSelf.lock()) {
+                    s->FireBullets(s->GetPlayerLevel());
+                }
+            }, true);
     }
 }
 
 // Fire bullets in multiple directions based on level
 // プレイヤーレベルに応じて多方向に弾を発射
-void Player::FireBullets(int bLevel, int rate)
+void Player::FireBullets(int bLevel)
 {
     if (bulletSystem)
     {
@@ -202,7 +232,7 @@ void Player::Initialize() {
         ConfigManager::GetInstance().GetPlayerInitialFireInterval() / GetPlayerLevel(),
         [weakSelf = std::weak_ptr<Player>(self)] {
             if (auto s = weakSelf.lock()) {
-                s->FireBullets(s->GetPlayerLevel(), s->level);
+                s->FireBullets(s->GetPlayerLevel());
             }
         }, true);
 }

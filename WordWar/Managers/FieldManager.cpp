@@ -186,6 +186,18 @@ void FieldManager::DrawField()
             else if (y == 11) {
                 printf(" HealthPack Spawn Interval: %-4d ms", ConfigManager::GetInstance().GetHealthPackSpawnInterval());
             }
+            else if (y == 13) {
+                printf(" ---CHEAT MODE---");
+            }
+            else if (y == 14) {
+                printf(" Press 'H' to add HP");
+            }
+            else if (y == 15) {
+                printf(" Press 'E' to eliminate all enemies");
+            }
+            else if (y == 16) {
+                printf(" Press 'L' to level up player");
+			}
         }
 
         printf("\n");
@@ -215,10 +227,50 @@ void FieldManager::ShowDebugInfo(char input)
 {
     switch (input)
     {
-    case '0':
-        system("cls");
-        showDebugMessage = !showDebugMessage;
-        break;
+		// Show debug info and open debug mode
+		// デバッグ情報を表示し、デバッグモードをONにする
+        case '0':
+            system("cls");
+            showDebugMessage = !showDebugMessage;
+            break;
+
+		// If debug mode is on, active cheat commands
+		// Debug modeがONのとき、チートコマンドを有効化
+        
+		// Add HP to player
+		// プレイヤーにHPを追加
+        case 'H':
+        case 'h':
+            if (showDebugMessage && playerSystem) {
+                system("cls");
+                playerSystem->AddHP();
+            }
+            break;
+
+		// Destroy all enemies
+		// すべての敵を破壊し
+        case 'E':
+        case 'e':
+            if (showDebugMessage && enemySystem) {
+                system("cls");
+                for (const auto& e : enemySystem->GetAllEnemy()) {
+                    if (e && !e->GetIsDead()) {
+                        e->UnderAttack(e->GetHP());
+                    }
+                }
+            }
+			break;
+
+		// Add player level
+        // プレイヤーレベルを追加
+        case 'L':
+        case 'l':
+            if (showDebugMessage && playerSystem) {
+                system("cls");
+                playerSystem->AddKillCount(playerSystem->GetEXPRemain());
+            }
+			break;
+           
     default: break;
     }
 }

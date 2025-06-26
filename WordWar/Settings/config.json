@@ -10,12 +10,14 @@
 	"initialAP": 1,
 	"initialPlayerLevel": 1,
 	"initialBulletLevel": 1,
-	"initialFireIntervalMs": 2000,
+	"initialFireIntervalMs": 3000,
     
     "levelUpBaseKills": 10,
     "levelUpGrowthFactor": 1.5,
 	
-    "bulletUpBaseLevel": 5
+	"minFireIntervalMs": 300,
+	"fireIntervalScale": 0.9,
+    "bulletUpBaseLevel": 10
   },
   "enemy": {
 	"symbol": "i",

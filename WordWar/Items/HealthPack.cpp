@@ -1,9 +1,10 @@
 #include "HealthPack.h"
+#include "../Managers/ConfigManager.h"
 
 // Constructor: initialize health pack properties
 // е│еєе╣е╚ещепе┐г║╗╪П═еведе╞ерд╬│ї╞┌╗п
 HealthPack::HealthPack(int x, int y)
-    : CharacterBase(x, y, 1, 0, '+', false, 0)
+    : CharacterBase(x, y, 1, 0, ConfigManager::GetInstance().GetHealthPackSymbol()[0], false, 0)
 {
 }
 

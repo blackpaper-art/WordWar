@@ -39,6 +39,8 @@ public:
 	int GetPlayerInitialPlayerLevel() const;
 	int GetPlayerInitialBulletLevel() const;
 	int GetPlayerInitialFireInterval() const;
+	int GetPlayerMinFireInterval() const;
+	int GetPlayerFireIntervalScale() const;
 
 	int GetPlayerLevelUpBaseKills() const;
 	float GetPlayerLevelUpGrowthFactor() const;
